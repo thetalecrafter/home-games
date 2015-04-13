@@ -1,0 +1,22 @@
+@import "./variables.css";
+
+.app-header
+{
+	background: rgba(34,34,34,.98);
+	color: #aaa;
+	position: fixed;
+	top: 0;
+	height: var(--header-height);
+	boxShadow: 0 0 5px rgba(0,0,0,.5);
+	width: 100%;
+}
+
+.app-header-text
+{
+	padding: 12px 8px;
+	text-transform: uppercase;
+	line-height: 26px;
+	display: inline-block;
+	vertical-align: top
+}
+
