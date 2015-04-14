@@ -3,15 +3,15 @@ const { ADD_PLAYERS, INTRO, NIGHT, MORNING, AFTERNOON, EVENING, END } = stages
 const { WITCH, PURITAN } = roles
 
 const transitions = {
-  [ADD_PLAYERS]: transitionToIntro
-  [INTRO]: transitionIntroToNight
-  [NIGHT]: transitionToMorning
-  [MORNING]: transitionToAfternoon
-  [AFTERNOON]: transitionToEvening
+  [ADD_PLAYERS]: transitionToIntro,
+  [INTRO]: transitionIntroToNight,
+  [NIGHT]: transitionToMorning,
+  [MORNING]: transitionToAfternoon,
+  [AFTERNOON]: transitionToEvening,
   [EVENING]: transitionToNight
 }
 
-export default function transition(state) {
+export default function transition (state) {
   const to = transitions[state.stage]
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
   return to(state)

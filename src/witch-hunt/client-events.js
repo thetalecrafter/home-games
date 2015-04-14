@@ -2,7 +2,7 @@
 export default function (actions, store) {
   const source = new EventSource(actions.baseUrl + 'events')
 
-  function relay(action) {
+  function relay (action) {
     return event => {
       const args = JSON.parse(event.data)
       actions[action].apply(actions, args)

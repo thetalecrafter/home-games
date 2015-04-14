@@ -16,7 +16,7 @@ export default function (actions, store) {
       res.write(':' + preamble + '\n') // 2kB padding for IE
     }
     res.write('retry: 10000\n')
-    sendEventSource(res, { name: 'update', data: [
+    sendEventSource(res, { name: 'bootstrap', data: [
       store.getStateForPlayer(req.session.playerId)
     ] })
     clients = clients.concat(res)
@@ -52,20 +52,14 @@ export default function (actions, store) {
     res.write(`data: ${JSON.stringify(data)}\n\n`)
   }
 
-  actions.on('create', () => {
-    sendEvent({ name: 'create', data: [ store.state ] })
+  actions.on('create', player => {
+    sendEvent({ name: 'update', data: [ player ] })
   })
-  actions.on('add-player', player => {
-    sendEvent({ name: 'add-player', data: [ player ] })
+  actions.on('update', player => {
+    sendEvent({ name: 'update', data: [ player ] })
   })
-  actions.on('player-vote', (player, vote) => {
-    sendEvent({ name: 'player-vote', data: [ { id: player.id }, vote ] })
-  })
-  actions.on('player-ready', player => {
-    sendEvent({ name: 'player-ready', data: [ { id: player.id } ] })
-  })
-  actions.on('change-stage', data => {
-    sendEvent({ name: 'change-stage', data: [ data ] })
+  actions.on('delete', player => {
+    sendEvent({ name: 'delete', data: [ { id: player.id } ] })
   })
 
   return events

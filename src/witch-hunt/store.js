@@ -1,5 +1,5 @@
 import uniflow from 'uniflow'
-import { stages } from './constants'
+import { stages, roles } from './constants'
 
 export default function WitchHuntStore () {
   return uniflow.createStore({
@@ -71,13 +71,13 @@ export default function WitchHuntStore () {
       )
     },
 
-    getStateForPlayer (player) {
-      const role = this.state.players.find(p => p.id === player.id).role
+    getStateForPlayer (playerId) {
+      const role = this.state.players.find(p => p.id === playerId).role
       if (role === roles.WITCH) { return this.state }
-      const players = this.state.players.map(playa => {
-        if (playa.id === player.id) { return playa }
-        const role = playa.role && roles.UNKNOWN
-        return Object.assign({}, playa, { role })
+      const players = this.state.players.map(player => {
+        if (player.id === playerId) { return player }
+        const role = player.role && roles.UNKNOWN
+        return Object.assign({}, player, { role })
       })
       return Object.assign({}, this.state, { players })
     },

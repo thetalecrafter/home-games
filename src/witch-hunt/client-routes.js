@@ -9,7 +9,7 @@ import connectToEventSource from './client-events'
 
 export default function (app) {
   function witchHuntSetup (ctx, next) {
-    const { actions, stores } = app
+    const { actions, stores, bootstrap } = app
     const isServer = stores.config.state.request
 
     if (!actions.witchHunt) { actions.witchHunt = WitchHuntActions(stores.config) }

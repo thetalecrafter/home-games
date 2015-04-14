@@ -5,6 +5,7 @@ import transition from './transition'
 import events from './server-events'
 
 const actions = WitchHuntActions()
+actions.send = function () {} // disable it calling back to server routes
 const store = WitchHuntStore()
 store.subscribe(actions)
 
@@ -14,7 +15,7 @@ function getState (req, res, next) {
 
 export default Router()
   .get('/events', events(actions, store))
-  .get('/state.json' getState)
+  .get('/state.json', getState)
   .post('/create.json')
   .post('/add-player.json')
   .post('/player-vote.json')

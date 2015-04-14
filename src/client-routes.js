@@ -2,6 +2,7 @@
 require.ensure || require.ensure = (_, fn) => fn(require)
 
 import Router from '../lib/router'
+import HomeView from './home/view'
 
 export default function Routes(app) {
   const router = new Router()
@@ -12,7 +13,17 @@ export default function Routes(app) {
     next()
   }
 
-  const witchHunt = makeJITRoute('witch-hunt', save => {
+  function home (ctx, next) {
+    app.render(<HomeView app={ app } />)
+  }
+
+  const player = makeJITRoute(app, 'player', save => {
+    require.ensure([ './player/client-routes' ],
+      () => save(require('./player/client-routes')(app))
+    )
+  })
+
+  const witchHunt = makeJITRoute(app, 'witch-hunt', save => {
     require.ensure([ './witch-hunt/client-routes' ],
       () => save(require('./witch-hunt/client-routes')(app))
     )
@@ -25,6 +36,8 @@ export default function Routes(app) {
 
   return router
     .get('/:locale(/?.*)', setLocale)
+    .get('/:locale', home)
+    .get('/:locale/player', player)
     .get('/:locale/witch-hunt', witchHunt)
     .get('*', redirectToDefault)
 }
