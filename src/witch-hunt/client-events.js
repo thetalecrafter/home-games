@@ -1,27 +1,11 @@
-/*global EventSource*/
+import ClientEventSource from '../common/eventsource/client'
+
 export default function (actions, store) {
-  const source = new EventSource(actions.baseUrl + 'events')
-
-  function relay (action) {
-    return event => {
-      const args = JSON.parse(event.data)
-      actions[action].apply(actions, args)
-    }
-  }
-
-  source.addEventListener('create', relay('bootstrap'), false)
-  source.addEventListener('add-player', relay('addPlayer'), false)
-  source.addEventListener('player-vote', relay('vote'), false)
-  source.addEventListener('player-ready', relay('ready'), false)
-  source.addEventListener('change-stage', relay('changeState'), false)
-
-  source.addEventListener('error', event => {
-    if (event.target.readyState === EventSource.CLOSED) {
-      console.error('Witch Hunt EventSource connection closed')
-    } else if (event.target.readyState === EventSource.CONNECTING) {
-      console.info('Witch Hunt EventSource reconnecting')
-    } else {
-      console.error('Witch Hunt EventSource error', event)
-    }
-  }, false)
+  const source = new ClientEventSource(actions.baseUrl + 'events')
+  source.relay('create', actions.bootstrap)
+  source.relay('add-player', actions.addPlayer)
+  source.relay('player-vote', actions.vote)
+  source.relay('player-ready', actions.ready)
+  source.relay('change-stage', actions.changeState)
+  return source
 }
