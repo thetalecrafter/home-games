@@ -4,8 +4,12 @@ import uniflow from 'uniflow'
 export default function PlayerActions (config) {
   const baseUrl = config && (config.state.api + '/player/')
   return uniflow.createActions({
+    getBaseUrl () {
+      return baseUrl
+    },
+
     create (player) {
-      this.emit('create')
+      this.emit('create', player)
       this.send('create.json', player)
     },
 

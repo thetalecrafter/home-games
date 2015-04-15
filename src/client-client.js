@@ -12,6 +12,9 @@ const app = new App({
   stores,
   render (view) {
     React.render(view, document.body)
+  },
+  onError(err) {
+    console.error(err)
   }
 })
 app.start()

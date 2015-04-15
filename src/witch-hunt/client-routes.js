@@ -1,6 +1,6 @@
 import React from 'react'
 import Router from '../../lib/router'
-import UniflowComponent from 'uniflow-component'
+import wrap from 'uniflow-component'
 
 import WitchHuntView from './view'
 import WitchHuntActions from './actions'
@@ -28,11 +28,8 @@ export default function (app) {
   }
 
   function witchHunt (context, next) {
-    app.render(
-      <UniflowComponent game={ app.stores.witchHunt }>
-        <WitchHuntView app={ app } />
-      </UniflowComponent>
-    )
+    const View = wrap(WitchHuntView, { game: app.stores.witchHunt })
+    app.render(<View app={ app } />)
   }
 
   return new Router()

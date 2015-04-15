@@ -13,7 +13,7 @@
     "path-to-regexp": "1.0.3",
     "react": "0.13.1",
     "uniflow": "1.1.0",
-    "uniflow-component": "1.0.0"
+    "uniflow-component": "2.0.1"
   },
   "devDependencies": {
     "babel-core": "5.0.12",

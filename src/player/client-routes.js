@@ -1,6 +1,6 @@
 import React from 'react'
 import Router from '../../lib/router'
-import UniflowComponent from 'uniflow-component'
+import wrap from 'uniflow-component'
 
 import PlayerView from './view'
 import PlayerActions from './actions'
@@ -28,11 +28,8 @@ export default function (app) {
   }
 
   function player (context, next) {
-    app.render(
-      <UniflowComponent players={ app.stores.player }>
-        <PlayerView app={ app } />
-      </UniflowComponent>
-    )
+    const View = wrap(PlayerView, { players: app.stores.player })
+    app.render(<View app={ app } />)
   }
 
   return new Router()

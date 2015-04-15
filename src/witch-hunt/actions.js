@@ -4,6 +4,10 @@ import uniflow from 'uniflow'
 export default function WitchHuntActions (config) {
   const baseUrl = config && (config.state.api + '/witch-hunt/')
   return uniflow.createActions({
+    getBaseUrl () {
+      return baseUrl
+    },
+
     create (o) {
       this.emit('create')
       this.send('create.json', {})

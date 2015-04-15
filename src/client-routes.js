@@ -45,6 +45,7 @@ export default function Routes(app) {
     .get('/:locale/player', player)
     .get('/:locale/witch-hunt', witchHunt)
     .get('*', redirectToDefault)
+    .use((err, ctx, next) => app.onError(err))
 }
 
 /**

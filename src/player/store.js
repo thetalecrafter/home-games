@@ -5,7 +5,7 @@ export default function PlayerStore () {
     state: { players: {} },
 
     subscribe (actions) {
-      actions.on('load-success', this.update)
+      actions.on('load-success', this.bootstrap)
       actions.on('bootstrap', this.bootstrap)
       actions.on('create', this.update)
       actions.on('update', this.update)
@@ -50,6 +50,11 @@ export default function PlayerStore () {
 
     getStateForPlayer (selectedId) {
       return Object.assign({}, this.state, { selectedId })
+    },
+
+    nextId () {
+      const ids = Object.keys(this.state.players).concat(0)
+      return '' + (Math.max(...ids) + 1)
     },
 
     toJSON () {

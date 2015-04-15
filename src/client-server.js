@@ -14,7 +14,7 @@ const translate = getTranslate({
   keyType: 'underscored_crc32',
   translations: { en, pt }
 })
-formatMessage.setup({ translate })
+//formatMessage.setup({ translate })
 
 import React from 'react'
 import App from './client-app'
@@ -32,7 +32,8 @@ export default function (request, response, next) {
     },
     actions: {},
     stores: {},
-    render
+    render,
+    onError: next
   })
 
   app.stores.config.on('change', () => {

@@ -1,7 +1,7 @@
 import ClientEventSource from '../common/eventsource/client'
 
 export default function (actions, store) {
-  const source = new ClientEventSource(actions.baseUrl + 'events')
+  const source = new ClientEventSource(actions.getBaseUrl() + 'events')
   source.relay('create', actions.bootstrap)
   source.relay('add-player', actions.addPlayer)
   source.relay('player-vote', actions.vote)

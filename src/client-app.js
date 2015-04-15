@@ -7,6 +7,7 @@ export default class App {
     this.actions = o.actions
     this.stores = o.stores
     this.render = o.render
+    this.onError = o.onError
 
     this.stores.config = ConfigStore(this.bootstrap.config)
     this.router = Routes(this)
