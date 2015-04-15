@@ -26,20 +26,18 @@ export default class PlayerView extends React.Component {
   }
 
   render () {
-    const players = this.props.players.players
-    const select = this.getActions().select
-    const remove = this.getActions().delete
-    const selectedId = players.selectedId
+    const { players, selectedId } = this.props.players
+    const { select, delete: remove } = this.getActions()
     return (
       <div>
         <h1>{ formatMessage('Players') }</h1>
-        { Object.keys(players).map(playerId =>
-          <div key={ playerId }>
-            <span onClick={ select.partial(players[playerId]) }>
-              { playerId === selectedId && '✓' }
-              { players[playerId].name }
+        { players.map(player =>
+          <div key={ player.id }>
+            <span onClick={ select.partial(player) }>
+              { player.id === selectedId && '✓' }
+              { player.name }
             </span>
-            <button onClick={ remove.partial(players[playerId]) }>
+            <button onClick={ remove.partial(player) }>
               ⌫
             </button>
           </div>

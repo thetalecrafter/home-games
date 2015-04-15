@@ -3,6 +3,12 @@ import uniflow from 'uniflow'
 
 export default function WitchHuntActions (config) {
   const baseUrl = config && (config.state.api + '/witch-hunt/')
+  const addAuth = config && config.state.request ?
+    headers => Object.assign(headers, {
+      Cookie: config.state.request.get('Cookie')
+    }) :
+    headers => headers
+
   return uniflow.createActions({
     getBaseUrl () {
       return baseUrl
@@ -37,10 +43,10 @@ export default function WitchHuntActions (config) {
       const url = baseUrl + path
       return fetch(url, {
 				method: data ? 'post' : 'get',
-				headers: {
+				headers: addAuth({
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
-				},
+				}),
 				body: data && JSON.stringify(data)
 			})
       .then(response => response.json())
@@ -55,9 +61,9 @@ export default function WitchHuntActions (config) {
       this.emit('load')
       const url = baseUrl + '/state.json'
       return fetch(url, {
-				headers: {
+				headers: addAuth({
 					'Accept': 'application/json'
-				}
+				})
       })
 			.then(response => response.json())
       .then(

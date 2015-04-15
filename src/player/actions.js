@@ -3,6 +3,12 @@ import uniflow from 'uniflow'
 
 export default function PlayerActions (config) {
   const baseUrl = config && (config.state.api + '/player/')
+  const addAuth = config && config.state.request ?
+    headers => Object.assign(headers, {
+      Cookie: config.state.request.get('Cookie')
+    }) :
+    headers => headers
+
   return uniflow.createActions({
     getBaseUrl () {
       return baseUrl
@@ -33,10 +39,10 @@ export default function PlayerActions (config) {
       const url = baseUrl + path
       return fetch(url, {
 				method: method || data ? 'post' : 'get',
-				headers: {
+				headers: addAuth({
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
-				},
+				}),
 				body: data && JSON.stringify(data)
 			})
       .then(response => response.json())
@@ -51,9 +57,9 @@ export default function PlayerActions (config) {
       this.emit('load')
       const url = baseUrl + '/players.json'
       return fetch(url, {
-				headers: {
+				headers: addAuth({
 					'Accept': 'application/json'
-				}
+				})
       })
 			.then(response => response.json())
       .then(

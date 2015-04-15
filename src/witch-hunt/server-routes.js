@@ -3,10 +3,14 @@ import WitchHuntActions from './actions'
 import WitchHuntStore from './store'
 import transition from './transition'
 import events from './server-events'
+import persist from '../common/persist'
 
 const actions = WitchHuntActions()
 const store = WitchHuntStore()
 store.subscribe(actions)
+
+actions.bootstrap(persist.readSync('witch-hunt') || {})
+store.on('change', () => persist.write('witch-hunt', store))
 
 function getState (req, res, next) {
   res.send(store.getStateForPlayer(req.session.playerId))

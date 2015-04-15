@@ -2,10 +2,14 @@ import { Router } from 'express'
 import PlayerActions from './actions'
 import PlayerStore from './store'
 import events from './server-events'
+import persist from '../common/persist'
 
 const actions = PlayerActions()
 const store = PlayerStore()
 store.subscribe(actions)
+
+actions.bootstrap(persist.readSync('players') || { players: [] })
+store.on('change', () => persist.write('players', store))
 
 function getPlayers (req, res, next) {
   res.send(store.getStateForPlayer(req.session.playerId))

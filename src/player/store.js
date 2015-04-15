@@ -2,12 +2,12 @@ import uniflow from 'uniflow'
 
 export default function PlayerStore () {
   return uniflow.createStore({
-    state: { players: {} },
+    state: { players: [] },
 
     subscribe (actions) {
       actions.on('load-success', this.bootstrap)
       actions.on('bootstrap', this.bootstrap)
-      actions.on('create', this.update)
+      actions.on('create', this.create)
       actions.on('update', this.update)
       actions.on('select', this.select)
       actions.on('delete', this.delete)
@@ -19,14 +19,16 @@ export default function PlayerStore () {
     },
 
     create (player) {
-      const players = Object.assign({}, this.state.players)
-      players[player.id] = player
+      const players = this.state.players.filter(
+        oplayer => oplayer.id !== player.id
+      ).concat(player)
       this.setState({ players })
     },
 
     update (player) {
-      const players = Object.assign({}, this.state.players)
-      players[player.id] = player
+      const players = this.state.players.map(oplayer => {
+        return oplayer.id === player.id ? player : oplayer
+      })
       this.setState({ players })
     },
 
@@ -36,16 +38,16 @@ export default function PlayerStore () {
 
     getCurrentPlayer () {
       const playerId = this.state.selectedId
-      return this.state.players[playerId]
+      return this.state.players.find(player => player.id === playerId)
     },
 
     delete (playerId) {
-      const oldPlayers = this.state.players
-      const players = {}
-      Object.keys(oldPlayers).forEach(id => {
-        if (id !== playerId) { players[id] = oldPlayers[id] }
-      })
-      this.setState({ players })
+      const selectedId = playerId === this.state.selectedId ?
+        undefined : this.state.selectedId
+      const players = this.state.players.filter(
+        player => player.id !== playerId
+      )
+      this.setState({ players, selectedId })
     },
 
     getStateForPlayer (selectedId) {
@@ -53,7 +55,7 @@ export default function PlayerStore () {
     },
 
     nextId () {
-      const ids = Object.keys(this.state.players).concat(0)
+      const ids = this.state.players.map(player => +player.id).concat(0)
       return '' + (Math.max(...ids) + 1)
     },
 

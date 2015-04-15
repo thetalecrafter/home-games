@@ -1,6 +1,4 @@
 import express from 'express'
-import bodyParser from 'body-parser'
-import session from 'cookie-session'
 import client from './client-server'
 import player from './player/server-routes'
 import witchHunt from './witch-hunt/server-routes'
@@ -19,11 +17,8 @@ function error (err, req, res, next) {
 }
 
 const api = express.Router()
-  .use(bodyParser.json())
-  .use(session({ name: 'player', keys: [ 'unsafekey' ] }))
   .use('/player', player)
   .use('/witch-hunt', witchHunt)
-  .use(error)
 
 export default express.Router()
 	.use('/api/v1', api)
