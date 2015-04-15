@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const debug = process.argv.indexOf('-d') >= 0 ||
     process.argv.indexOf('--debug') >= 0
-const locales = [ 'en', 'pt' ]
+const locales = [ 'en'/*, 'pt'*/ ]
 
 module.exports = locales.map(function(locale) {
   return {
@@ -36,6 +36,7 @@ module.exports = locales.map(function(locale) {
     },
     output: {
       filename: '[name].' + locale + '.js',
+      chunkFilename: '[name].' + locale + '.js',
       path: __dirname + '/dist',
       publicPath: '/'
     },

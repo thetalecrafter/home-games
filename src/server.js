@@ -8,6 +8,7 @@ const express = require('express')
 const routes = require('./server-routes')
 
 module.exports = express()
+  .set('api-base-url', 'http://localhost:1337/api/v1')
 	.use(routes)
 	.listen(1337)
 

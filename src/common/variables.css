@@ -1,5 +1,0 @@
-:root {
-	--header-height: 50px;
-	--full-height: calc(100vh - var(--header-height));
-}
-

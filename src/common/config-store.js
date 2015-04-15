@@ -23,7 +23,7 @@ export default function ConfigStore (data) {
     },
 
     toJSON () {
-      const blacklist = [ 'stores', 'env', 'request', 'response' ]
+      const blacklist = [ 'store', 'env', 'request', 'response' ]
       const json = {}
       Object.keys(this.state)
         .filter(key => blacklist.indexOf(key) === -1)

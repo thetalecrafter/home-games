@@ -43,7 +43,7 @@ export default function PlayerStore () {
       const oldPlayers = this.state.players
       const players = {}
       Object.keys(oldPlayers).forEach(id => {
-        if (id !== playerId) { players = oldPlayers[id] }
+        if (id !== playerId) { players[id] = oldPlayers[id] }
       })
       this.setState({ players })
     },
@@ -53,7 +53,12 @@ export default function PlayerStore () {
     },
 
     toJSON () {
-      return this.state
+      const blacklist = [ 'store' ]
+      const json = {}
+      Object.keys(this.state)
+        .filter(key => blacklist.indexOf(key) === -1)
+        .forEach(key => json[key] = this.state[key])
+      return json
     }
   })
 }

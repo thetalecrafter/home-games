@@ -9,7 +9,7 @@ export default class App {
     this.render = o.render
 
     this.stores.config = ConfigStore(this.bootstrap.config)
-    this.actions.router = Routes(this)
+    this.router = Routes(this)
   }
 
   start () {
@@ -18,5 +18,9 @@ export default class App {
 
   route (url) {
     this.router.route(url)
+  }
+
+  reroute () {
+    this.router.routeFromLocation()
   }
 }

@@ -8,7 +8,8 @@ import formatMessage from 'format-message'
 import { getTranslate } from 'format-message/lib/translate-util'
 import lookupClosestLocale from 'format-message/node_modules/message-format/lib/lookup-closest-locale'
 import { en } from '../locales/en.json'
-import { pt } from '../locales/pt.json'
+//import { pt } from '../locales/pt.json'
+const pt = { pt: {} }
 const translate = getTranslate({
   keyType: 'underscored_crc32',
   translations: { en, pt }
@@ -26,7 +27,7 @@ export default function (request, response, next) {
       config: {
         request, response,
         env: process.env,
-        api: 'http://localhost:1337/api/v1' // TODO: from config
+        api: request.app.get('api-base-url')
       }
     },
     actions: {},
@@ -49,8 +50,8 @@ export default function (request, response, next) {
     const headers = http.headers || {}
 
     const title = '' // TODO: where does title come from?
-    const html = (
-      '<!doctype html>\n' + React.renderToStaticMarkup(
+    React.renderToString(view)
+    const html = '<!doctype html>\n' + React.renderToStaticMarkup(
       <html lang={ locale }>
         <meta charSet="utf-8" />
         <title>{ title }</title>
@@ -67,7 +68,7 @@ export default function (request, response, next) {
           React.renderToString(view)
         } } />
       </html>
-    ))
+    )
 
     return response
       .status(statusCode)

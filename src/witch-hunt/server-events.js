@@ -24,5 +24,5 @@ export default function (actions, store) {
     events.sendEvent({ name: 'change-stage', data: [ data ] })
   })
 
-  return events
+  return events.expressHandler
 }

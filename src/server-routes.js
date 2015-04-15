@@ -1,12 +1,14 @@
-import { Router } from 'express'
+import express from 'express'
 import bodyParser from 'body-parser'
 import session from 'cookie-session'
 import client from './client-server'
+import player from './player/server-routes'
 import witchHunt from './witch-hunt/server-routes'
 
-const api = Router()
+const api = express.Router()
   .use(bodyParser.json())
-  .use(session({ name: 'player' }))
+  .use(session({ name: 'player', keys: [ 'unsafekey' ] }))
+  .use('/player', player)
   .use('/witch-hunt', witchHunt)
   .use((err, req, res, next) => {
     let status = err.status || 500
@@ -21,7 +23,7 @@ const api = Router()
     })
   })
 
-export default Router()
+export default express.Router()
 	.use('/api/v1', api)
 	.use(express.static('dist', {
 		index: false,

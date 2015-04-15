@@ -18,5 +18,5 @@ export default function (actions, store) {
     events.sendEvent({ name: 'delete', data: [ { id: player.id } ] })
   })
 
-  return events
+  return events.expressHandler
 }

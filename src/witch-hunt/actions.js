@@ -2,9 +2,8 @@
 import uniflow from 'uniflow'
 
 export default function WitchHuntActions (config) {
+  const baseUrl = config && (config.state.api + '/witch-hunt/')
   return uniflow.createActions({
-    baseUrl: config.state.api + '/witch-hunt/',
-
     create (o) {
       this.emit('create')
       this.send('create.json', {})
@@ -31,7 +30,7 @@ export default function WitchHuntActions (config) {
 
     send (path, data) {
       if (!config) { return }
-      const url = this.baseUrl + path
+      const url = baseUrl + path
       return fetch(url, {
 				method: data ? 'post' : 'get',
 				headers: {
@@ -50,7 +49,7 @@ export default function WitchHuntActions (config) {
     load () {
       if (!config) { return }
       this.emit('load')
-      const url = this.baseUrl + '/state.json'
+      const url = baseUrl + '/state.json'
       return fetch(url, {
 				headers: {
 					'Accept': 'application/json'

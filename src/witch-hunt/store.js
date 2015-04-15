@@ -83,7 +83,12 @@ export default function WitchHuntStore () {
     },
 
     toJSON () {
-      return this.state
+      const blacklist = [ 'store' ]
+      const json = {}
+      Object.keys(this.state)
+        .filter(key => blacklist.indexOf(key) === -1)
+        .forEach(key => json[key] = this.state[key])
+      return json
     }
   })
 }

@@ -1,4 +1,3 @@
-if (typeof Intl === 'undefined') { require(['intl']) } // code split, add Intl global if needed
 import React from 'react'
 import App from './client-app'
 
@@ -16,3 +15,12 @@ const app = new App({
   }
 })
 app.start()
+
+// code split, add Intl global if needed
+if (typeof Intl === 'undefined') {
+  require.ensure([ 'intl' ], () => {
+    require('intl')
+    app.reroute()
+  }, 'intl')
+}
+

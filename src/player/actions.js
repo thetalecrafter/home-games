@@ -2,9 +2,8 @@
 import uniflow from 'uniflow'
 
 export default function PlayerActions (config) {
+  const baseUrl = config && (config.state.api + '/player/')
   return uniflow.createActions({
-    baseUrl: config.state.api + '/player/',
-
     create (player) {
       this.emit('create')
       this.send('create.json', player)
@@ -27,7 +26,7 @@ export default function PlayerActions (config) {
 
     send (path, data, method) {
       if (!config) { return }
-      const url = this.baseUrl + path
+      const url = baseUrl + path
       return fetch(url, {
 				method: method || data ? 'post' : 'get',
 				headers: {
@@ -46,7 +45,7 @@ export default function PlayerActions (config) {
     load () {
       if (!config) { return }
       this.emit('load')
-      const url = this.baseUrl + '/players.json'
+      const url = baseUrl + '/players.json'
       return fetch(url, {
 				headers: {
 					'Accept': 'application/json'

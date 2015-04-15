@@ -1,5 +1,5 @@
 {
-  "name": "tessel-games",
+  "name": "home-games",
   "version": "0.0.1",
   "description": "Games for your local network",
   "dependencies": {

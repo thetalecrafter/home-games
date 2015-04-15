@@ -1,6 +1,7 @@
 // allow client code-split to just sync require on server
-require.ensure || require.ensure = (_, fn) => fn(require)
+if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(require) }
 
+import React from 'react'
 import Router from '../lib/router'
 import HomeView from './home/view'
 
@@ -17,15 +18,19 @@ export default function Routes(app) {
     app.render(<HomeView app={ app } />)
   }
 
-  const player = makeJITRoute(app, 'player', save => {
-    require.ensure([ './player/client-routes' ],
-      () => save(require('./player/client-routes')(app))
+  const player = makeJITRouter(app, 'player', save => {
+    require.ensure(
+      [ './player/client-routes' ],
+      () => save(require('./player/client-routes')(app)),
+      'player'
     )
   })
 
-  const witchHunt = makeJITRoute(app, 'witch-hunt', save => {
-    require.ensure([ './witch-hunt/client-routes' ],
-      () => save(require('./witch-hunt/client-routes')(app))
+  const witchHunt = makeJITRouter(app, 'witch-hunt', save => {
+    require.ensure(
+      [ './witch-hunt/client-routes' ],
+      () => save(require('./witch-hunt/client-routes')(app)),
+      'witch-hunt'
     )
   })
 
@@ -45,15 +50,16 @@ export default function Routes(app) {
 /**
  * Utility to just-in-time load game-specific code
  **/
-const jitRoutes = {}
-function makeJITRoute(app, key, ensure) {
-  return (ctx, next) => {
-    if (jitRoutes[key]) { return jitRoutes[key](ctx, next) }
+function makeJITRouter(app, key, ensure) {
+  const wrappingRouter = new Router()
+  let dynamicRouter = null
+  return wrappingRouter.use((ctx, next) => {
+    if (dynamicRouter) { return dynamicRouter.run(ctx, next) }
     app.stores.config.setLoading(key)
-    ensure(route => {
-      jitRoutes[key] = route
+    ensure(router => {
       app.stores.config.clearLoading(key)
-      route(ctx, next)
+      dynamicRouter = router
+      router.run(ctx, next)
     })
-  }
+  })
 }

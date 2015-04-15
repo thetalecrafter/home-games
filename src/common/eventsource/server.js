@@ -7,9 +7,11 @@ const heartbeatTimeout = 10 * 1000
 
 export default class ServerEventSource extends EventEmitter {
   constructor () {
+    super()
     this.clients = []
     this.timer = null
     this.heartbeat = this.heartbeat.bind(this)
+    this.expressHandler = this.expressHandler.bind(this)
   }
 
   expressHandler (req, res, next) {
