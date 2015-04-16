@@ -13,10 +13,7 @@ export default class ClientEventSource {
     }, false)
   }
 
-  relay (evtName, action) {
-    this.source.addEventListener(evtName, event => {
-      const args = JSON.parse(event.data)
-      action(...args)
-    }, false)
+  on (evtName, fn) {
+    this.source.addEventListener(evtName, fn, false)
   }
 }

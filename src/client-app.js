@@ -13,8 +13,8 @@ export default class App {
     this.router = Routes(this)
   }
 
-  start () {
-    this.router.start()
+  start (opts) {
+    this.router.start(opts)
   }
 
   route (url) {
@@ -23,5 +23,10 @@ export default class App {
 
   reroute () {
     this.router.routeFromLocation()
+  }
+
+  getCurrentPlayer () {
+    if (!this.stores.player) { return null }
+    return this.stores.player.getCurrentPlayer()
   }
 }

@@ -1,18 +1,39 @@
 import uniflow from 'uniflow'
 import { stages, roles } from './constants'
+import ClientEventSource from '../common/eventsource/client'
+import equal from 'obj-eql'
+const deepEqual = equal.bind(null, (a, b) => deepEqual(a, b))
 
-export default function WitchHuntStore () {
+export default function WitchHuntStore (config) {
+  const baseUrl = config && (config.state.api + '/witch-hunt/')
+
   return uniflow.createStore({
-    state: {},
+    state: { players: [] },
 
     subscribe (actions) {
-      actions.on('load-success', this.update)
-      actions.on('bootstrap', this.update)
+      actions.on('load-success', this.bootstrap)
+      actions.on('bootstrap', this.bootstrap)
       actions.on('create', this.create)
       actions.on('add-player', this.addPlayer)
       actions.on('player-vote', this.vote)
       actions.on('player-ready', this.ready)
       actions.on('change-stage', this.updateStage)
+      actions.on('end', this.end)
+    },
+
+    subscribeToServer () {
+      if (this.source || !baseUrl) { return }
+      this.source = new ClientEventSource(baseUrl + 'store-changes')
+      this.source.on('change', event => {
+        const data = JSON.parse(event.data)
+        if (!deepEqual(this.state, data)) {
+          this.replaceState(data)
+        }
+      })
+    },
+
+    bootstrap (state) {
+      this.setState(state)
     },
 
     // action event handlers
@@ -24,10 +45,6 @@ export default function WitchHuntStore () {
       })
     },
 
-    update (state) {
-      this.setState(state)
-    },
-
     addPlayer (player) {
       const players = this.state.players.filter(
         existing => existing.id !== player.id
@@ -35,33 +52,39 @@ export default function WitchHuntStore () {
       this.setState({ players })
     },
 
-    vote (player, vote) {
-      const players = this.state.players.map(playa => {
-        if (playa.id !== player.id) { return playa }
-        return Object.assign({}, playa, { vote })
+    vote (playerId, vote) {
+      const players = this.state.players.map(player => {
+        if (player.id !== playerId) { return player }
+        return Object.assign({}, player, { vote })
       })
       this.setState({ players })
     },
 
-    ready (player) {
-      const players = this.state.players.map(playa => {
-        if (playa.id !== player.id) { return playa }
-        return Object.assign({}, playa, { isReady: true })
+    ready (playerId) {
+      const players = this.state.players.map(player => {
+        if (player.id !== playerId) { return player }
+        return Object.assign({}, player, { isReady: true })
       })
       this.setState({ players })
     },
 
-    updateStage (state) {
-      let { stage, result, players } = state
-      players = players.map(player => {
-        return Object.assign({}, player, { isReady: false, vote: null })
-      })
-      this.setState({ stage, result, players })
+    end () {
+      this.replaceState({ players: [] })
     },
 
     // computed data
     isEveryoneReady () {
+      if (this.state.players.length < 4) { return false }
       return this.state.players.every(player => player.isReady)
+    },
+
+    isPlayerReady (playerId) {
+      const player = this.state.players.find(player => player.id === playerId)
+      return player && player.isReady
+    },
+
+    isPlaying (playerId) {
+      return !!this.state.players.find(player => player.id === playerId)
     },
 
     didWin (player) {
@@ -72,7 +95,8 @@ export default function WitchHuntStore () {
     },
 
     getStateForPlayer (playerId) {
-      const role = this.state.players.find(p => p.id === playerId).role
+      const currentPlayer = this.state.players.find(p => p.id === playerId)
+      const role = currentPlayer && currentPlayer.role
       if (role === roles.WITCH) { return this.state }
       const players = this.state.players.map(player => {
         if (player.id === playerId) { return player }

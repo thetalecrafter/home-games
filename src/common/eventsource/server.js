@@ -25,21 +25,22 @@ export default class ServerEventSource extends EventEmitter {
     }
     res.write('retry: 10000\n')
 
-    this.clients = this.clients.concat(res)
+    const client = { request: req, response: res }
+    this.clients = this.clients.concat(client)
     res.socket.setTimeout(0)
     req.connection.on('close', () => {
-      this.clients = this.clients.filter(client => client !== res)
+      this.clients = this.clients.filter(c => c !== client)
     })
 
     if (!this.timer) { this.heartbeat() }
-    this.emit('connect', req, res)
+    this.emit('connect', client)
   }
 
   heartbeat () {
-    this.sendEvent({ data: Date.now() })
+    this.broadcast({ data: Date.now() })
   }
 
-  sendEvent (event) {
+  broadcast (event) {
     clearTimeout(this.timer)
     this.timer = !this.clients.length ? null :
       setTimeout(this.heartbeat, heartbeatTimeout)
@@ -47,11 +48,22 @@ export default class ServerEventSource extends EventEmitter {
     const time = process.hrtime()
     event.id = time[0] * 1e9 + time[1]
     for (let client of this.clients) {
-      this.sendToClient(client, event)
+      this.send(client, event)
     }
   }
 
-  sendToClient (res, { id, name, data }) {
+  send (client, { id, name, data }) {
+    if (typeof data !== 'function') {
+      return this.write(client, { id, name, data })
+    }
+    data(client, (err, data) => {
+      if (err) { return console.error(err.stack) }
+      else { this.write(client, { id, name, data }) }
+    })
+  }
+
+  write (client, { id, name, data }) {
+    const res = client.response
     if (name) { res.write(`event: ${name}\n`) }
     if (id) { res.write(`id: ${id}\n`) }
     res.write(`data: ${JSON.stringify(data)}\n\n`)

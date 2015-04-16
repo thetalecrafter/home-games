@@ -10,49 +10,28 @@ export default function WitchHuntActions (config) {
     headers => headers
 
   return uniflow.createActions({
-    getBaseUrl () {
-      return baseUrl
-    },
+    create () { this.send('create') },
+    addPlayer (player) { this.send('add-player', player) },
+    vote (playerId, vote) { this.send('player-vote', playerId, vote) },
+    ready (playerId) { this.send('player-ready', playerId) },
+    end () { this.send('end') },
 
-    create (o) {
-      this.emit('create')
-      this.send('create.json', {})
-    },
-
-    addPlayer (player) {
-      this.emit('add-player', player)
-      this.send('add-player.json', player)
-    },
-
-    vote (player, vote) {
-      this.emit('player-vote', player, vote)
-      this.send('player-vote.json', { player, vote })
-    },
-
-    ready (player) {
-      this.emit('player-ready', player)
-      this.send('player-ready.json', { player })
-    },
-
-    changeState (state) {
-      this.emit('change-stage', state)
-    },
-
-    send (path, data) {
+    send (action, ...args) {
+      this.emit(action, ...args)
       if (!config) { return }
-      const url = baseUrl + path
+      const url = baseUrl + 'action/' + action
       return fetch(url, {
-				method: data ? 'post' : 'get',
+				method: 'post',
 				headers: addAuth({
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				}),
-				body: data && JSON.stringify(data)
+				body: JSON.stringify(args)
 			})
       .then(response => response.json())
       .then(
-        json => this.emit(path + '-send-success', path, data, json),
-        err => this.emit(path + '-send-failure', path, data, err)
+        json => this.emit(action + '-send-success', args, json),
+        err => this.emit(action + '-send-failure', args, err)
       )
     },
 

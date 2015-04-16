@@ -3,21 +3,24 @@ import App from './client-app'
 
 const script = document.getElementById('StoreBootstrapData') || {}
 const bootstrap = JSON.parse(script.textContent || '{}') || {}
-const actions = {} // will hold the actions instances
-const stores = {} // will hold the stores instances
 
 const app = new App({
   bootstrap,
-  actions,
-  stores,
+  actions: {},
+  stores: {},
   render (view) {
     React.render(view, document.body)
   },
-  onError(err) {
+  redirect (url) {
+    app.go(url)
+  },
+  onError (err) {
     console.error(err)
   }
 })
-app.start()
+app.start({
+  routeLinks: true
+})
 
 // code split, add Intl global if needed
 if (typeof Intl === 'undefined') {

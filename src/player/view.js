@@ -6,11 +6,13 @@ export default class PlayerView extends React.Component {
     super()
     this.state = this.initialState
     this.create = this.create.bind(this)
+    this.update = this.update.bind(this)
     this.didChange = this.didChange.bind(this)
   }
 
   get initialState () {
     return {
+      id: null,
       name: ''
     }
   }
@@ -33,12 +35,18 @@ export default class PlayerView extends React.Component {
         <h1>{ formatMessage('Players') }</h1>
         { players.map(player =>
           <div key={ player.id }>
-            <span onClick={ select.partial(player) }>
-              { player.id === selectedId && '✓' }
+            <label>
+              <input type="radio"
+                onChange={ select.partial(player.id) }
+                checked={ player.id === selectedId }
+              />
               { player.name }
-            </span>
-            <button onClick={ remove.partial(player) }>
-              ⌫
+            </label>
+            <button onClick={ this.edit.bind(this, player) }>
+              ✎ { formatMessage('Change') }
+            </button>
+            <button onClick={ remove.partial(player.id) }>
+              ⌫ { formatMessage('Remove') }
             </button>
           </div>
         ) }
@@ -48,12 +56,21 @@ export default class PlayerView extends React.Component {
           value={ this.state.name }
           onChange={ this.didChange }
         />
-        <button
-          disabled={ !this.state.name.trim() }
-          onClick={ this.state.name.trim() && this.create }
-        >
-          { formatMessage('Create Player') }
-        </button>
+        { this.state.id ?
+          <button
+            disabled={ !this.state.name.trim() }
+            onClick={ this.state.name.trim() && this.update }
+          >
+            { formatMessage('Update') }
+          </button>
+        :
+          <button
+            disabled={ !this.state.name.trim() }
+            onClick={ this.state.name.trim() && this.create }
+          >
+            { formatMessage('Create') }
+          </button>
+        }
       </div>
     )
   }
@@ -65,5 +82,19 @@ export default class PlayerView extends React.Component {
       name: this.state.name.trim()
     }
     this.setState(this.initialState, () => create(player))
+  }
+
+  update () {
+    const update = this.getActions().update
+    const player = {
+      id: this.state.id,
+      name: this.state.name.trim()
+    }
+    this.setState(this.initialState, () => update(player))
+  }
+
+  edit (player) {
+    const { id, name } = player
+    this.setState({ id, name })
   }
 }

@@ -10,52 +10,34 @@ export default function PlayerActions (config) {
     headers => headers
 
   return uniflow.createActions({
-    getBaseUrl () {
-      return baseUrl
-    },
+    create (player) { this.send('create', player) },
+    update (player) { this.send('update', player) },
+    select (playerId) { this.send('select', playerId) },
+    delete (playerId) { this.send('delete', playerId) },
 
-    create (player) {
-      this.emit('create', player)
-      this.send('create.json', player)
-    },
-
-    update (player) {
-      this.emit('update', player)
-      this.send('update.json', player, 'put')
-    },
-
-    select (player) {
-      this.emit('select', player.id)
-      this.send('select.json', { id: player.id })
-    },
-
-    delete (player) {
-      this.emit('delete', player.id)
-      this.send('delete.json', { id: player.id }, 'delete')
-    },
-
-    send (path, data, method) {
+    send (action, ...args) {
+      this.emit(action, ...args)
       if (!config) { return }
-      const url = baseUrl + path
+      const url = baseUrl + 'action/' + action
       return fetch(url, {
-				method: method || data ? 'post' : 'get',
+				method: 'post',
 				headers: addAuth({
 					'Accept': 'application/json',
 					'Content-Type': 'application/json'
 				}),
-				body: data && JSON.stringify(data)
+				body: JSON.stringify(args)
 			})
       .then(response => response.json())
       .then(
-        json => this.emit(path + '-send-success', path, data, json),
-        err => this.emit(path + '-send-failure', path, data, err)
+        json => this.emit(action + '-send-success', args, json),
+        err => this.emit(action + '-send-failure', args, err)
       )
     },
 
     load () {
       if (!config) { return }
       this.emit('load')
-      const url = baseUrl + '/players.json'
+      const url = baseUrl + '/store-state.json'
       return fetch(url, {
 				headers: addAuth({
 					'Accept': 'application/json'

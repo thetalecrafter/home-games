@@ -1,50 +1,58 @@
-// Make sure we just ignore .css requires instead of throwing errors
-require.extensions['.css'] = function () {}
-
 global.fetch = require('node-fetch') // add fetch global
 if (typeof Intl === 'undefined') { require('intl') } // add Intl global, if needed
 
 import formatMessage from 'format-message'
 import { getTranslate } from 'format-message/lib/translate-util'
 import lookupClosestLocale from 'format-message/node_modules/message-format/lib/lookup-closest-locale'
-import { en } from '../locales/en.json'
-//import { pt } from '../locales/pt.json'
-const pt = { pt: {} }
-const translate = getTranslate({
+import translations from '../locales'
+/*
+formatMessage.setup({ translate: getTranslate({
   keyType: 'underscored_crc32',
-  translations: { en, pt }
-})
-//formatMessage.setup({ translate })
+  translations
+}) })
+*/
 
+import { Router } from 'express'
 import React from 'react'
 import App from './client-app'
 
-export default function (request, response, next) {
-  let locale
+export default Router()
+  .get('/', (_, res) => res.redirect('/en/'))
+  .get('/:locale/*', client)
+
+function client (request, response, next) {
+  const locale = lookupClosestLocale(request.params.locale, translations)
+  if (locale !== request.params.locale) {
+    const pathParts = request.url.split('/')
+    pathParts[1] = locale
+    return response.redirect(pathParts.join('/'))
+  }
 
   const app = new App({
     bootstrap: {
       config: {
-        request, response,
-        env: process.env,
-        api: request.app.get('api-base-url')
+        request, response, locale,
+        playerId: request.session.playerId,
+        api: request.app.get('api-base-url'),
+        env: process.env
       }
     },
     actions: {},
     stores: {},
     render,
-    onError: next
-  })
-
-  app.stores.config.on('change', () => {
-    locale = lookupClosestLocale(app.stores.config.state.locale, { en, pt })
-    formatMessage.setup({ locale })
+    redirect (url) {
+      res.redirect(url)
+    },
+    onError (err) {
+      next(err)
+    }
   })
   app.route(request.url)
 
   function render (view) {
     for (let name in app.actions) { app.actions[name].removeAllListeners() }
     for (let name in app.stores) { app.stores[name].removeAllListeners() }
+    formatMessage.setup({ locale })
 
     const http = app.stores.http || {}
     const statusCode = http.statusCode || 200

@@ -14,7 +14,11 @@ const transitions = {
 export default function transition (state) {
   const to = transitions[state.stage]
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
-  return to(state)
+  const newState = to(state)
+  newState.players = newState.players.map(player => {
+    return Object.assign({}, player, { isReady: false, vote: null })
+  })
+  return newState
 }
 
 function transitionToIntro (state) {

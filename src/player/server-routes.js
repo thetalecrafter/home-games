@@ -1,44 +1,56 @@
 import { Router } from 'express'
 import PlayerActions from './actions'
 import PlayerStore from './store'
-import events from './server-events'
+import ServerEventSource from '../common/eventsource/server'
 import persist from '../common/persist'
 
+const changes = new ServerEventSource()
 const actions = PlayerActions()
 const store = PlayerStore()
 store.subscribe(actions)
 
 actions.bootstrap(persist.readSync('players') || { players: [] })
-store.on('change', () => persist.write('players', store))
 
-function getPlayers (req, res, next) {
+store.on('change', () => {
+  persist.write('players', store)
+  const data = (client, fn) => {
+    const req = client.request
+    req.session.reload(err => {
+      fn(err, store.getStateForPlayer(req.session.playerId))
+    })
+  }
+  changes.broadcast({ name: 'change', data })
+})
+
+changes.on('connect', client => {
+  const req = client.request
+  const data = store.getStateForPlayer(req.session.playerId)
+  changes.send(client, { name: 'change', data })
+})
+
+function getStoreState (req, res, next) {
   res.send(store.getStateForPlayer(req.session.playerId))
 }
 
-function createPlayer (req, res, next) {
-  actions.create(req.body)
-  res.status(204).end()
-}
-
 function selectPlayer (req, res, next) {
-  req.session.playerId = req.body.id
+  req.session.playerId = req.body[0]
   res.status(204).end()
 }
 
-function updatePlayer (req, res, next) {
-  actions.update(req.body)
-  res.status(204).end()
-}
+const acceptActions = [ 'create', 'update', 'delete' ]
+function postAction (req, res, next) {
+  const action = req.params.action
+  const args = req.body
+  if (acceptActions.indexOf(action) === -1) {
+    return res.status(404).end()
+  }
 
-function deletePlayer (req, res, next) {
-  actions.delete(req.body)
-  res.status(204).end()
+  res.status(202).end()
+  actions.emit(action, ...args)
 }
 
 export default Router()
-  .get('/events', events(actions, store))
-  .get('/players.json', getPlayers)
-  .post('/create.json', createPlayer)
-  .post('/select.json', selectPlayer)
-  .put('/update.json', updatePlayer)
-  .delete('/delete.json', deletePlayer)
+  .get('/store-state.json', getStoreState)
+  .get('/store-changes', changes.expressHandler)
+  .post('/action/select', selectPlayer)
+  .post('/action/:action', postAction)

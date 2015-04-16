@@ -1,6 +1,11 @@
 import uniflow from 'uniflow'
+import ClientEventSource from '../common/eventsource/client'
+import equal from 'obj-eql'
+const deepEqual = equal.bind(null, (a, b) => deepEqual(a, b))
 
-export default function PlayerStore () {
+export default function PlayerStore (config) {
+  const baseUrl = config && (config.state.api + '/player/')
+
   return uniflow.createStore({
     state: { players: [] },
 
@@ -11,6 +16,17 @@ export default function PlayerStore () {
       actions.on('update', this.update)
       actions.on('select', this.select)
       actions.on('delete', this.delete)
+    },
+
+    subscribeToServer () {
+      if (this.source || !baseUrl) { return }
+      this.source = new ClientEventSource(baseUrl + 'store-changes')
+      this.source.on('change', event => {
+        const data = JSON.parse(event.data)
+        if (!deepEqual(this.state, data)) {
+          this.replaceState(data)
+        }
+      })
     },
 
     // action event handlers
@@ -36,11 +52,6 @@ export default function PlayerStore () {
       this.setState({ selectedId })
     },
 
-    getCurrentPlayer () {
-      const playerId = this.state.selectedId
-      return this.state.players.find(player => player.id === playerId)
-    },
-
     delete (playerId) {
       const selectedId = playerId === this.state.selectedId ?
         undefined : this.state.selectedId
@@ -48,6 +59,14 @@ export default function PlayerStore () {
         player => player.id !== playerId
       )
       this.setState({ players, selectedId })
+    },
+
+    getPlayer (playerId) {
+      return this.state.players.find(player => player.id === playerId)
+    },
+
+    getCurrentPlayer () {
+      return this.getPlayer(this.state.selectedId)
     },
 
     getStateForPlayer (selectedId) {

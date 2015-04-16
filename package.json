@@ -5,13 +5,15 @@
   "dependencies": {
     "babel": "5.0.12",
     "body-parser": "1.12.2",
-    "cookie-session": "^1.1.0",
     "express": "4.12.3",
+    "express-session": "^1.11.1",
     "format-message": "2.3.0",
     "intl": "0.1.4",
     "node-fetch": "1.0.6",
+    "obj-eql": "^1.0.1",
     "path-to-regexp": "1.0.3",
     "react": "0.13.1",
+    "session-file-store": "0.0.3",
     "uniflow": "1.1.0",
     "uniflow-component": "2.0.1"
   },

@@ -3,19 +3,39 @@ if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(requi
 
 import React from 'react'
 import Router from '../lib/router'
+
+import ShellView from './common/shell'
 import HomeView from './home/view'
+
+import PlayerActions from './player/actions'
+import PlayerStore from './player/store'
 
 export default function Routes(app) {
   const router = new Router()
-  const DEFAULT_ROUTE = '/en-US'
 
-  function setLocale (ctx, next) {
-    app.stores.config.setLocale(ctx.params.locale || 'en-US')
-    next()
+  function playerSetup (ctx, next) {
+    const { actions, stores, bootstrap } = app
+    const isServer = stores.config.state.request
+
+    if (!actions.player) {
+      actions.player = PlayerActions(stores.config)
+    }
+    if (!stores.player) {
+      stores.player = PlayerStore(stores.config)
+      stores.player.subscribe(actions.player)
+      actions.player.bootstrap(bootstrap.player || {})
+      if (!isServer) { stores.player.subscribeToServer() }
+    }
+
+    if (!isServer) { return next() }
+    app.actions.player.load().then(
+      data => next(),
+      err => next(err)
+    )
   }
 
   function home (ctx, next) {
-    app.render(<HomeView app={ app } />)
+    app.render(<ShellView><HomeView app={ app } /></ShellView>)
   }
 
   const player = makeJITRouter(app, 'player', save => {
@@ -34,18 +54,13 @@ export default function Routes(app) {
     )
   })
 
-  function redirectToDefault (ctx, next) {
-    if (ctx.path === DEFAULT_ROUTE) { return next() }
-    router.route(DEFAULT_ROUTE)
-  }
-
   return router
-    .get('/:locale(/?.*)', setLocale)
-    .get('/:locale', home)
+    .use(playerSetup)
+    .get('/:locale/', home)
     .get('/:locale/player', player)
     .get('/:locale/witch-hunt', witchHunt)
-    .get('*', redirectToDefault)
-    .use((err, ctx, next) => app.onError(err))
+    .get((ctx, next) => app.onError()) // 404
+    .use((err, ctx, next) => app.onError(err)) // 500
 }
 
 /**
