@@ -6,8 +6,6 @@ const bootstrap = JSON.parse(script.textContent || '{}') || {}
 
 const app = new App({
   bootstrap,
-  actions: {},
-  stores: {},
   render (view) {
     React.render(view, document.body)
   },
@@ -29,4 +27,3 @@ if (typeof Intl === 'undefined') {
     app.reroute()
   }, 'intl')
 }
-

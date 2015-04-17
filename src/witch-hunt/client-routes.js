@@ -1,6 +1,5 @@
 import React from 'react'
 import Router from '../../lib/router'
-import wrap from 'uniflow-component'
 
 import ShellView from '../common/shell'
 import WitchHuntView from './view'
@@ -30,7 +29,7 @@ export default function (app) {
   }
 
   function witchHunt (context, next) {
-    const View = wrap(WitchHuntView, { game: app.stores.witchHunt })
+    const View = app.bind(WitchHuntView, { game: app.stores.witchHunt, players: app.stores.player })
     app.render(<ShellView><View app={ app } /></ShellView>)
   }
 

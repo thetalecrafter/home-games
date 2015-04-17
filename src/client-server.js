@@ -37,11 +37,9 @@ function client (request, response, next) {
         env: process.env
       }
     },
-    actions: {},
-    stores: {},
     render,
     redirect (url) {
-      res.redirect(url)
+      response.redirect(url)
     },
     onError (err) {
       next(err)

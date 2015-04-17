@@ -7,8 +7,12 @@ export default class PlayerPicker extends React.Component {
     return this.props.app.actions.player
   }
 
+  getStore () {
+    return this.props.app.stores.player
+  }
+
   render () {
-    const { players, selectedId } = this.props.players
+    const { players, selectedId } = this.getStore().state
     const { select } = this.getActions()
     return (
       <div>
@@ -26,11 +30,9 @@ export default class PlayerPicker extends React.Component {
       </div>
     )
   }
+}
 
-  static bind (app) {
-    const store = app.stores.player
-    return store.PlayerPicker || (
-      store.PlayerPicker = wrap(PlayerPicker, { players: store })
-    )
-  }
+PlayerPicker.displayName = 'PlayerPicker'
+PlayerPicker.propTypes = {
+  app: React.PropTypes.object.isRequired
 }

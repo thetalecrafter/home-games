@@ -10,3 +10,5 @@ export default class EveningStage extends React.Component {
     )
   }
 }
+
+EveningStage.displayName = 'EveningStage'

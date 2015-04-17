@@ -57,8 +57,11 @@ export default class ServerEventSource extends EventEmitter {
       return this.write(client, { id, name, data })
     }
     data(client, (err, data) => {
-      if (err) { return console.error(err.stack) }
-      else { this.write(client, { id, name, data }) }
+      if (err) {
+        return console.error(err.stack)
+      } else {
+        this.write(client, { id, name, data })
+      }
     })
   }
 

@@ -11,14 +11,13 @@ export default class AddPlayerStage extends React.Component {
     const isReady = store.isPlayerReady(currentPlayer && currentPlayer.id)
     const addPlayer = app.actions.witchHunt.addPlayer
     const ready = app.actions.witchHunt.ready
-    const Picker = PlayerPicker.bind(this.props.app)
     return (
       <div>
         <h2>{ formatMessage('Choose Players') }</h2>
         <p>
           { formatMessage('The game will begin once everyone has chosen their player.') }
         </p>
-        <Picker app={ app } />
+        <PlayerPicker app={ app } />
         { !isPlaying &&
           <button
             onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
@@ -30,7 +29,7 @@ export default class AddPlayerStage extends React.Component {
         { isPlaying && (
             isReady ?
             formatMessage('Waiting for players...') :
-            <button onClick={ ready.partial(currentPlayer) }>
+            <button onClick={ ready.partial(currentPlayer.id) }>
               { formatMessage('I’m Ready') }
             </button>
           )
@@ -38,4 +37,10 @@ export default class AddPlayerStage extends React.Component {
       </div>
     )
   }
+}
+
+AddPlayerStage.displayName = 'AddPlayerStage'
+AddPlayerStage.propTypes = {
+  app: React.PropTypes.object.isRequired,
+  game: React.PropTypes.object.isRequired
 }

@@ -12,3 +12,5 @@ export default class HomeView extends React.Component {
     )
   }
 }
+
+HomeView.displayName = 'HomeView'

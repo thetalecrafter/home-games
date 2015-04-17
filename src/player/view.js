@@ -98,3 +98,9 @@ export default class PlayerView extends React.Component {
     this.setState({ id, name })
   }
 }
+
+PlayerView.displayName = 'PlayerView'
+PlayerView.propTypes = {
+  app: React.PropTypes.object.isRequired,
+  players: React.PropTypes.object.isRequired
+}

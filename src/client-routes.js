@@ -10,7 +10,7 @@ import HomeView from './home/view'
 import PlayerActions from './player/actions'
 import PlayerStore from './player/store'
 
-export default function Routes(app) {
+export default function Routes (app) {
   const router = new Router()
 
   function playerSetup (ctx, next) {
@@ -66,7 +66,7 @@ export default function Routes(app) {
 /**
  * Utility to just-in-time load game-specific code
  **/
-function makeJITRouter(app, key, ensure) {
+function makeJITRouter (app, key, ensure) {
   const wrappingRouter = new Router()
   let dynamicRouter = null
   return wrappingRouter.use((ctx, next) => {

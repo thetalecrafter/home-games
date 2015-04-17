@@ -10,3 +10,5 @@ export default class EndStage extends React.Component {
     )
   }
 }
+
+EndStage.displayName = 'EndStage'

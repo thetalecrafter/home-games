@@ -10,3 +10,8 @@ export default class ShellView extends React.Component {
     )
   }
 }
+
+ShellView.displayName = 'ShellView'
+ShellView.propTypes = {
+  children: React.PropTypes.element
+}

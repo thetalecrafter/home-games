@@ -10,3 +10,5 @@ export default class IntroStage extends React.Component {
     )
   }
 }
+
+IntroStage.displayName = 'IntroStage'

@@ -12,7 +12,7 @@ import EndStage from './view/end-stage'
 import GameDescription from './view/description'
 
 export default class WitchHuntView extends React.Component {
-  getViewForStage(stage) {
+  getViewForStage (stage) {
     switch (stage) {
       case stages.ADD_PLAYERS: return AddPlayerStage
       case stages.INTRO: return IntroStage
@@ -36,8 +36,15 @@ export default class WitchHuntView extends React.Component {
     return (
       <div>
         <h1>{ formatMessage('Witch Hunt') }</h1>
-        <Stage app={ app } game={ game } />
+        <Stage app={ app } game={ game } players={ this.props.players } />
       </div>
     )
   }
+}
+
+WitchHuntView.displayName = 'WitchHuntView'
+WitchHuntView.propTypes = {
+  app: React.PropTypes.object.isRequired,
+  game: React.PropTypes.object.isRequired,
+  players: React.PropTypes.object.isRequired
 }

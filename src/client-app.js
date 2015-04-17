@@ -1,11 +1,13 @@
+import wrap from 'uniflow-component'
 import ConfigStore from './common/config-store'
 import Routes from './client-routes'
 
 export default class App {
   constructor (o) {
     this.bootstrap = o.bootstrap
-    this.actions = o.actions
-    this.stores = o.stores
+    this.actions = {}
+    this.stores = {}
+    this.components = {}
     this.render = o.render
     this.onError = o.onError
 
@@ -28,5 +30,12 @@ export default class App {
   getCurrentPlayer () {
     if (!this.stores.player) { return null }
     return this.stores.player.getCurrentPlayer()
+  }
+
+  bind (Component, stores) {
+    const cache = this.components
+    const displayName = Component.displayName || (Component.displayName = 'View' + Math.random())
+    const key = displayName + ':' + Object.keys(stores).join(':')
+    return cache[key] || (cache[key] = wrap(Component, stores))
   }
 }

@@ -38,7 +38,7 @@ export default function WitchHuntActions (config) {
     load () {
       if (!config) { return }
       this.emit('load')
-      const url = baseUrl + '/state.json'
+      const url = baseUrl + '/store-state.json'
       return fetch(url, {
 				headers: addAuth({
 					'Accept': 'application/json'

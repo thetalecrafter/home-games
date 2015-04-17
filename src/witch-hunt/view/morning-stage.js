@@ -10,3 +10,5 @@ export default class MorningStage extends React.Component {
     )
   }
 }
+
+MorningStage.displayName = 'MorningStage'

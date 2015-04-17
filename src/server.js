@@ -14,7 +14,7 @@ const session = require('express-session')
 const FileStore = require('session-file-store')(session)
 
 module.exports = express()
-  .set('api-base-url', 'http://localhost:1337/api/v1')
+  .set('api-base-url', 'http://127.0.0.1:1337/api/v1')
   .use(bodyParser.json())
   .use(session({
     name: 'player',

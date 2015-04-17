@@ -63,3 +63,9 @@ export default class GameDescription extends React.Component {
     )
   }
 }
+
+GameDescription.displayName = 'GameDescription'
+GameDescription.propTypes = {
+  app: React.PropTypes.object.isRequired,
+  game: React.PropTypes.object.isRequired
+}
