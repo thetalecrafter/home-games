@@ -29,7 +29,10 @@ export default {
   write (filename, content) {
     return new Promise((resolve, reject) => {
       fs.writeFile(join(dataDir, filename + '.json'), JSON.stringify(content, null, '  '), err => {
-        if (err) { return reject(err) }
+        if (err) {
+          console.error(err.message)
+          return reject(err)
+        }
         resolve(content)
       })
     })

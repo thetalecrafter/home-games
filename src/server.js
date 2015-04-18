@@ -13,8 +13,9 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const FileStore = require('session-file-store')(session)
 
-module.exports = express()
-  .set('api-base-url', 'http://127.0.0.1:1337/api/v1')
+const app = module.exports = express()
+  .set('api-base-url', '/api/v1')
+  .set('port', 1337)
   .use(bodyParser.json())
   .use(session({
     name: 'player',
@@ -27,6 +28,6 @@ module.exports = express()
     })
   }))
 	.use(routes)
-	.listen(1337)
 
-console.log('Started server on port 1337')
+app.listen(app.get('port'))
+console.log('Started server on port ' + app.get('port'))

@@ -28,12 +28,19 @@ function client (request, response, next) {
     return response.redirect(pathParts.join('/'))
   }
 
+  const port = request.app.get('port')
+  const api = (
+    request.protocol + '://' +
+    request.hostname +
+    (port === 80 || port === 443 ? '' : ':' + port) +
+    request.app.get('api-base-url')
+  )
+
   const app = new App({
     bootstrap: {
       config: {
-        request, response, locale,
+        request, response, locale, api,
         playerId: request.session.playerId,
-        api: request.app.get('api-base-url'),
         env: process.env
       }
     },
@@ -66,13 +73,13 @@ function client (request, response, next) {
         <script
           type="application/json"
           id="StoreBootstrapData"
-          dangerouslySetInnerHTML={ { __html:
-            '\n' + JSON.stringify(app.stores) + '\n'
+          dangerouslySetInnerHTML={ {
+            __html: '\n' + JSON.stringify(app.stores) + '\n'
           } }
         />
         <script defer src={ '/client.' + locale + '.js' } />
-        <body dangerouslySetInnerHTML={ { __html:
-          React.renderToString(view)
+        <body dangerouslySetInnerHTML={ {
+          __html: React.renderToString(view)
         } } />
       </html>
     )

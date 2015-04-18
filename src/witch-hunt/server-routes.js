@@ -36,7 +36,7 @@ function getStoreState (req, res, next) {
 function ready (req, res, next) {
   res.status(202).end()
   const args = req.body
-  actions.emit('ready', ...args)
+  actions.emit('player-ready', ...args)
   if (!store.isEveryoneReady()) { return }
   try {
     actions.bootstrap(transition(store.state))
@@ -46,7 +46,7 @@ function ready (req, res, next) {
   }
 }
 
-const acceptActions = [ 'create', 'add-player', 'player-vote', 'player-ready', 'end' ]
+const acceptActions = [ 'create', 'add-player', 'player-vote', 'end' ]
 function postAction (req, res, next) {
   const action = req.params.action
   const args = req.body
@@ -61,5 +61,5 @@ function postAction (req, res, next) {
 export default Router()
   .get('/store-state.json', getStoreState)
   .get('/store-changes', changes.expressHandler)
-  .post('/action/ready', ready)
+  .post('/action/player-ready', ready)
   .post('/action/:action', postAction)

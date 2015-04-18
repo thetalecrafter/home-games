@@ -8,7 +8,7 @@ export default class AddPlayerStage extends React.Component {
     const store = this.props.game.store
     const currentPlayer = app.getCurrentPlayer()
     const isPlaying = store.isPlaying(currentPlayer && currentPlayer.id)
-    const isReady = store.isPlayerReady(currentPlayer && currentPlayer.id)
+    const isReady = store.isReady(currentPlayer && currentPlayer.id)
     const addPlayer = app.actions.witchHunt.addPlayer
     const ready = app.actions.witchHunt.ready
     return (

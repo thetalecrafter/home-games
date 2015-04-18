@@ -25,8 +25,10 @@ export default function WitchHuntStore (config) {
       if (this.source || !baseUrl) { return }
       this.source = new ClientEventSource(baseUrl + 'store-changes')
       this.source.on('change', event => {
-        const data = JSON.parse(event.data)
-        if (!deepEqual(this.state, data)) {
+        let data
+        try { data = JSON.parse(event.data) }
+        catch (err) { console.error(err) }
+        if (data && !deepEqual(this.state, data)) {
           this.replaceState(data)
         }
       })
@@ -78,16 +80,26 @@ export default function WitchHuntStore (config) {
       return this.state.players.every(player => player.isReady)
     },
 
-    isPlayerReady (playerId) {
-      const player = this.state.players.find(player => player.id === playerId)
+    getPlayer (playerId) {
+      return this.state.players.find(player => player.id === playerId)
+    },
+
+    isReady (playerId) {
+      const player = this.getPlayer(playerId)
       return player && player.isReady
     },
 
-    isPlaying (playerId) {
-      return !!this.state.players.find(player => player.id === playerId)
+    isWitch (playerId) {
+      const player = this.getPlayer(playerId)
+      return player && player.role === roles.WITCH
     },
 
-    didWin (player) {
+    isPlaying (playerId) {
+      return !!this.getPlayer(playerId)
+    },
+
+    didWin (playerId) {
+      const player = this.getPlayer(playerId)
       if (player.role === roles.WITCH) { return !player.isDead }
       return this.state.players.every(
         player => player.isDead || player.role === roles.PURITAN
