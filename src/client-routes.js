@@ -11,7 +11,7 @@ import PlayerActions from './player/actions'
 import PlayerStore from './player/store'
 
 export default function Routes (app) {
-  const router = new Router()
+  const router = Router()
 
   function playerSetup (ctx, next) {
     const { actions, stores, bootstrap } = app
@@ -67,7 +67,7 @@ export default function Routes (app) {
  * Utility to just-in-time load game-specific code
  **/
 function makeJITRouter (app, key, ensure) {
-  const wrappingRouter = new Router()
+  const wrappingRouter = Router()
   let dynamicRouter = null
   return wrappingRouter.use((ctx, next) => {
     if (dynamicRouter) { return dynamicRouter.run(ctx, next) }

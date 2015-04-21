@@ -45,7 +45,14 @@ const description = (
   </div>
 )
 
-export default class GameDescription extends React.Component {
+export default React.createClass({
+  displayName: 'GameDescription',
+
+  propTypes: {
+    app: React.PropTypes.object.isRequired,
+    game: React.PropTypes.object.isRequired
+  },
+
   render () {
     const isStarted = !!this.props.game.stage
     const start = this.props.app.actions.witchHunt.create
@@ -62,10 +69,4 @@ export default class GameDescription extends React.Component {
       </div>
     )
   }
-}
-
-GameDescription.displayName = 'GameDescription'
-GameDescription.propTypes = {
-  app: React.PropTypes.object.isRequired,
-  game: React.PropTypes.object.isRequired
-}
+})

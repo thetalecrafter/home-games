@@ -2,7 +2,14 @@ import React from 'react'
 import formatMessage from 'format-message'
 import PlayerPicker from '../../player/picker'
 
-export default class AddPlayerStage extends React.Component {
+export default React.createClass({
+  displayName: 'AddPlayerStage',
+
+  propTypes: {
+    app: React.PropTypes.object.isRequired,
+    game: React.PropTypes.object.isRequired
+  },
+
   render () {
     const app = this.props.app
     const store = this.props.game.store
@@ -17,7 +24,11 @@ export default class AddPlayerStage extends React.Component {
         <p>
           { formatMessage('The game will begin once everyone has chosen their player.') }
         </p>
-        <PlayerPicker app={ app } />
+        <PlayerPicker
+          players={ app.stores.player.state.players }
+          selectedId={ app.stores.player.state.selectedId }
+          select={ app.actions.player.select }
+        />
         { !isPlaying &&
           <button
             onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
@@ -37,10 +48,4 @@ export default class AddPlayerStage extends React.Component {
       </div>
     )
   }
-}
-
-AddPlayerStage.displayName = 'AddPlayerStage'
-AddPlayerStage.propTypes = {
-  app: React.PropTypes.object.isRequired,
-  game: React.PropTypes.object.isRequired
-}
+})

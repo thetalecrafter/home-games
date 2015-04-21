@@ -16,7 +16,7 @@ export default function transition (state) {
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
   const newState = to(state)
   newState.players = newState.players.map(player => {
-    return Object.assign({}, player, { isReady: false, vote: null })
+    return Object.assign({}, player, { isReady: undefined, vote: undefined })
   })
   return newState
 }
@@ -48,14 +48,14 @@ function transitionIntroToNight (state) {
 }
 
 function transitionToMorning (state) {
-  const stage = MORNING
+  let stage = MORNING
   const result = {}
   let players = state.players
 
   // choose victim, and suspicion
   const votes = {}
   let victimId = null
-  players.each(player => {
+  players.forEach(player => {
     if (player.isDead) { return } // skip dead people
     if (player.role === WITCH) {
       if (!player.vote) { throw new Error(errors.WITCH_MUST_VOTE) }
@@ -68,25 +68,30 @@ function transitionToMorning (state) {
     } else if (player.vote) {
       const followId = player.vote
       const followPlayer = players.find(player => player.id === followId)
-      const followed = result.followed || (result.followed = {})
-      followed[followId] = !!followPlayer.vote
+      const follow = result.follow || (result.follow = {})
+      follow[player.id] = { followId, wasAwake: !!followPlayer.vote }
     }
   })
   result.victimId = victimId
   players = killPlayer(victimId, players)
 
+  const onlyWitchesLeft = players.every(
+    ({ role, isDead }) => isDead || role === WITCH
+  )
+  if (onlyWitchesLeft) { stage = END }
+
   return { stage, result, players }
 }
 
 function transitionToAfternoon (state) {
-  const stage = AFTERNOON
+  let stage = AFTERNOON
   const result = {}
   let players = state.players
 
   // choose trial victim
   const votes = {}
   let victimId = null
-  players.each(player => {
+  players.forEach(player => {
     if (player.isDead) { return } // skip dead people
     if (!player.vote) { throw new Error(errors.EVERYONE_MUST_VOTE) }
     const votePlayerId = player.vote
@@ -106,31 +111,42 @@ function transitionToAfternoon (state) {
     return Object.assign({}, player, { isDead })
   })
 
+  const onlyWitchesLeft = players.every(
+    ({ role, isDead }) => isDead || role === WITCH
+  )
+  if (onlyWitchesLeft) { stage = END }
+
   return { stage, result, players }
 }
 
 function transitionToEvening (state) {
-  const stage = EVENING
-  let { result, players } = stage
+  let stage = EVENING
+  let { result, players } = state
+  const { victimId, victimDied } = result
 
   // should execute
-  if (result.victimDied) {
+  if (victimDied) {
     result = null
   } else {
-    result = {}
+    result = { victimId }
     let yesVotes = 0
     let noVotes = 0
-    players.each(player => {
-      if (player.isDead) { return } // skip dead people
+    players.forEach(player => {
+      if (player.isDead || player.id === victimId) { return } // skip dead people
+      if (player.vote == null) { throw new Error(errors.EVERYONE_MUST_VOTE) }
       if (player.vote === true) { ++yesVotes }
       if (player.vote === false) { ++noVotes }
     })
-    result.victimId = stage.result.victimId
     result.victimDied = yesVotes > noVotes
     if (result.victimDied) {
       players = killPlayer(result.victimId, players)
     }
   }
+
+  const onlyWitchesLeft = players.every(
+    ({ role, isDead }) => isDead || role === WITCH
+  )
+  if (onlyWitchesLeft) { stage = END }
 
   return { stage, result, players }
 }
@@ -138,7 +154,7 @@ function transitionToEvening (state) {
 function transitionToNight (state) {
   const players = state.players
   const isEnded = players.every(
-    player => player.isDead || player.vote === true
+    ({ isDead, vote }) => isDead || vote === true
   )
   const stage = isEnded ? END : NIGHT
 

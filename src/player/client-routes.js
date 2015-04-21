@@ -10,6 +10,6 @@ export default function (app) {
     app.render(<ShellView><View app={ app } /></ShellView>)
   }
 
-  return new Router()
+  return Router()
     .get('/', player)
 }

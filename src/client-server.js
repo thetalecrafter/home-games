@@ -36,7 +36,7 @@ function client (request, response, next) {
     request.app.get('api-base-url')
   )
 
-  const app = new App({
+  const app = App({
     bootstrap: {
       config: {
         request, response, locale, api,
@@ -67,12 +67,12 @@ function client (request, response, next) {
     React.renderToString(view)
     const html = '<!doctype html>\n' + React.renderToStaticMarkup(
       <html lang={ locale }>
-        <meta charSet="utf-8" />
+        <meta charSet='utf-8' />
         <title>{ title }</title>
-        <link rel="stylesheet" href="/client.css" />
+        <link rel='stylesheet' href='/client.css' />
         <script
-          type="application/json"
-          id="StoreBootstrapData"
+          type='application/json'
+          id='StoreBootstrapData'
           dangerouslySetInnerHTML={ {
             __html: '\n' + JSON.stringify(app.stores) + '\n'
           } }

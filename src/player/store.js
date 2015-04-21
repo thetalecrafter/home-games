@@ -23,8 +23,11 @@ export default function PlayerStore (config) {
       this.source = new ClientEventSource(baseUrl + 'store-changes')
       this.source.on('change', event => {
         let data
-        try { data = JSON.parse(event.data) }
-        catch (err) { console.error(err) }
+        try {
+          data = JSON.parse(event.data)
+        } catch (err) {
+          console.error(err)
+        }
         if (data && !deepEqual(this.state, data)) {
           this.replaceState(data)
         }

@@ -1,7 +1,9 @@
 import React from 'react'
 import formatMessage from 'format-message'
 
-export default class EndStage extends React.Component {
+export default React.createClass({
+  displayName: 'EndStage',
+
   render () {
     return (
       <div>
@@ -9,6 +11,4 @@ export default class EndStage extends React.Component {
       </div>
     )
   }
-}
-
-EndStage.displayName = 'EndStage'
+})

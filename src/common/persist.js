@@ -2,6 +2,7 @@ import fs from 'fs'
 import { join } from 'path'
 
 const dataDir = join(__dirname, '../../data')
+let writePromise
 export default {
   read (filename) {
     return new Promise((resolve, reject) => {
@@ -27,15 +28,20 @@ export default {
   },
 
   write (filename, content) {
-    return new Promise((resolve, reject) => {
-      fs.writeFile(join(dataDir, filename + '.json'), JSON.stringify(content, null, '  '), err => {
-        if (err) {
-          console.error(err.message)
-          return reject(err)
-        }
-        resolve(content)
+    function writeFile() {
+      return new Promise((resolve, reject) => {
+        fs.writeFile(join(dataDir, filename + '.json'), JSON.stringify(content, null, '  '), err => {
+          if (err) {
+            console.error(err.message)
+            return reject(err)
+          }
+          resolve(content)
+        })
       })
-    })
+    }
+    return writePromise ?
+      (writePromise = writePromise.then(writeFile)) :
+      (writePromise = writeFile())
   },
 
   writeSync (filename, content) {

@@ -4,7 +4,7 @@ import PlayerStore from './store'
 import ServerEventSource from '../common/eventsource/server'
 import persist from '../common/persist'
 
-const changes = new ServerEventSource()
+const changes = ServerEventSource()
 const actions = PlayerActions()
 const store = PlayerStore()
 store.subscribe(actions)

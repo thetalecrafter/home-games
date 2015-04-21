@@ -26,8 +26,11 @@ export default function WitchHuntStore (config) {
       this.source = new ClientEventSource(baseUrl + 'store-changes')
       this.source.on('change', event => {
         let data
-        try { data = JSON.parse(event.data) }
-        catch (err) { console.error(err) }
+        try {
+          data = JSON.parse(event.data)
+        } catch (err) {
+          console.error(err)
+        }
         if (data && !deepEqual(this.state, data)) {
           this.replaceState(data)
         }
@@ -48,9 +51,9 @@ export default function WitchHuntStore (config) {
     },
 
     addPlayer (player) {
-      const players = this.state.players.filter(
-        existing => existing.id !== player.id
-      ).concat(player)
+      let players = this.state.players
+      const exists = players.some(({ id }) => id === player.id)
+      if (!exists) { players = players.concat(player) }
       this.setState({ players })
     },
 
@@ -77,7 +80,7 @@ export default function WitchHuntStore (config) {
     // computed data
     isEveryoneReady () {
       if (this.state.players.length < 4) { return false }
-      return this.state.players.every(player => player.isReady)
+      return this.state.players.every(player => player.isReady || player.isDead)
     },
 
     getPlayer (playerId) {
@@ -86,7 +89,7 @@ export default function WitchHuntStore (config) {
 
     isReady (playerId) {
       const player = this.getPlayer(playerId)
-      return player && player.isReady
+      return player && (player.isReady || player.isDead)
     },
 
     isWitch (playerId) {
@@ -107,15 +110,25 @@ export default function WitchHuntStore (config) {
     },
 
     getStateForPlayer (playerId) {
+      if (this.state.stage === stages.END) { return this.state }
       const currentPlayer = this.state.players.find(p => p.id === playerId)
       const role = currentPlayer && currentPlayer.role
       if (role === roles.WITCH) { return this.state }
+
       const players = this.state.players.map(player => {
         if (player.id === playerId) { return player }
         const role = player.role && roles.UNKNOWN
         return Object.assign({}, player, { role })
       })
-      return Object.assign({}, this.state, { players })
+      let result = this.state.result
+      if (result && result.follow) {
+        const follow = {}
+        if (result.follow[playerId]) {
+          follow[playerId] = result.follow[playerId]
+        }
+        result = Object.assign({}, result, { follow })
+      }
+      return Object.assign({}, this.state, { players, result })
     },
 
     toJSON () {

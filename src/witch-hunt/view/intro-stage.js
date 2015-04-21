@@ -56,7 +56,14 @@ const puritan = (
   </div>
 )
 
-export default class IntroStage extends React.Component {
+export default React.createClass({
+  displayName: 'IntroStage',
+
+  propTypes: {
+    app: React.PropTypes.object.isRequired,
+    game: React.PropTypes.object.isRequired
+  },
+
   render () {
     const app = this.props.app
     const store = this.props.game.store
@@ -82,10 +89,4 @@ export default class IntroStage extends React.Component {
       </div>
     )
   }
-}
-
-IntroStage.displayName = 'IntroStage'
-IntroStage.propTypes = {
-  app: React.PropTypes.object.isRequired,
-  game: React.PropTypes.object.isRequired
-}
+})

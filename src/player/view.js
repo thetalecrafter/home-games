@@ -1,31 +1,30 @@
 import React from 'react'
 import formatMessage from 'format-message'
 
-export default class PlayerView extends React.Component {
-  constructor () {
-    super()
-    this.state = this.initialState
-    this.create = this.create.bind(this)
-    this.update = this.update.bind(this)
-    this.didChange = this.didChange.bind(this)
-  }
+export default React.createClass({
+  displayName: 'PlayerView',
 
-  get initialState () {
+  propTypes: {
+    app: React.PropTypes.object.isRequired,
+    players: React.PropTypes.object.isRequired
+  },
+
+  getInitialState () {
     return {
       id: null,
       name: ''
     }
-  }
+  },
 
   didChange (event) {
     const target = event.target
     const { name, value } = target
     this.setState({ [name]: value })
-  }
+  },
 
   getActions () {
     return this.props.app.actions.player
-  }
+  },
 
   render () {
     const { players, selectedId } = this.props.players
@@ -36,7 +35,7 @@ export default class PlayerView extends React.Component {
         { players.map(player =>
           <div key={ player.id }>
             <label>
-              <input type="radio"
+              <input type='radio'
                 onChange={ select.partial(player.id) }
                 checked={ player.id === selectedId }
               />
@@ -51,8 +50,8 @@ export default class PlayerView extends React.Component {
           </div>
         ) }
         <input
-          type="text"
-          name="name"
+          type='text'
+          name='name'
           value={ this.state.name }
           onChange={ this.didChange }
         />
@@ -73,7 +72,7 @@ export default class PlayerView extends React.Component {
         }
       </div>
     )
-  }
+  },
 
   create () {
     const create = this.getActions().create
@@ -82,7 +81,7 @@ export default class PlayerView extends React.Component {
       name: this.state.name.trim()
     }
     this.setState(this.initialState, () => create(player))
-  }
+  },
 
   update () {
     const update = this.getActions().update
@@ -91,16 +90,10 @@ export default class PlayerView extends React.Component {
       name: this.state.name.trim()
     }
     this.setState(this.initialState, () => update(player))
-  }
+  },
 
   edit (player) {
     const { id, name } = player
     this.setState({ id, name })
   }
-}
-
-PlayerView.displayName = 'PlayerView'
-PlayerView.propTypes = {
-  app: React.PropTypes.object.isRequired,
-  players: React.PropTypes.object.isRequired
-}
+})

@@ -5,14 +5,19 @@ preamble.length = 2049
 preamble = preamble.join(' ')
 const heartbeatTimeout = 10 * 1000
 
-export default class ServerEventSource extends EventEmitter {
-  constructor () {
-    super()
-    this.clients = []
-    this.timer = null
-    this.heartbeat = this.heartbeat.bind(this)
-    this.expressHandler = this.expressHandler.bind(this)
+export default function ServerEventSource () {
+  if (!(this instanceof ServerEventSource)) {
+    return new ServerEventSource()
   }
+
+  EventEmitter.call(this)
+  this.clients = []
+  this.timer = null
+  this.heartbeat = this.heartbeat.bind(this)
+  this.expressHandler = this.expressHandler.bind(this)
+}
+ServerEventSource.prototype = Object.assign(
+  Object.create(EventEmitter.prototype), {
 
   expressHandler (req, res, next) {
     res.writeHead(200, {
@@ -34,11 +39,11 @@ export default class ServerEventSource extends EventEmitter {
 
     if (!this.timer) { this.heartbeat() }
     this.emit('connect', client)
-  }
+  },
 
   heartbeat () {
     this.broadcast({ data: Date.now() })
-  }
+  },
 
   broadcast (event) {
     clearTimeout(this.timer)
@@ -50,7 +55,7 @@ export default class ServerEventSource extends EventEmitter {
     for (let client of this.clients) {
       this.send(client, event)
     }
-  }
+  },
 
   send (client, { id, name, data }) {
     if (typeof data !== 'function') {
@@ -63,7 +68,7 @@ export default class ServerEventSource extends EventEmitter {
         this.write(client, { id, name, data })
       }
     })
-  }
+  },
 
   write (client, { id, name, data }) {
     const res = client.response
@@ -71,4 +76,4 @@ export default class ServerEventSource extends EventEmitter {
     if (id) { res.write(`id: ${id}\n`) }
     res.write(`data: ${JSON.stringify(data)}\n\n`)
   }
-}
+})

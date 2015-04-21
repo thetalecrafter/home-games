@@ -4,7 +4,7 @@ import App from './client-app'
 const script = document.getElementById('StoreBootstrapData') || {}
 const bootstrap = JSON.parse(script.textContent || '{}') || {}
 
-const app = new App({
+const app = App({
   bootstrap,
   render (view) {
     React.render(view, document.body)
