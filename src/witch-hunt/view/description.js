@@ -39,7 +39,8 @@ const description = (
         during the early modern period. While the scenarios depicted in this
         game are fictional, an estimated 40,000 people were executed in real
         witch trials across Europe and in North America. Remember to be
-        patient and tolerant with each other outside of the game.`)
+        patient and tolerant with each other outside of the game, and that a
+        bigot hunt is no different from a witch hunt.`)
       }
     </p>
   </div>
