@@ -7,3 +7,7 @@
 .Shell {
   display: flex;
 }
+
+.u-chunk {
+  visibility: hidden;
+}

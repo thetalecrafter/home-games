@@ -83,6 +83,13 @@ export default function WitchHuntStore (config) {
       return this.state.players.every(player => player.isReady || player.isDead)
     },
 
+    getNotReadyCount () {
+      return this.state.players.reduce((count, player) => {
+        if (player.isDead || player.isReady) { return count }
+        return count + 1
+      }, 0)
+    },
+
     getPlayer (playerId) {
       return this.state.players.find(player => player.id === playerId)
     },

@@ -1,6 +1,7 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import PlayerPicker from '../../player/picker'
+import ReadyButton from './ready-button'
 
 export default React.createClass({
   displayName: 'MorningStage',
@@ -16,16 +17,16 @@ export default React.createClass({
     const victim = game.store.getPlayer(victimId)
     let currentPlayer = app.getCurrentPlayer()
     currentPlayer = game.store.getPlayer(currentPlayer.id)
-    const isReady = game.store.isReady(currentPlayer.id)
-    const { ready, vote } = app.actions.witchHunt
+    const { vote } = app.actions.witchHunt
     const others = game.players.filter(
       ({ id, isDead }) => (id !== currentPlayer.id && !isDead)
     ).map(
       player => ({ player, selectedId: player.vote })
     )
+    const disabled = currentPlayer.isDead || currentPlayer.isReady
 
     let followResult
-    if (victimId !== currentPlayer.id && follow[currentPlayer.id]) {
+    if (follow && follow[currentPlayer.id]) {
       const followPlayer = game.store.getPlayer(follow[currentPlayer.id].followId)
       const name = followPlayer.name
       followResult = follow[currentPlayer.id].wasAwake ?
@@ -38,38 +39,47 @@ export default React.createClass({
           to sleep as usual, and then, so did you.`, { name })
     }
 
-    const victimName = victim.name
-    const victimResult = (victimId === currentPlayer.id) ?
-      formatMessage(`Shortly after you retired to your bed, a
-        sudden pain flashed in your shoulder and chest. After a few moments
-        your life came to an end.`) :
-      formatMessage(`Late this morning someone realized { name } wasn’t about
-        the usual tasks. { name } was quickly found to be dead alone in bed.`,
-        { name: victimName })
+    let victimResult
+    if (victim) {
+      const victimName = victim.name
+      victimResult = (victimId === currentPlayer.id) ?
+        <div>
+          <h3>{ formatMessage('You have died') }</h3>
+          <p>{ formatMessage(`Shortly after you retired to your bed, a
+          sudden pain flashed in your shoulder and chest. After a few moments
+          your life came to an end.`) }</p>
+        </div> :
+        <p>{ formatMessage(`Late this morning someone realized { name } wasn’t about
+          the usual tasks. { name } was quickly found to be dead alone in bed.`,
+          { name: victimName }) }</p>
+    }
 
     return (
       <div>
         <h2>{ formatMessage('Morning') }</h2>
         { followResult && <p>{ followResult }</p> }
 
-        <p>{ victimResult }</p>
-
-        <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
-        <PlayerPicker
-          players={ game.players.filter(({ isDead }) => !isDead) }
-          selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-          select={ currentPlayer.isDead ? null : vote.partial(currentPlayer.id) }
-          others={ others }
+        { victimResult ?
+          <div>
+            { victimResult }
+            <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
+            <PlayerPicker
+              players={ game.players.filter(({ isDead }) => !isDead) }
+              selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
+              select={ disabled ? null : vote.partial(currentPlayer.id) }
+              others={ others }
+            />
+          </div> :
+          <p>
+            { formatMessage(`You all went about their usual tasks this morning.
+              Everyone was accounted for.`) }
+          </p>
+        }
+        <ReadyButton
+          app={ app }
+          game={ game }
+          disabled={ !!victimResult && currentPlayer.vote == null }
         />
-        { !currentPlayer.isDead && (isReady ?
-          formatMessage('Waiting for others...') :
-          <button
-            onClick={ currentPlayer.vote != null && ready.partial(currentPlayer.id) }
-            disabled={ currentPlayer.vote == null }
-          >
-            { formatMessage('I’m Ready') }
-          </button>
-        ) }
       </div>
     )
   }

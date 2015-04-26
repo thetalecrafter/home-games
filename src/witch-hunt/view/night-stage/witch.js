@@ -2,6 +2,7 @@ import React from 'react'
 import formatMessage from 'format-message'
 import { roles } from '../../constants'
 import PlayerPicker from '../../../player/picker'
+import ReadyButton from '../ready-button'
 
 export default React.createClass({
   displayName: 'WitchNightStage',
@@ -15,8 +16,8 @@ export default React.createClass({
     const { app, game } = this.props
     let currentPlayer = app.getCurrentPlayer()
     currentPlayer = game.store.getPlayer(currentPlayer.id)
-    const isReady = game.store.isReady(currentPlayer.id)
-    const { ready, vote } = app.actions.witchHunt
+    const disabled = currentPlayer.isDead || currentPlayer.isReady
+    const { vote } = app.actions.witchHunt
 
     const otherWitches = []
     const puritans = []
@@ -35,18 +36,14 @@ export default React.createClass({
         <PlayerPicker
           players={ puritans }
           selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-          select={ currentPlayer.isDead ? null : vote.partial(currentPlayer.id) }
+          select={ disabled ? null : vote.partial(currentPlayer.id) }
           others={ otherWitches }
         />
-        { !currentPlayer.isDead && (isReady ?
-          formatMessage('Waiting for others...') :
-          <button
-            onClick={ currentPlayer.vote && ready.partial(currentPlayer.id) }
-            disabled={ !currentPlayer.vote }
-          >
-            { formatMessage('I’m Ready') }
-          </button>
-        ) }
+        <ReadyButton
+          app={ app }
+          game={ game }
+          disabled={ !currentPlayer.vote }
+        />
       </div>
     )
   }

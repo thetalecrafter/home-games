@@ -10,6 +10,7 @@ import AfternoonStage from './view/afternoon-stage'
 import EveningStage from './view/evening-stage'
 import EndStage from './view/end-stage'
 import GameDescription from './view/description'
+import './view/view.css'
 
 export default React.createClass({
   displayName: 'WitchHuntView',
@@ -42,7 +43,7 @@ export default React.createClass({
       this.getViewForStage(stage) :
       GameDescription
     return (
-      <div>
+      <div className='WitchHuntView u-chunk'>
         <h1>{ formatMessage('Witch Hunt') }</h1>
         <Stage app={ app } game={ game } players={ this.props.players } />
       </div>

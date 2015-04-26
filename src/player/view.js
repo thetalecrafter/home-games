@@ -80,7 +80,7 @@ export default React.createClass({
       id: this.props.players.store.nextId(),
       name: this.state.name.trim()
     }
-    this.setState(this.initialState, () => create(player))
+    this.setState(this.getInitialState(), create.partial(player))
   },
 
   update () {
@@ -89,7 +89,7 @@ export default React.createClass({
       id: this.state.id,
       name: this.state.name.trim()
     }
-    this.setState(this.initialState, () => update(player))
+    this.setState(this.getInitialState(), update.partial(player))
   },
 
   edit (player) {

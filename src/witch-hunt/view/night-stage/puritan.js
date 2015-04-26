@@ -2,6 +2,7 @@ import React from 'react'
 import formatMessage from 'format-message'
 import { roles } from '../../constants'
 import PlayerPicker from '../../../player/picker'
+import ReadyButton from '../ready-button'
 
 export default React.createClass({
   displayName: 'PuritanNightStage',
@@ -15,11 +16,11 @@ export default React.createClass({
     const { app, game } = this.props
     let currentPlayer = app.getCurrentPlayer()
     currentPlayer = game.store.getPlayer(currentPlayer.id)
-    const isReady = game.store.isReady(currentPlayer.id)
-    const { ready, vote } = app.actions.witchHunt
+    const { vote } = app.actions.witchHunt
     const followees = game.players.filter(
       ({ id, isDead }) => (id !== currentPlayer.id && !isDead)
     )
+    const disabled = currentPlayer.isDead || currentPlayer.isReady
     return (
       <div>
         <div>
@@ -27,6 +28,8 @@ export default React.createClass({
             <input
               type='radio'
               name='playerId'
+              checked={ currentPlayer.vote === '' }
+              disabled={ disabled }
               onChange={ vote.partial(currentPlayer.id, '') }
             />
             { formatMessage('Sleep') }
@@ -37,17 +40,13 @@ export default React.createClass({
           name='playerId'
           players={ followees }
           selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-          select={ currentPlayer.isDead ? null : vote.partial(currentPlayer.id) }
+          select={ disabled ? null : vote.partial(currentPlayer.id) }
         />
-        { !currentPlayer.isDead && (isReady ?
-          formatMessage('Waiting for others...') :
-          <button
-            onClick={ currentPlayer.vote != null && ready.partial(currentPlayer.id) }
-            disabled={ currentPlayer.vote == null }
-          >
-            { formatMessage('I’m Ready') }
-          </button>
-        ) }
+        <ReadyButton
+          app={ app }
+          game={ game }
+          disabled={ currentPlayer.vote == null }
+        />
       </div>
     )
   }

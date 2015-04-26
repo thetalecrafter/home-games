@@ -30,7 +30,7 @@ export default React.createClass({
               <input type='radio'
                 name={ name }
                 onChange={ select && select.partial(player.id) }
-                disabled={ !select }
+                disabled={ !select || player.isDisabled }
                 checked={ player.id === selectedId }
               />
               { player.name }

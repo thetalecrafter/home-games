@@ -68,6 +68,7 @@ function client (request, response, next) {
     const html = '<!doctype html>\n' + React.renderToStaticMarkup(
       <html lang={ locale }>
         <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
         <title>{ title }</title>
         <link rel='stylesheet' href='/client.css' />
         <script

@@ -18,6 +18,11 @@ export default React.createClass({
     const isReady = store.isReady(currentPlayer && currentPlayer.id)
     const addPlayer = app.actions.witchHunt.addPlayer
     const ready = app.actions.witchHunt.ready
+    const availablePlayers = app.stores.player.state.players.map(player => {
+      const isDisabled = (isPlaying && currentPlayer.id === player.id) ?
+        false : store.isPlaying(player.id)
+      return Object.assign({}, player, { isDisabled })
+    })
     return (
       <div>
         <h2>{ formatMessage('Choose Players') }</h2>
@@ -25,20 +30,18 @@ export default React.createClass({
           { formatMessage('The game will begin once everyone has chosen their player.') }
         </p>
         <PlayerPicker
-          players={ app.stores.player.state.players }
+          players={ availablePlayers }
           selectedId={ app.stores.player.state.selectedId }
-          select={ app.actions.player.select }
+          select={ isPlaying ? null : app.actions.player.select }
         />
-        { !isPlaying &&
+        { !isPlaying ?
           <button
             onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
             disabled={ !currentPlayer }
           >
             { formatMessage('Join Game') }
-          </button>
-        }
-        { isPlaying && (
-            isReady ?
+          </button> : (
+          isReady ?
             formatMessage('Waiting for players...') :
             <button onClick={ ready.partial(currentPlayer.id) }>
               { formatMessage('I’m Ready') }
