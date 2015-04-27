@@ -33,20 +33,7 @@ function getStoreState (req, res, next) {
   res.send(store.getStateForPlayer(req.session.playerId))
 }
 
-function ready (req, res, next) {
-  res.status(202).end()
-  const args = req.body
-  actions.emit('player-ready', ...args)
-  if (!store.isEveryoneReady()) { return }
-  try {
-    actions.bootstrap(transition(store.state))
-  } catch (err) {
-    console.error(err.stack)
-    // TODO: expose validation errors
-  }
-}
-
-const acceptActions = [ 'create', 'add-player', 'player-vote', 'end' ]
+const acceptActions = [ 'create', 'add-player', 'start', 'player-ready', 'player-vote', 'end' ]
 function postAction (req, res, next) {
   const action = req.params.action
   const args = req.body
@@ -56,10 +43,16 @@ function postAction (req, res, next) {
 
   res.status(202).end()
   actions.emit(action, ...args)
+  if (!store.isEveryoneReady()) { return }
+  try {
+    actions.bootstrap(transition(store.state))
+  } catch (err) {
+    console.error(err.stack)
+    // TODO: expose validation errors
+  }
 }
 
 export default Router()
   .get('/store-state.json', getStoreState)
   .get('/store-changes', changes.expressHandler)
-  .post('/action/player-ready', ready)
   .post('/action/:action', postAction)

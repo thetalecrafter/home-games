@@ -12,6 +12,7 @@ export default function WitchHuntActions (config) {
   return uniflow.createActions({
     create () { this.send('create') },
     addPlayer (player) { this.send('add-player', player) },
+    start () { this.send('start') },
     vote (playerId, vote) { this.send('player-vote', playerId, vote) },
     ready (playerId) { this.send('player-ready', playerId) },
     end () { this.send('end') },

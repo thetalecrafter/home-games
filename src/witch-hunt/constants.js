@@ -21,3 +21,5 @@ export const errors = {
   WITCH_MUST_VOTE: 'witch-must-vote',
   EVERYONE_MUST_VOTE: 'everyone-must-vote'
 }
+
+export const MIN_PLAYERS = 4

@@ -15,38 +15,59 @@ export default React.createClass({
     const store = this.props.game.store
     const currentPlayer = app.getCurrentPlayer()
     const isPlaying = store.isPlaying(currentPlayer && currentPlayer.id)
-    const isReady = store.isReady(currentPlayer && currentPlayer.id)
+    const canStart = store.canStart()
     const addPlayer = app.actions.witchHunt.addPlayer
-    const ready = app.actions.witchHunt.ready
+    const start = app.actions.witchHunt.start
     const availablePlayers = app.stores.player.state.players.map(player => {
       const isDisabled = (isPlaying && currentPlayer.id === player.id) ?
         false : store.isPlaying(player.id)
       return Object.assign({}, player, { isDisabled })
     })
+    const count = this.props.game.players.length
     return (
       <div>
         <h2>{ formatMessage('Choose Players') }</h2>
         <p>
-          { formatMessage('The game will begin once everyone has chosen their player.') }
+          { formatMessage('This game requires at least 4 players.') }
         </p>
-        <PlayerPicker
-          players={ availablePlayers }
-          selectedId={ app.stores.player.state.selectedId }
-          select={ isPlaying ? null : app.actions.player.select }
-        />
-        { !isPlaying ?
-          <button
-            onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
-            disabled={ !currentPlayer }
-          >
-            { formatMessage('Join Game') }
-          </button> : (
-          isReady ?
-            formatMessage('Waiting for players...') :
-            <button onClick={ ready.partial(currentPlayer.id) }>
-              { formatMessage('I’m Ready') }
+        { !isPlaying &&
+          <div>
+            <PlayerPicker
+              players={ availablePlayers }
+              selectedId={ app.stores.player.state.selectedId }
+              select={ isPlaying ? null : app.actions.player.select }
+            />
+            <button
+              onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
+              disabled={ !currentPlayer }
+            >
+              { formatMessage('Join Game') }
             </button>
-          )
+          </div>
+        }
+        <p>
+          { formatMessage(`{
+              count, plural,
+              one {1 player has}
+              other {# players have}
+            } joined this game.`, {
+              count
+            }) }
+        </p>
+        <ol>
+          { this.props.game.players.map(player =>
+            <li key={ player.id }>
+              { player.name }
+            </li>
+          ) }
+        </ol>
+        { isPlaying &&
+          <button
+            onClick={ !canStart ? null : start }
+            disabled={ !canStart }
+          >
+            { formatMessage('Start Game') }
+          </button>
         }
       </div>
     )

@@ -13,7 +13,7 @@ export default React.createClass({
 
   render () {
     const { app, game } = this.props
-    const { victimId, follow } = game.result
+    const { victimId, victimDied, follow } = game.result
     const victim = game.store.getPlayer(victimId)
     let currentPlayer = app.getCurrentPlayer()
     currentPlayer = game.store.getPlayer(currentPlayer.id)
@@ -32,27 +32,51 @@ export default React.createClass({
       const name = followPlayer.name
       followResult = follow[currentPlayer.id].wasAwake ?
         formatMessage(`You followed { name } for much of the evening. { name }
-          was sneaking about, but you couldn’t keep up without being noticed,
-          so eventually you went back to bed without really seeing anything.`,
-          { name }
-        ) :
+        was sneaking about, but you couldn’t keep up without being noticed,
+        so eventually you went back to bed without really seeing anything.`,
+        { name }) :
         formatMessage(`You stayed up for a little while, but { name } just went
-          to sleep as usual, and then, so did you.`, { name })
+        to sleep as usual, and then, so did you.`, { name })
     }
 
     let victimResult
     if (victim) {
       const victimName = victim.name
-      victimResult = (victimId === currentPlayer.id) ?
-        <div>
-          <h3>{ formatMessage('You have died') }</h3>
-          <p>{ formatMessage(`Shortly after you retired to your bed, a
-          sudden pain flashed in your shoulder and chest. After a few moments
-          your life came to an end.`) }</p>
-        </div> :
-        <p>{ formatMessage(`Late this morning someone realized { name } wasn’t about
-          the usual tasks. { name } was quickly found to be dead alone in bed.`,
-          { name: victimName }) }</p>
+      if (victimDied) {
+        victimResult = (victimId === currentPlayer.id) ?
+          <div>
+            <h3>{ formatMessage('You have died') }</h3>
+            <p>
+              { formatMessage(`Shortly after you retired to your bed, a sudden
+                pain flashed in your shoulder and chest. After a few moments
+                your life came to an end.`)
+              }
+            </p>
+          </div> :
+          <p>
+            { formatMessage(`Late this morning someone realized { name } wasn’t
+              about the usual tasks. { name } was quickly found to be dead in
+              bed.`, { name: victimName })
+            }
+          </p>
+      } else {
+        victimResult = (victimId === currentPlayer.id) ?
+          <div>
+            <h3>{ formatMessage('You have been cursed') }</h3>
+            <p>
+              { formatMessage(`You woke this morning with a terrible headache
+                and fever. You tried to get out of bed but felt so dizzy you
+                immediately returned to bed.`)
+              }
+            </p>
+          </div> :
+          <p>
+            { formatMessage(`Late this morning someone realized { name } wasn’t
+              about the usual tasks. { name } was then found to be terribly ill
+              in bed.`, { name: victimName })
+            }
+          </p>
+      }
     }
 
     return (
@@ -77,7 +101,8 @@ export default React.createClass({
           </div> :
           <p>
             { formatMessage(`You all went about their usual tasks this morning.
-              Everyone was accounted for.`) }
+              Everyone was accounted for.`)
+            }
           </p>
         }
         <ReadyButton

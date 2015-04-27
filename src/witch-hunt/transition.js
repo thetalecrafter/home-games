@@ -1,4 +1,4 @@
-import { stages, roles, errors } from './constants'
+import { stages, roles, errors, MIN_PLAYERS } from './constants'
 const { ADD_PLAYERS, INTRO, NIGHT, MORNING, AFTERNOON, EVENING, END } = stages
 const { WITCH, PURITAN } = roles
 
@@ -23,7 +23,7 @@ export default function transition (state) {
 
 function transitionFromAddPlayers (state) {
   const numPlayers = state.players.length
-  if (numPlayers < 4) { throw new Error(errors.NUM_PLAYERS) }
+  if (numPlayers < MIN_PLAYERS) { throw new Error(errors.NUM_PLAYERS) }
 
   const stage = INTRO
   const result = null
@@ -72,8 +72,11 @@ function transitionFromNight (state) {
       follow[player.id] = { followId, wasAwake: !!followPlayer.vote }
     }
   })
-  result.victimId = victimId
-  players = killPlayer(victimId, players)
+  if ((result.victimId = victimId)) {
+    if ((result.victimDied = Math.random() < 0.5)) {
+      players = killPlayer(victimId, players)
+    }
+  }
 
   return { stage, result, players }
 }
@@ -104,7 +107,7 @@ function transitionFromMorning (state) {
     players = players.map(player => {
       if (player.id !== victimId) { return player }
       const isDead = Math.random() < (
-        player.role === WITCH ? 0.2 : 0.8
+        player.role === WITCH ? 0.2 : 0.6
       )
       result.victimDied = isDead
       return Object.assign({}, player, { isDead })
@@ -148,6 +151,7 @@ function transitionFromAfternoon (state) {
 
 function transitionFromEvening (state) {
   const stage = isAllSame(state) ? END : NIGHT
+  const players = state.players
   return { stage, result: null, players }
 }
 

@@ -1,7 +1,8 @@
 import uniflow from 'uniflow'
-import { stages, roles } from './constants'
+import { stages, roles, MIN_PLAYERS } from './constants'
 import ClientEventSource from '../common/eventsource/client'
 import equal from 'obj-eql'
+import compare from '../../lib/natural-compare'
 const deepEqual = equal.bind(null, (a, b) => deepEqual(a, b))
 
 export default function WitchHuntStore (config) {
@@ -15,6 +16,7 @@ export default function WitchHuntStore (config) {
       actions.on('bootstrap', this.bootstrap)
       actions.on('create', this.create)
       actions.on('add-player', this.addPlayer)
+      actions.on('start', this.start)
       actions.on('player-vote', this.vote)
       actions.on('player-ready', this.ready)
       actions.on('change-stage', this.updateStage)
@@ -53,7 +55,10 @@ export default function WitchHuntStore (config) {
     addPlayer (player) {
       let players = this.state.players
       const exists = players.some(({ id }) => id === player.id)
-      if (!exists) { players = players.concat(player) }
+      if (!exists) {
+        players = players.concat(player)
+          .sort((a, b) => compare(a.name, b.name))
+      }
       this.setState({ players })
     },
 
@@ -73,13 +78,24 @@ export default function WitchHuntStore (config) {
       this.setState({ players })
     },
 
+    start () {
+      const players = this.state.players.map(player => {
+        return Object.assign({}, player, { isReady: true })
+      })
+      this.setState({ players })
+    },
+
     end () {
       this.replaceState({ players: [] })
     },
 
     // computed data
+    canStart () {
+      return this.state.players.length >= MIN_PLAYERS
+    },
+
     isEveryoneReady () {
-      if (this.state.players.length < 4) { return false }
+      if (this.state.players.length < MIN_PLAYERS) { return false }
       return this.state.players.every(player => player.isReady || player.isDead)
     },
 
