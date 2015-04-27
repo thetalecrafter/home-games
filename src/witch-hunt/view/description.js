@@ -35,7 +35,7 @@ const description = (
       }
     </p>
     <p>
-      { formatMessage(`The game is set in location similar to North America
+      { formatMessage(`The game is set in a location similar to North America
         during the early modern period. While the scenarios depicted in this
         game are fictional, an estimated 40,000 people were executed in real
         witch trials across Europe and in North America. Remember to be

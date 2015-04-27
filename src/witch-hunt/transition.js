@@ -3,12 +3,12 @@ const { ADD_PLAYERS, INTRO, NIGHT, MORNING, AFTERNOON, EVENING, END } = stages
 const { WITCH, PURITAN } = roles
 
 const transitions = {
-  [ADD_PLAYERS]: transitionToIntro,
-  [INTRO]: transitionIntroToNight,
-  [NIGHT]: transitionToMorning,
-  [MORNING]: transitionToAfternoon,
-  [AFTERNOON]: transitionToEvening,
-  [EVENING]: transitionToNight
+  [ADD_PLAYERS]: transitionFromAddPlayers,
+  [INTRO]: transitionFromIntro,
+  [NIGHT]: transitionFromNight,
+  [MORNING]: transitionFromMorning,
+  [AFTERNOON]: transitionFromAfternoon,
+  [EVENING]: transitionFromEvening
 }
 
 export default function transition (state) {
@@ -21,7 +21,7 @@ export default function transition (state) {
   return newState
 }
 
-function transitionToIntro (state) {
+function transitionFromAddPlayers (state) {
   const numPlayers = state.players.length
   if (numPlayers < 4) { throw new Error(errors.NUM_PLAYERS) }
 
@@ -43,11 +43,11 @@ function transitionToIntro (state) {
   return { stage, result, players }
 }
 
-function transitionIntroToNight (state) {
+function transitionFromIntro (state) {
   return { stage: NIGHT, result: null, players: state.players }
 }
 
-function transitionToMorning (state) {
+function transitionFromNight (state) {
   let stage = MORNING
   const result = { stage }
   let players = state.players
@@ -75,21 +75,19 @@ function transitionToMorning (state) {
   result.victimId = victimId
   players = killPlayer(victimId, players)
 
-  const onlyWitchesLeft = players.every(
-    ({ role, isDead }) => isDead || role === WITCH
-  )
-  if (onlyWitchesLeft) { stage = END }
-
   return { stage, result, players }
 }
 
-function transitionToAfternoon (state) {
+function transitionFromMorning (state) {
   let stage = AFTERNOON
   const result = { stage }
   let players = state.players
+  const isDone = isAllSame(state)
 
   // choose trial victim
-  if (state.result.victimId) {
+  if (isDone) {
+    stage = END
+  } else {
     const votes = {}
     let victimId = null
     players.forEach(player => {
@@ -111,25 +109,23 @@ function transitionToAfternoon (state) {
       result.victimDied = isDead
       return Object.assign({}, player, { isDead })
     })
-  } else {
-    stage = EVENING
   }
-
-  const onlyWitchesLeft = players.every(
-    ({ role, isDead }) => isDead || role === WITCH
-  )
-  if (onlyWitchesLeft) { stage = END }
 
   return { stage, result, players }
 }
 
-function transitionToEvening (state) {
+function transitionFromAfternoon (state) {
   let stage = EVENING
   let { result, players } = state
   const { victimId, victimDied } = result
+  const isDone = isAllSame(state)
 
   // should execute
-  if (victimDied) {
+  if (isDone) {
+    stage = END
+    result = { stage }
+  } else if (victimDied) {
+    stage = NIGHT
     result = { stage }
   } else {
     result = { stage, victimId }
@@ -147,21 +143,11 @@ function transitionToEvening (state) {
     }
   }
 
-  const onlyWitchesLeft = players.every(
-    ({ role, isDead }) => isDead || role === WITCH
-  )
-  if (onlyWitchesLeft) { stage = END }
-
   return { stage, result, players }
 }
 
-function transitionToNight (state) {
-  const players = state.players
-  const isEnded = players.every(
-    ({ isDead, vote }) => isDead || vote === true
-  )
-  const stage = isEnded ? END : NIGHT
-
+function transitionFromEvening (state) {
+  const stage = isAllSame(state) ? END : NIGHT
   return { stage, result: null, players }
 }
 
@@ -170,4 +156,20 @@ function killPlayer (victimId, players) {
     if (player.id !== victimId) { return player }
     return Object.assign({}, player, { isDead: true })
   })
+}
+
+function isAllWitches (state) {
+  return state.players.every(
+    ({ isDead, role }) => isDead || role === WITCH
+  )
+}
+
+function isAllPuritans (state) {
+  return state.players.every(
+    ({ isDead, role }) => isDead || role === PURITAN
+  )
+}
+
+function isAllSame (state) {
+  return isAllWitches(state) || isAllPuritans(state)
 }

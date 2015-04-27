@@ -108,6 +108,15 @@ export default function WitchHuntStore (config) {
       return !!this.getPlayer(playerId)
     },
 
+    isAllSame () {
+      const players = this.state.players
+      return players.every(
+        ({ isDead, role }) => isDead || role === roles.WITCH
+      ) || players.every(
+        ({ isDead, role }) => isDead || role === roles.PURITAN
+      )
+    },
+
     didWin (playerId) {
       const player = this.getPlayer(playerId)
       if (player.isDead) { return false }

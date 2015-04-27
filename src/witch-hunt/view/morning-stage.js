@@ -24,6 +24,7 @@ export default React.createClass({
       player => ({ player, selectedId: player.vote })
     )
     const disabled = currentPlayer.isDead || currentPlayer.isReady
+    const isDone = game.store.isAllSame()
 
     let followResult
     if (follow && follow[currentPlayer.id]) {
@@ -62,13 +63,17 @@ export default React.createClass({
         { victimResult ?
           <div>
             { victimResult }
-            <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
-            <PlayerPicker
-              players={ game.players.filter(({ isDead }) => !isDead) }
-              selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-              select={ disabled ? null : vote.partial(currentPlayer.id) }
-              others={ others }
-            />
+            { !isDone &&
+              <div>
+                <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
+                <PlayerPicker
+                  players={ game.players.filter(({ isDead }) => !isDead) }
+                  selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
+                  select={ disabled ? null : vote.partial(currentPlayer.id) }
+                  others={ others }
+                />
+              </div>
+            }
           </div> :
           <p>
             { formatMessage(`You all went about their usual tasks this morning.
@@ -78,7 +83,7 @@ export default React.createClass({
         <ReadyButton
           app={ app }
           game={ game }
-          disabled={ !!victimResult && currentPlayer.vote == null }
+          disabled={ !!victimResult && !isDone && currentPlayer.vote == null }
         />
       </div>
     )

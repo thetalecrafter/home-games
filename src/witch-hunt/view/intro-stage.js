@@ -1,5 +1,6 @@
 import React from 'react'
 import formatMessage from 'format-message'
+import ReadyButton from './ready-button'
 
 const witch = (
   <div>
@@ -65,8 +66,8 @@ export default React.createClass({
   },
 
   render () {
-    const app = this.props.app
-    const store = this.props.game.store
+    const { app, game } = this.props
+    const store = game.store
     const currentPlayer = app.getCurrentPlayer()
     const isWitch = store.isWitch(currentPlayer.id)
     const isReady = store.isReady(currentPlayer.id)
@@ -80,12 +81,11 @@ export default React.createClass({
           }
         </h2>
         { isWitch ? witch : puritan }
-        { isReady ?
-          formatMessage('Waiting for others...') :
-          <button onClick={ ready.partial(currentPlayer.id) }>
-            { formatMessage('I’m Ready') }
-          </button>
-        }
+        <ReadyButton
+          app={ app }
+          game={ game }
+          disabled={ false }
+        />
       </div>
     )
   }

@@ -14,7 +14,6 @@ export default React.createClass({
     const { app, game } = this.props
     let currentPlayer = app.getCurrentPlayer()
     currentPlayer = game.store.getPlayer(currentPlayer.id)
-    const { vote } = app.actions.witchHunt
 
     let victimResult
     if (game.result && game.result.victimId) {
@@ -60,37 +59,10 @@ export default React.createClass({
       <div>
         <h2>{ formatMessage('Evening') }</h2>
         { victimResult }
-        <div>
-          <p>
-            { formatMessage(`Have we freed ourselves of the witches? Shall
-              the trials end?`)
-            }
-          </p>
-          <label>
-            <input
-              type='radio'
-              name='vote'
-              checked={ currentPlayer.vote === true }
-              disabled={ currentPlayer.isDead }
-              onChange={ currentPlayer.isDead ? null : vote.partial(currentPlayer.id, true) }
-            />
-            { formatMessage('Yes') }
-          </label>
-          <label>
-            <input
-              type='radio'
-              name='vote'
-              checked={ currentPlayer.vote === false }
-              disabled={ currentPlayer.isDead }
-              onChange={ currentPlayer.isDead ? null : vote.partial(currentPlayer.id, false) }
-            />
-            { formatMessage('No') }
-          </label>
-        </div>
         <ReadyButton
           app={ app }
           game={ game }
-          disabled={ currentPlayer.vote == null }
+          disabled={ false }
         />
       </div>
     )
