@@ -1,5 +1,7 @@
 import React from 'react'
 import formatMessage from 'format-message'
+import EditPlayerView from './view/edit-player'
+import './view/view.css'
 
 export default React.createClass({
   displayName: 'PlayerView',
@@ -11,15 +13,8 @@ export default React.createClass({
 
   getInitialState () {
     return {
-      id: null,
-      name: ''
+      player: null
     }
-  },
-
-  didChange (event) {
-    const target = event.target
-    const { name, value } = target
-    this.setState({ [name]: value })
   },
 
   getActions () {
@@ -28,9 +23,10 @@ export default React.createClass({
 
   render () {
     const { players, selectedId } = this.props.players
-    const { select, delete: remove } = this.getActions()
+    const { create, update, select, delete: remove } = this.getActions()
+    const nextId = this.props.app.stores.player.nextId
     return (
-      <div>
+      <div className='PlayerView u-chunk'>
         <h1>{ formatMessage('Players') }</h1>
         { players.map(player =>
           <div key={ player.id }>
@@ -39,9 +35,15 @@ export default React.createClass({
                 onChange={ select.partial(player.id) }
                 checked={ player.id === selectedId }
               />
+              { player.avatarUrl &&
+                <img className='PlayerView-playerAvatar'
+                  alt={ player.name }
+                  src={ player.avatarUrl }
+                />
+              }
               { player.name }
             </label>
-            <button onClick={ this.edit.bind(this, player) }>
+            <button onClick={ () => this.setState({ player }) }>
               ✎ { formatMessage('Change') }
             </button>
             <button onClick={ remove.partial(player.id) }>
@@ -49,51 +51,30 @@ export default React.createClass({
             </button>
           </div>
         ) }
-        <input
-          type='text'
-          name='name'
-          value={ this.state.name }
-          onChange={ this.didChange }
-        />
-        { this.state.id ?
-          <button
-            disabled={ !this.state.name.trim() }
-            onClick={ this.state.name.trim() && this.update }
-          >
-            { formatMessage('Update') }
-          </button>
-        :
-          <button
-            disabled={ !this.state.name.trim() }
-            onClick={ this.state.name.trim() && this.create }
-          >
-            { formatMessage('Create') }
+        { this.state.player ?
+          <EditPlayerView
+            player={ this.state.player }
+            cancel={ () => this.setState({ player: null }) }
+            save={ this.state.player.id ?
+              player => {
+                update(player)
+                this.setState({ player: null })
+              } :
+              player => {
+                create(Object.assign({}, player, { id: nextId() }))
+                this.setState({ player: null })
+              }
+            }
+            saveText={ this.state.player.id ?
+              formatMessage('Update') :
+              formatMessage('Create')
+            }
+          /> :
+          <button onClick={ () => this.setState({ player: {} }) }>
+            { formatMessage('Add Player') }
           </button>
         }
       </div>
     )
-  },
-
-  create () {
-    const create = this.getActions().create
-    const player = {
-      id: this.props.players.store.nextId(),
-      name: this.state.name.trim()
-    }
-    this.setState(this.getInitialState(), create.partial(player))
-  },
-
-  update () {
-    const update = this.getActions().update
-    const player = {
-      id: this.state.id,
-      name: this.state.name.trim()
-    }
-    this.setState(this.getInitialState(), update.partial(player))
-  },
-
-  edit (player) {
-    const { id, name } = player
-    this.setState({ id, name })
   }
 })

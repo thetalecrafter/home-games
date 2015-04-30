@@ -5,6 +5,11 @@ import { roles } from '../constants'
 export default React.createClass({
   displayName: 'EndStage',
 
+  propTypes: {
+    app: React.PropTypes.object.isRequired,
+    game: React.PropTypes.object.isRequired
+  },
+
   end () {
     const message = (
       formatMessage('Are you sure you want to end the game?') +
@@ -19,7 +24,7 @@ export default React.createClass({
   },
 
   render () {
-    const { app, game } = this.props
+    const { game } = this.props
     const { store, players } = game
     return (
       <div>

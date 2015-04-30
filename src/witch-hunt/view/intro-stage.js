@@ -70,8 +70,6 @@ export default React.createClass({
     const store = game.store
     const currentPlayer = app.getCurrentPlayer()
     const isWitch = store.isWitch(currentPlayer.id)
-    const isReady = store.isReady(currentPlayer.id)
-    const ready = app.actions.witchHunt.ready
     return (
       <div>
         <h2>
