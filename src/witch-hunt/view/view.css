@@ -1,4 +1,25 @@
 .WitchHuntView {
   visibility: visible;
   padding: .5em;
+  min-height: 100%;
+}
+
+.WitchHuntView--night {
+  background-color: #0b1e32;
+  color: #5fb1ca;
+}
+
+.WitchHuntView--morning {
+  background-color: #1365e0;
+  color: #fefd91;
+}
+
+.WitchHuntView--afternoon {
+  background-color: #4383bb;
+  color: #111;
+}
+
+.WitchHuntView--evening {
+  background-color: #ce8049;
+  color: #1c1c1c;
 }

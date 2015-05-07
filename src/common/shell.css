@@ -6,6 +6,7 @@
 
 .Shell {
   display: flex;
+  height: 100vh;
 }
 
 .u-chunk {

@@ -43,7 +43,7 @@ export default React.createClass({
       this.getViewForStage(stage) :
       GameDescription
     return (
-      <div className='WitchHuntView u-chunk'>
+      <div className={ 'WitchHuntView u-chunk WitchHuntView--' + stage }>
         <h1>{ formatMessage('Witch Hunt') }</h1>
         <Stage app={ app } game={ game } players={ this.props.players } />
       </div>
