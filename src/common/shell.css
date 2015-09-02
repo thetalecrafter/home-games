@@ -4,8 +4,7 @@
   box-sizing: border-box;
 }
 
-.Shell {
-  display: flex;
+#root {
   height: 100vh;
 }
 

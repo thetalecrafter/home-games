@@ -1,6 +1,7 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import ReadyButton from './ready-button'
+import { roles } from '../constants'
 
 const witch = (
   <div>
@@ -57,19 +58,19 @@ const puritan = (
   </div>
 )
 
-export default React.createClass({
-  displayName: 'IntroStage',
+export default class IntroStage extends React.Component {
+  static displayName = 'IntroStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
 
   render () {
-    const { app, game } = this.props
-    const store = game.store
-    const currentPlayer = app.getCurrentPlayer()
-    const isWitch = store.isWitch(currentPlayer.id)
+    const { sid, game, confirm } = this.props
+    const currentPlayer = game.players.find(player => player.sid === sid)
+    const isWitch = currentPlayer.role === roles.WITCH
     return (
       <div>
         <h2>
@@ -80,11 +81,12 @@ export default React.createClass({
         </h2>
         { isWitch ? witch : puritan }
         <ReadyButton
-          app={ app }
+          player={ currentPlayer }
           game={ game }
           disabled={ false }
+          confirm={ confirm }
         />
       </div>
     )
   }
-})
+}

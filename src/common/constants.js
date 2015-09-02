@@ -1,0 +1,1 @@
+export const SET_LOADING_CODE = 'SET_LOADING_CODE'

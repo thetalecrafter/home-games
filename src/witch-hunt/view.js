@@ -12,16 +12,27 @@ import EndStage from './view/end-stage'
 import GameDescription from './view/description'
 import './view/view.css'
 
-export default React.createClass({
-  displayName: 'WitchHuntView',
+export default class WitchHuntView extends React.Component {
+  static displayName = 'WitchHuntView'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
     game: React.PropTypes.object.isRequired,
-    players: React.PropTypes.object.isRequired
-  },
+    players: React.PropTypes.array.isRequired
+  }
 
-  getViewForStage (stage) {
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.players !== this.props.players
+      || nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
+
+  getView (isPlaying, stage) {
+    if (!isPlaying && stage !== stages.ADD_PLAYERS) {
+      return GameDescription
+    }
     switch (stage) {
       case stages.ADD_PLAYERS: return AddPlayerStage
       case stages.INTRO: return IntroStage
@@ -32,21 +43,19 @@ export default React.createClass({
       case stages.END: return EndStage
       default: return GameDescription
     }
-  },
+  }
 
   render () {
-    const { app, game } = this.props
+    const { sid, game, players } = this.props
     const stage = game.stage
-    const currentPlayer = app.getCurrentPlayer()
-    const isPlaying = game.store.isPlaying(currentPlayer && currentPlayer.id)
-    const Stage = isPlaying || stage === stages.ADD_PLAYERS ?
-      this.getViewForStage(stage) :
-      GameDescription
+    const isPlaying = !!game.players.find(player => player.sid === sid)
+    const Stage = this.getView(isPlaying, stage)
+
     return (
       <div className={ 'WitchHuntView u-chunk WitchHuntView--' + stage }>
         <h1>{ formatMessage('Witch Hunt') }</h1>
-        <Stage app={ app } game={ game } players={ this.props.players } />
+        <Stage { ...this.props } />
       </div>
     )
   }
-})
+}

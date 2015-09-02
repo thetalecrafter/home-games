@@ -1,7 +1,8 @@
 import express from 'express'
 import client from './client-server'
-import player from './player/server-routes'
-import witchHunt from './witch-hunt/server-routes'
+import dispatchRouter from './dispatch-router'
+import playersRouter from './players/server-router'
+import witchHuntRouter from './witch-hunt/server-router'
 
 function error (err, req, res, next) {
   let status = err.status || 500
@@ -17,8 +18,9 @@ function error (err, req, res, next) {
 }
 
 const api = express.Router()
-  .use('/player', player)
-  .use('/witch-hunt', witchHunt)
+  .use(dispatchRouter)
+  .use('/players', playersRouter)
+  .use('/witch-hunt', witchHuntRouter)
 
 export default express.Router()
 	.use('/api/v1', api)

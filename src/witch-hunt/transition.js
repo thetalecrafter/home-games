@@ -12,12 +12,14 @@ const transitions = {
 }
 
 export default function transition (state) {
+  if (!isEveryoneReady(state)) return state
+
   const to = transitions[state.stage]
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
   const newState = to(state)
-  newState.players = newState.players.map(player => {
-    return Object.assign({}, player, { isReady: undefined, vote: undefined })
-  })
+  newState.players = newState.players.map(player => ({
+    ...player, isReady: undefined, vote: undefined
+  }))
   return newState
 }
 
@@ -28,7 +30,7 @@ function transitionFromAddPlayers (state) {
   const stage = INTRO
   const result = null
   const players = state.players.map(
-    player => Object.assign({}, player, { role: PURITAN })
+    player => ({ ...player, role: PURITAN })
   )
   let witchesLeft = Math.round(numPlayers / 4)
   while (witchesLeft > 0) {
@@ -110,7 +112,7 @@ function transitionFromMorning (state) {
         player.role === WITCH ? 0.2 : 0.6
       )
       result.victimDied = isDead
-      return Object.assign({}, player, { isDead })
+      return { ...player, isDead }
     })
   }
 
@@ -157,8 +159,8 @@ function transitionFromEvening (state) {
 
 function killPlayer (victimId, players) {
   return players.map(player => {
-    if (player.id !== victimId) { return player }
-    return Object.assign({}, player, { isDead: true })
+    if (player.id !== victimId) return player
+    return { ...player, isDead: true }
   })
 }
 
@@ -176,4 +178,9 @@ function isAllPuritans (state) {
 
 function isAllSame (state) {
   return isAllWitches(state) || isAllPuritans(state)
+}
+
+function isEveryoneReady (state) {
+  if (state.players.length < MIN_PLAYERS) { return false }
+  return state.players.every(player => player.isReady || player.isDead)
 }

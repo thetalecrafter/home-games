@@ -1,18 +1,20 @@
 import React from 'react'
+import classnames from 'classnames'
 import './shell.css'
 
-export default React.createClass({
-  displayName: 'ShellView',
+export default class ShellView extends React.Component {
+  static displayName = 'ShellView'
 
-  propTypes: {
-    children: React.PropTypes.element
-  },
+  static propTypes = {
+    className: React.PropTypes.string,
+    children: React.PropTypes.node
+  }
 
   render () {
     return (
-      <div className='Shell'>
+      <div className={ classnames('Shell', this.props.className) }>
         { this.props.children }
       </div>
     )
   }
-})
+}

@@ -1,59 +1,34 @@
-/*globals fetch*/
-import uniflow from 'uniflow'
+import {
+  CREATE_GAME,
+  START_GAME,
+  ADD_PLAYER,
+  VOTE,
+  CONFIRM,
+  END_GAME
+} from './constants'
 
-export default function WitchHuntActions (config) {
-  const baseUrl = config && (config.state.api + '/witch-hunt/')
-  const addAuth = config && config.state.request ?
-    headers => Object.assign(headers, {
-      Cookie: config.state.request.get('Cookie')
-    }) :
-    headers => headers
+export default {
+  create () {
+    return { type: CREATE_GAME }
+  },
 
-  return uniflow.createActions({
-    create () { this.send('create') },
-    addPlayer (player) { this.send('add-player', player) },
-    start () { this.send('start') },
-    vote (playerId, vote) { this.send('player-vote', playerId, vote) },
-    ready (playerId) { this.send('player-ready', playerId) },
-    end () { this.send('end') },
+  start () {
+    return { type: START_GAME }
+  },
 
-    send (action, ...args) {
-      this.emit(action, ...args)
-      if (!config) { return }
-      const url = baseUrl + 'action/' + action
-      return fetch(url, {
-				method: 'post',
-				headers: addAuth({
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-				}),
-				body: JSON.stringify(args)
-			})
-      .then(response => response.json())
-      .then(
-        json => this.emit(action + '-send-success', args, json),
-        err => this.emit(action + '-send-failure', args, err)
-      )
-    },
+  addPlayer (player) {
+    return { type: ADD_PLAYER, player }
+  },
 
-    load () {
-      if (!config) { return }
-      this.emit('load')
-      const url = baseUrl + '/store-state.json'
-      return fetch(url, {
-				headers: addAuth({
-					'Accept': 'application/json'
-				})
-      })
-			.then(response => response.json())
-      .then(
-        state => this.emit('load-success', state),
-        err => this.emit('load-failure', err)
-      )
-    },
+  vote ({ id, vote }) {
+    return { type: VOTE, player: { id, vote } }
+  },
 
-    bootstrap (json) {
-      this.emit('bootstrap', json)
-    }
-  })
+  confirm ({ id }) {
+    return { type: CONFIRM, player: { id } }
+  },
+
+  end () {
+    return { type: END_GAME }
+  }
 }

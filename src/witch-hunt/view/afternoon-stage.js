@@ -2,20 +2,28 @@ import React from 'react'
 import formatMessage from 'format-message'
 import ReadyButton from './ready-button'
 
-export default React.createClass({
-  displayName: 'AfternoonStage',
+export default class AfternoonStage extends React.Component {
+  static displayName = 'AfternoonStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    vote: React.PropTypes.func.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
 
   render () {
-    const { app, game } = this.props
+    const { sid, game, vote, confirm } = this.props
     const { victimId, victimDied } = game.result
-    const victim = game.store.getPlayer(victimId)
-    let currentPlayer = app.getCurrentPlayer()
-    currentPlayer = game.store.getPlayer(currentPlayer.id)
+    const victim = game.players.find(player => player.id === victimId)
+    const currentPlayer = game.players.find(player => player.sid === sid)
     const canVote = (
       !victimDied &&
       victimId !== currentPlayer.id &&
@@ -23,7 +31,6 @@ export default React.createClass({
     )
     const needsToVote = canVote && currentPlayer.vote == null
     const disabled = !canVote || currentPlayer.isReady
-    const { vote } = app.actions.witchHunt
 
     const victimName = victim.name
     let victimResult
@@ -81,7 +88,7 @@ export default React.createClass({
                 name='vote'
                 checked={ currentPlayer.vote === true }
                 disabled={ disabled }
-                onChange={ disabled ? null : vote.partial(currentPlayer.id, true) } />
+                onChange={ disabled ? null : () => vote({ id: currentPlayer.id, vote: true }) } />
               { formatMessage('Yes') }
             </label>
             <label>
@@ -90,7 +97,7 @@ export default React.createClass({
                 name='vote'
                 checked={ currentPlayer.vote === false }
                 disabled={ disabled }
-                onChange={ disabled ? null : vote.partial(currentPlayer.id, false) } />
+                onChange={ disabled ? null : () => vote({ id: currentPlayer.id, vote: false }) } />
               { formatMessage('No') }
             </label>
           </div>
@@ -103,11 +110,12 @@ export default React.createClass({
           </p>
         }
         <ReadyButton
-          app={ app }
+          player={ currentPlayer }
           game={ game }
           disabled={ needsToVote }
+          confirm={ confirm }
         />
       </div>
     )
   }
-})
+}

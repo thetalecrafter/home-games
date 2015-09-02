@@ -1,0 +1,13 @@
+.PlayersListItem-avatar {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+}
+
+.PlayersListItem-name {
+  font-weight: bold;
+}
+
+.PlayersListItem-gender {
+  font-weight: bold;
+}

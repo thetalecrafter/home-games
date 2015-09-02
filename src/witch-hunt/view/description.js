@@ -46,21 +46,26 @@ const description = (
   </div>
 )
 
-export default React.createClass({
-  displayName: 'GameDescription',
+export default class GameDescription extends React.Component {
+  static displayName = 'GameDescription'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    game: React.PropTypes.object.isRequired,
+    create: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return nextProps.game !== this.props.game
+  }
 
   render () {
-    const isStarted = !!this.props.game.stage
-    const start = this.props.app.actions.witchHunt.create
+    const { game, create } = this.props
+    const isStarted = !!game.stage 
+    const didClickStart = isStarted ? null : () => create()
     return (
       <div>
         { summary }
-        <button onClick={ !isStarted && start } disabled={ isStarted }>
+        <button onClick={ didClickStart } disabled={ isStarted }>
           { isStarted ?
             formatMessage('Game In Progress') :
             formatMessage('Play Witch Hunt')
@@ -70,4 +75,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

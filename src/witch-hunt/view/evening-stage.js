@@ -2,23 +2,31 @@ import React from 'react'
 import formatMessage from 'format-message'
 import ReadyButton from './ready-button'
 
-export default React.createClass({
-  displayName: 'EveningStage',
+export default class EveningStage extends React.Component {
+  static displayName = 'EveningStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    vote: React.PropTypes.func.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
 
   render () {
-    const { app, game } = this.props
-    let currentPlayer = app.getCurrentPlayer()
-    currentPlayer = game.store.getPlayer(currentPlayer.id)
+    const { sid, game, vote, confirm } = this.props
+    const currentPlayer = game.players.find(player => player.sid === sid)
 
     let victimResult
     if (game.result && game.result.victimId) {
       const { victimId, victimDied } = game.result
-      const { name: victimName } = game.store.getPlayer(victimId)
+      const { name: victimName } = game.players.find(player => player.id === victimId)
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id) ?
           <div>
@@ -60,11 +68,12 @@ export default React.createClass({
         <h2>{ formatMessage('Evening') }</h2>
         { victimResult }
         <ReadyButton
-          app={ app }
+          player={ currentPlayer }
           game={ game }
           disabled={ false }
+          confirm={ confirm }
         />
       </div>
     )
   }
-})
+}

@@ -1,29 +1,60 @@
 import React from 'react'
 import formatMessage from 'format-message'
-import PlayerPicker from '../../player/picker'
+import PlayerPicker from '../../players/picker'
+import { MIN_PLAYERS } from '../constants'
 
-export default React.createClass({
-  displayName: 'AddPlayerStage',
+export default class AddPlayerStage extends React.Component {
+  static displayName = 'AddPlayerStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    players: React.PropTypes.array.isRequired,
+    addPlayer: React.PropTypes.func.isRequired,
+    start: React.PropTypes.func.isRequired
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = { selectedId: null }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return (
+      nextState.selectedId !== this.state.selectedId
+      || nextProps.players !== this.props.players
+      || nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
+
+  select = (selectedId) => {
+    this.setState({ selectedId })
+  }
+
+  join = () => {
+    const id = this.state.selectedId
+    const { sid, game, players, addPlayer } = this.props
+    const player = (
+      game.players.every(player => player.id !== id)
+      && players.find(player => player.id === id)
+    )
+    if (player) addPlayer({ ...player, sid })
+  }
 
   render () {
-    const app = this.props.app
+    const { sid, game, players, start } = this.props
     const store = this.props.game.store
-    const currentPlayer = app.getCurrentPlayer()
-    const isPlaying = store.isPlaying(currentPlayer && currentPlayer.id)
-    const canStart = store.canStart()
-    const addPlayer = app.actions.witchHunt.addPlayer
-    const start = app.actions.witchHunt.start
-    const availablePlayers = app.stores.player.state.players.map(player => {
-      const isDisabled = (isPlaying && currentPlayer.id === player.id) ?
-        false : store.isPlaying(player.id)
-      return Object.assign({}, player, { isDisabled })
+    const currentPlayer = game.players.find(player => player.sid === sid)
+    const isPlaying = !!currentPlayer
+    const count = game.players.length
+    const canStart = isPlaying && count >= MIN_PLAYERS
+
+    const availablePlayers = isPlaying || players.map(player => {
+      const isDisabled = game.players.some(({ id }) => player.id === id)
+      return { ...player, isDisabled }
     })
-    const count = this.props.game.players.length
+
     return (
       <div>
         <h2>{ formatMessage('Choose Players') }</h2>
@@ -34,13 +65,10 @@ export default React.createClass({
           <div>
             <PlayerPicker
               players={ availablePlayers }
-              selectedId={ app.stores.player.state.selectedId }
-              select={ isPlaying ? null : app.actions.player.select }
+              selectedId={ this.state.selectedId }
+              select={ this.select }
             />
-            <button
-              onClick={ currentPlayer && addPlayer.partial(currentPlayer) }
-              disabled={ !currentPlayer }
-            >
+            <button onClick={ this.join }>
               { formatMessage('Join Game') }
             </button>
           </div>
@@ -55,7 +83,7 @@ export default React.createClass({
             }) }
         </p>
         <ol>
-          { this.props.game.players.map(player =>
+          { game.players.map(player =>
             <li key={ player.id }>
               { player.name }
             </li>
@@ -63,7 +91,7 @@ export default React.createClass({
         </ol>
         { isPlaying &&
           <button
-            onClick={ !canStart ? null : start }
+            onClick={ canStart ? start : null }
             disabled={ !canStart }
           >
             { formatMessage('Start Game') }
@@ -72,4 +100,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

@@ -1,51 +1,64 @@
 /* global window */
 import React from 'react'
 import formatMessage from 'format-message'
-import './edit-player.css'
+import resolve from '../../common/resolve-url'
+import './edit.css'
 
-export default React.createClass({
-  displayName: 'EditPlayerView',
+export default class EditPlayerView extends React.Component {
+  static displayName = 'EditPlayerView'
 
-  propTypes: {
+  static propTypes = {
     player: React.PropTypes.object,
-    cancel: React.PropTypes.func.isRequired,
-    save: React.PropTypes.func.isRequired,
-    saveText: React.PropTypes.string
-  },
+    create: React.PropTypes.func.isRequired,
+    update: React.PropTypes.func.isRequired,
+    delete: React.PropTypes.func.isRequired
+  }
 
-  getDefaultProps () {
-    return {
-      saveText: formatMessage('Create Player')
-    }
-  },
-
-  getInitialState () {
-    return this.getStateFromPlayer(this.props.player)
-  },
+  constructor (props) {
+    super(props)
+    this.state = this.getStateFromPlayer(props.player)
+  }
 
   getStateFromPlayer (player) {
-    const { id, name, gender, avatarUrl } = player || {}
-    return {
+    const {
       id,
-      name: name || '',
-      gender: gender || 'other',
-      avatarUrl: avatarUrl || null
-    }
-  },
+      name = formatMessage('New Player'),
+      gender = 'other',
+      avatar = null
+    } = player || {}
+    return { id, name, gender, avatar }
+  }
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.player !== this.props.player) {
-      this.replaceState(this.getStateFromPlayer(nextProps.player))
+      this.state = this.getStateFromPlayer(nextProps.player)
     }
-  },
+  }
 
-  didChangeAvatar (evt) {
+  shouldComponentUpdate (nextProps, nextState) {
+    return (
+      nextProps.player !== this.props.player
+      || nextState.name !== this.state.name
+      || nextState.gender !== this.state.gender
+      || nextState.avatar !== this.state.avatar
+    )
+  }
+
+  componentWillUnmount () {
+    if (this.img) {
+      this.img.onload = null
+      this.img = null
+    }
+  }
+
+  didChangeAvatar = evt => {
     const file = evt.target.files[0]
     const URL = window.URL || window.webkitURL
 
-    const img = new window.Image()
+    if (this.img) this.img.onload = null
+    const img = this.img = new window.Image()
     img.onload = () => {
-      if (!this.isMounted()) return
+      this.img = null
 
       const { naturalWidth, naturalHeight } = img
       let x = 0
@@ -65,18 +78,35 @@ export default React.createClass({
       canvas.width = canvas.height = 128
       const ctx = canvas.getContext('2d')
       ctx.drawImage(img, x, y, width, height)
-      const avatarUrl = canvas.toDataURL('image/png')
-      this.setState({ avatarUrl })
+      const avatar = canvas.toDataURL('image/jpeg')
+      this.setState({ avatar })
 
       URL.revokeObjectURL(img.src)
     }
     img.src = URL.createObjectURL(file)
-  },
+  }
 
-  didSubmit (evt) {
+  didClickRemove = evt => {
+    const msg = formatMessage('Are you sure you want to remove { name }?', {
+      name: this.state.name
+    })
+    if (window.confirm(msg)) {
+      this.props.delete(this.props.player)
+      window.history.back()
+    }
+  }
+
+  didSubmit = evt => {
     evt.preventDefault()
-    this.props.save(this.state)
-  },
+    let { id, name, gender, avatar } = this.state
+    if (!id) {
+      id = Math.random().toString(16).slice(2)
+      this.props.create({ id, name, gender, avatar })
+    } else {
+      this.props.update({ id, name, gender, avatar })
+    }
+    window.history.back()
+  }
 
   render () {
     return (
@@ -117,10 +147,10 @@ export default React.createClass({
           </label>
         </fieldset>
         <label className='EditPlayerView-avatar'>
-          { this.state.avatarUrl &&
+          { this.state.avatar &&
             <img className='EditPlayerView-avatarImg'
               alt={ this.state.name }
-              src={ this.state.avatarUrl }
+              src={ this.state.avatar }
             />
           }
           <input className='EditPlayerView-avatarInput'
@@ -131,13 +161,18 @@ export default React.createClass({
         </label>
         <div>
           <button type='submit'>
-            { this.props.saveText }
+            { formatMessage('Save') }
           </button>
-          <button type='button' onClick={ this.props.cancel }>
+          { this.props.player &&
+            <button type='button' onClick={ this.didClickRemove }>
+              { formatMessage('Remove') }
+            </button>
+          }
+          <button type='button' onClick={ () => window.history.back() }>
             { formatMessage('Cancel') }
           </button>
         </div>
       </form>
     )
   }
-})
+}

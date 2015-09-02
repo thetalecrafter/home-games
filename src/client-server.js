@@ -2,32 +2,49 @@ global.fetch = require('node-fetch') // add fetch global
 if (typeof Intl === 'undefined') { require('intl') } // add Intl global, if needed
 
 import formatMessage from 'format-message'
-import { getTranslate } from 'format-message/lib/translate-util'
-import lookupClosestLocale from 'format-message/node_modules/message-format/lib/lookup-closest-locale'
+import { getTranslate } from 'format-message-core/util'
 import translations from '../locales'
-/*
-formatMessage.setup({ translate: getTranslate({
-  keyType: 'underscored_crc32',
-  translations
-}) })
-*/
+
+formatMessage.setup({
+  translate: getTranslate({ translations }),
+  missingTranslation: 'ignore'
+})
 
 import { Router } from 'express'
 import React from 'react'
-import App from './client-app'
+import { createServerStore as createStore } from './common/base-store'
+import createRouter from './common/base-router'
+import makeElement from './common/make-element'
 
 export default Router()
   .get('/', (_, res) => res.redirect('/en/'))
-  .get('/:locale/*', client)
+  .get('/:locale/*', canonicalizeLocale, client)
+
+function lookupClosestLocale(locale) {
+  const parts = locale.split('-')
+  while (parts.length) {
+    const current = parts.join('-')
+    if (current in translations) {
+      return current
+    }
+    parts.pop()
+  }
+  return 'en'
+}
+
+function canonicalizeLocale (req, res, next) {
+  const locale = lookupClosestLocale(req.params.locale)
+  if (locale === req.params.locale) return next()
+
+  const pathParts = req.url.split('/')
+  pathParts[1] = locale
+  res.redirect(pathParts.join('/'))
+}
 
 function client (request, response, next) {
-  const locale = lookupClosestLocale(request.params.locale, translations)
-  if (locale !== request.params.locale) {
-    const pathParts = request.url.split('/')
-    pathParts[1] = locale
-    return response.redirect(pathParts.join('/'))
-  }
-
+  const env = process.env
+  const locale = request.params.locale
+  const sid = request.sessionID
   const port = request.app.get('port')
   const api = (
     request.protocol + '://' +
@@ -36,59 +53,70 @@ function client (request, response, next) {
     request.app.get('api-base-url')
   )
 
-  const app = App({
-    bootstrap: {
-      config: {
-        request, response, locale, api,
-        playerId: request.session.playerId,
-        env: process.env
-      }
+  const store = createStore({
+    config: {
+      locale, api, sid
     },
-    render,
+    http: {
+      statusCode: 200,
+      headers: {}
+    }
+  })
+
+  const router = createRouter({
+    request, response, env, store,
+    render (view) {
+      if (typeof view === 'function') view = makeElement(view)
+      renderHtml({ view, request, response, store })
+    },
     redirect (url) {
       response.redirect(url)
     },
-    onError (err) {
+    bail (err) {
       next(err)
     }
   })
-  app.route(request.url)
 
-  function render (view) {
-    for (let name in app.actions) { app.actions[name].removeAllListeners() }
-    for (let name in app.stores) { app.stores[name].removeAllListeners() }
-    formatMessage.setup({ locale })
+  router.route(request.url)
+}
 
-    const http = app.stores.http || {}
-    const statusCode = http.statusCode || 200
-    const headers = http.headers || {}
+function renderHtml ({ view, request, response, store }) {
+  const state = store.getState()
+  const locale = state.config.locale
 
-    const title = '' // TODO: where does title come from?
-    React.renderToString(view)
-    const html = '<!doctype html>\n' + React.renderToStaticMarkup(
-      <html lang={ locale }>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <title>{ title }</title>
-        <link rel='stylesheet' href='/client.css' />
-        <script
-          type='application/json'
-          id='StoreBootstrapData'
-          dangerouslySetInnerHTML={ {
-            __html: '\n' + JSON.stringify(app.stores) + '\n'
-          } }
-        />
-        <script defer src={ '/client.' + locale + '.js' } />
-        <body dangerouslySetInnerHTML={ {
+  const http = state.http
+  const statusCode = http.statusCode || 200
+  const headers = http.headers || {}
+  const title = state.title || ''
+
+  formatMessage.setup({ locale })
+  process.env.LOCALE = locale
+
+  const html = '<!doctype html>\n' + React.renderToStaticMarkup(
+    <html lang={ locale }>
+      <meta charSet='utf-8' />
+      <meta name='viewport' content='width=device-width, initial-scale=1' />
+      <title>{ title }</title>
+      <link rel='stylesheet' href='/client.css' />
+      <script
+        type='application/json'
+        id='StoreState'
+        dangerouslySetInnerHTML={ {
+          __html: '\n' + JSON.stringify(state) + '\n'
+        } }
+      />
+      <script defer src={ '/client.' + locale + '.js' } />
+      <body>
+        <div id='root' dangerouslySetInnerHTML={ {
           __html: React.renderToString(view)
         } } />
-      </html>
-    )
+      </body>
+    </html>
+  )
 
-    return response
-      .status(statusCode)
-      .type('html')
-      .set(headers)
-      .send(html)
-  }
-}
+  return response
+    .status(statusCode)
+    .type('html')
+    .set(headers)
+    .send(html)
+} 

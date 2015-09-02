@@ -1,23 +1,31 @@
 import React from 'react'
 import formatMessage from 'format-message'
 
-export default React.createClass({
-  displayName: 'PlayerPicker',
+export default class PlayerPicker extends React.Component {
+  static displayName = 'PlayerPicker'
 
-  propTypes: {
+  static propTypes = {
     name: React.PropTypes.string,
     players: React.PropTypes.array.isRequired,
     selectedId: React.PropTypes.string,
     select: React.PropTypes.func,
     others: React.PropTypes.array
-  },
+  }
 
-  getDefaultProps () {
-    return {
-      name: 'playerId',
-      others: []
-    }
-  },
+  static defaultProps = {
+    name: 'playerId',
+    others: []
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.name !== this.props.name
+      || nextProps.players !== this.props.players
+      || nextProps.selectedId !== this.props.selectedId
+      || nextProps.select !== this.props.select
+      || nextProps.others !== this.props.others
+    )
+  }
 
   render () {
     const { name, players, selectedId, select, others } = this.props
@@ -29,7 +37,7 @@ export default React.createClass({
             <label>
               <input type='radio'
                 name={ name }
-                onChange={ select && select.partial(player.id) }
+                onChange={ select && () => select(player.id) }
                 disabled={ !select || player.isDisabled }
                 checked={ player.id === selectedId }
               />
@@ -50,4 +58,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

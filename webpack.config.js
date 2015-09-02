@@ -1,17 +1,18 @@
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const formatMessagePlugin = require('babel-plugin-format-message')
+const translations = require('./locales')
 
 const debug = process.argv.indexOf('-d') >= 0 ||
     process.argv.indexOf('--debug') >= 0
-const locales = [ 'en'/*, 'pt'*/ ]
 
-module.exports = locales.map(function(locale) {
+module.exports = Object.keys(translations).map(function(locale) {
   return {
     cache: true,
     context: __dirname + '/src',
     entry: {
       client: [
-        'babel/polyfill',
+        'babel-core/polyfill',
         'whatwg-fetch',
         'eventsource-polyfill',
         './client-client.js'
@@ -22,7 +23,7 @@ module.exports = locales.map(function(locale) {
         {
           test: /\.jsx?$/i,
           exclude: /node_modules/,
-          loader: 'format-message!babel?stage=1&loose=all'
+          loader: 'babel'
         },
         {
           test: /\.css$/i,
@@ -45,7 +46,9 @@ module.exports = locales.map(function(locale) {
       new webpack.DefinePlugin({
         'process.env': {
           // This has effect on the react lib size
-          NODE_ENV: debug ? '"development"' : '"production"'
+          NODE_ENV: debug ? '"development"' : '"production"',
+          LOCALE: JSON.stringify(locale),
+          LOCALE_DATA: JSON.stringify('intl/locale-data/jsonp/' + locale)
         }
       })
     ].concat(!debug ? [] : [
@@ -67,10 +70,16 @@ module.exports = locales.map(function(locale) {
         path: [ 'lib' ]
       }
     },
-    formatMessage: {
-      locale: locale,
-      keyType: 'underscored_crc32',
-      translations: require('./locales/' + locale + '.json')
+    babel: {
+      stage: 0,
+      loose: 'all',
+      plugins: [
+        formatMessagePlugin.withOptions({
+          translations: translations,
+          missingTranslation: 'ignore',
+          locale: locale
+        })
+      ]
     }
   }
 })

@@ -2,27 +2,37 @@ import React from 'react'
 import formatMessage from 'format-message'
 import WitchNightStage from './night-stage/witch'
 import PuritanNightStage from './night-stage/puritan'
+import { roles } from '../constants'
 
-export default React.createClass({
-  displayName: 'NightStage',
+export default class NightStage extends React.Component {
+  static displayName = 'NightStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    vote: React.PropTypes.func.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
 
   render () {
-    const { app, game } = this.props
-    const currentPlayer = app.getCurrentPlayer()
-    const isWitch = game.store.isWitch(currentPlayer.id)
+    const { sid, game } = this.props
+    const currentPlayer = game.players.find(player => player.sid === sid)
+    const isWitch = currentPlayer.role === roles.WITCH
     return (
       <div>
         <h2>{ formatMessage('Night') }</h2>
         { isWitch ?
-          <WitchNightStage app={ app } game={ game } /> :
-          <PuritanNightStage app={ app } game={ game } />
+          <WitchNightStage { ...this.props } /> :
+          <PuritanNightStage { ...this.props } />
         }
       </div>
     )
   }
-})
+}

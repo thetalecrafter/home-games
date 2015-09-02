@@ -2,35 +2,45 @@ import React from 'react'
 import formatMessage from 'format-message'
 import { roles } from '../constants'
 
-export default React.createClass({
-  displayName: 'EndStage',
+export default class EndStage extends React.Component {
+  static displayName = 'EndStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    game: React.PropTypes.object.isRequired,
+    end: React.PropTypes.func.isRequired
+  }
 
-  end () {
+  shouldComponentUpdate (nextProps) {
+    return nextProps.game !== this.props.game
+  }
+
+  end = () => {
     const message = (
       formatMessage('Are you sure you want to end the game?') +
       '\n\n' +
       formatMessage(`All players will be taken back to the game description and
         a new game can be started.`).replace(/\s+/g, ' ')
     )
-    const confirm = window.confirm(message)
-    if (confirm) {
-      this.props.app.actions.witchHunt.end()
+    if (window.confirm(message)) {
+      this.props.end()
     }
-  },
+  }
+
+  didWin (game, player) {
+    if (player.isDead) return false
+    if (player.role === roles.WITCH) return true
+    return game.players.every(
+      player => player.isDead || player.role === roles.PURITAN
+    )
+  }
 
   render () {
     const { game } = this.props
-    const { store, players } = game
     return (
       <div>
         <h2>{ formatMessage('Epilogue') }</h2>
         <table>
-        { players.map(player =>
+        { game.players.map(player =>
           <tr key={ player.id }>
             <th>{ player.name }</th>
             <td>
@@ -46,7 +56,7 @@ export default React.createClass({
               }
             </td>
             <td>
-              { store.didWin(player.id) ?
+              { this.didWin(game, player) ?
                 formatMessage('Won') :
                 formatMessage('Lost')
               }
@@ -60,4 +70,4 @@ export default React.createClass({
       </div>
     )
   }
-})
+}

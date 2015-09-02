@@ -1,28 +1,35 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import { roles } from '../../constants'
-import PlayerPicker from '../../../player/picker'
+import PlayerPicker from '../../../players/picker'
 import ReadyButton from '../ready-button'
 
-export default React.createClass({
-  displayName: 'WitchNightStage',
+export default class WitchNightStage extends React.Component {
+  static displayName = 'WitchNightStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    vote: React.PropTypes.func.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
 
   render () {
-    const { app, game } = this.props
-    let currentPlayer = app.getCurrentPlayer()
-    currentPlayer = game.store.getPlayer(currentPlayer.id)
+    const { sid, game, vote, confirm } = this.props
+    const currentPlayer = game.players.find(player => player.sid === sid)
     const disabled = currentPlayer.isDead || currentPlayer.isReady
-    const { vote } = app.actions.witchHunt
 
     const otherWitches = []
     const puritans = []
     game.players.forEach(player => {
-      if (player.id === currentPlayer.id || player.isDead) { return }
+      if (player.id === currentPlayer.id || player.isDead) return
       if (player.role === roles.WITCH) {
         otherWitches.push({ player, selectedId: player.vote })
       } else {
@@ -36,15 +43,16 @@ export default React.createClass({
         <PlayerPicker
           players={ puritans }
           selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-          select={ disabled ? null : vote.partial(currentPlayer.id) }
+          select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
           others={ otherWitches }
         />
         <ReadyButton
-          app={ app }
+          player={ currentPlayer }
           game={ game }
           disabled={ !currentPlayer.vote }
+          confirm={ confirm }
         />
       </div>
     )
   }
-})
+}

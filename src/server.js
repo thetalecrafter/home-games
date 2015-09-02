@@ -2,22 +2,26 @@
 require.extensions['.css'] = function () {}
 
 // use babel for new ES features
-require('babel/register')({
-  stage: 1,
+require('babel-core/register')({
+  stage: 0,
   loose: 'all'
 })
 
+const cookieName = 'player'
+const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
+const REDIS_SOCKET = process.env.REDIS_SOCKET ||
+  (process.env.REDIS_SOCKET = '/tmp/redis.home-games.sock')
+
 const express = require('express')
-const routes = require('./server-routes')
+const router = require('./server-router')
 const bodyParser = require('body-parser')
 const cookieUtil = require('cookie')
 const signature = require('cookie-signature')
 const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+const redis = require('redis')
+const RedisStore = require('connect-redis')(session)
 const crypto = require('crypto')
 
-const cookieName = 'player'
-const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
 function genid (req) {
   return crypto.createHash('sha256')
     .update(req.ip + req.get('user-agent'), 'utf8')
@@ -27,6 +31,7 @@ function genid (req) {
 const app = module.exports = express()
   .set('api-base-url', '/api/v1')
   .set('port', 1337)
+  .set('redis-socket', REDIS_SOCKET)
   .use(bodyParser.json())
   .use(function (req, res, next) {
     // because Chrome doesn't honor localhost or .local cookies
@@ -42,13 +47,13 @@ const app = module.exports = express()
     secret: [ secret1 ],
     saveUninitialized: true,
     resave: false,
-    store: new FileStore({
-      path: __dirname + '/../data/sessions',
+    store: new RedisStore({
+      client: redis.createClient(REDIS_SOCKET),
       ttl: 24 * 60 * 60
     }),
     genid: genid
   }))
-	.use(routes)
+	.use(router)
 
 app.listen(app.get('port'))
 console.log('Started server on port ' + app.get('port'))

@@ -1,34 +1,51 @@
 import React from 'react'
 import formatMessage from 'format-message'
-import PlayerPicker from '../../player/picker'
+import PlayerPicker from '../../players/picker'
 import ReadyButton from './ready-button'
+import { roles } from '../constants'
 
-export default React.createClass({
-  displayName: 'MorningStage',
+export default class MorningStage extends React.Component {
+  static displayName = 'MorningStage'
 
-  propTypes: {
-    app: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired
-  },
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    vote: React.PropTypes.func.isRequired,
+    confirm: React.PropTypes.func.isRequired
+  }
+
+  shouldComponentUpdate (nextProps) {
+    return (
+      nextProps.game !== this.props.game
+      || nextProps.sid !== this.props.sid
+    )
+  }
+
+  isAllSame (players) {
+    return players.every(
+      ({ isDead, role }) => isDead || role === roles.WITCH
+    ) || players.every(
+      ({ isDead, role }) => isDead || role === roles.PURITAN
+    )
+  }
 
   render () {
-    const { app, game } = this.props
+    const { sid, game, vote, confirm } = this.props
     const { victimId, victimDied, follow } = game.result
-    const victim = game.store.getPlayer(victimId)
-    let currentPlayer = app.getCurrentPlayer()
-    currentPlayer = game.store.getPlayer(currentPlayer.id)
-    const { vote } = app.actions.witchHunt
+    const victim = game.players.find(player => player.id === victimId)
+    const currentPlayer = game.players.find(player => player.sid === sid)
     const others = game.players.filter(
-      ({ id, isDead }) => (id !== currentPlayer.id && !isDead)
+      player => (player !== currentPlayer && !player.isDead)
     ).map(
       player => ({ player, selectedId: player.vote })
     )
     const disabled = currentPlayer.isDead || currentPlayer.isReady
-    const isDone = game.store.isAllSame()
+    const isDone = this.isAllSame(game.players)
 
     let followResult
     if (follow && follow[currentPlayer.id]) {
-      const followPlayer = game.store.getPlayer(follow[currentPlayer.id].followId)
+      const followId = follow[currentPlayer.id].followId
+      const followPlayer = game.players.find(player => player.id === followId)
       const name = followPlayer.name
       followResult = follow[currentPlayer.id].wasAwake ?
         formatMessage(`You followed { name } for much of the evening. { name }
@@ -91,9 +108,9 @@ export default React.createClass({
               <div>
                 <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
                 <PlayerPicker
-                  players={ game.players.filter(({ isDead }) => !isDead) }
+                  players={ game.players.filter(player => !player.isDead) }
                   selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-                  select={ disabled ? null : vote.partial(currentPlayer.id) }
+                  select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
                   others={ others }
                 />
               </div>
@@ -106,11 +123,12 @@ export default React.createClass({
           </p>
         }
         <ReadyButton
-          app={ app }
+          player={ currentPlayer }
           game={ game }
           disabled={ !!victimResult && !isDone && currentPlayer.vote == null }
+          confirm={ confirm }
         />
       </div>
     )
   }
-})
+}
