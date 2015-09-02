@@ -38,7 +38,7 @@
   "scripts": {
     "build": "webpack --colors",
     "build:dev": "webpack -d --colors",
-    "extract": "format-message extract -l en -o locales/en.json --no-instructions src/**/*.js",
+    "extract": "format-message extract -l en -o locales/en.json --no-instructions 'src/**/*.js'",
     "redis": "redis-server redis.conf",
     "start": "forever start --uid \"home-games\" --minUptime 1000 --spinSleepTime 50 -a src/server.js",
     "stop": "forever stop \"home-games\"",
