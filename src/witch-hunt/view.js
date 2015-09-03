@@ -1,6 +1,7 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import { stages } from './constants'
+import resolve from '../common/resolve-url'
 
 import AddPlayerStage from './view/add-player-stage'
 import IntroStage from './view/intro-stage'
@@ -18,7 +19,8 @@ export default class WitchHuntView extends React.Component {
   static propTypes = {
     sid: React.PropTypes.string.isRequired,
     game: React.PropTypes.object.isRequired,
-    players: React.PropTypes.array.isRequired
+    players: React.PropTypes.array.isRequired,
+    end: React.PropTypes.func.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
@@ -45,6 +47,18 @@ export default class WitchHuntView extends React.Component {
     }
   }
 
+  end = () => {
+    const message = (
+      formatMessage('Are you sure you want to end the game?') +
+      '\n\n' +
+      formatMessage(`All players will be taken back to the game description and
+        a new game can be started.`).replace(/\s+/g, ' ')
+    )
+    if (window.confirm(message)) {
+      this.props.end()
+    }
+  }
+
   render () {
     const { sid, game, players } = this.props
     const stage = game.stage
@@ -53,8 +67,19 @@ export default class WitchHuntView extends React.Component {
 
     return (
       <div className={ 'WitchHuntView u-chunk WitchHuntView--' + stage }>
+        <a href={ resolve('/') }>
+          &laquo; { formatMessage('Home') }
+        </a>
         <h1>{ formatMessage('Witch Hunt') }</h1>
         <Stage { ...this.props } />
+        { isPlaying &&
+          <button onClick={ this.end } className='WitchHuntView-abandon'>
+            { stage === stages.END ?
+              formatMessage('End Game') :
+              formatMessage('Abandon Game')
+            }
+          </button>
+        }
       </div>
     )
   }

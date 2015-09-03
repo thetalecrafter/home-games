@@ -6,24 +6,11 @@ export default class EndStage extends React.Component {
   static displayName = 'EndStage'
 
   static propTypes = {
-    game: React.PropTypes.object.isRequired,
-    end: React.PropTypes.func.isRequired
+    game: React.PropTypes.object.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
     return nextProps.game !== this.props.game
-  }
-
-  end = () => {
-    const message = (
-      formatMessage('Are you sure you want to end the game?') +
-      '\n\n' +
-      formatMessage(`All players will be taken back to the game description and
-        a new game can be started.`).replace(/\s+/g, ' ')
-    )
-    if (window.confirm(message)) {
-      this.props.end()
-    }
   }
 
   didWin (game, player) {
@@ -64,9 +51,6 @@ export default class EndStage extends React.Component {
           </tr>
         ) }
         </table>
-        <button onClick={ this.end }>
-          { formatMessage('End Game') }
-        </button>
       </div>
     )
   }

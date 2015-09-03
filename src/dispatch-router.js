@@ -2,14 +2,14 @@ import { Router } from 'express'
 import persist from './common/persist'
 import EventSource from './common/event-source/server'
 
-const source = new EventSource()
+export const eventSource = new EventSource()
 persist.subscribe('dispatch', data => {
-  source.broadcast({ name: 'dispatch', data })
+  eventSource.broadcast({ name: 'dispatch', data })
 })
 
 export default Router()
 
-  .get('/actions', source.expressHandler)
+  .get('/actions', eventSource.expressHandler)
 
   .post('/dispatch', (req, res, next) => {
     persist.publish('dispatch', req.body)
