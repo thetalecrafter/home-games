@@ -10,7 +10,7 @@ export default {
   },
 
   update (player) {
-    return { type: UPDATE_PLAYER_NAME, player }
+    return { type: UPDATE_PLAYER, player }
   },
 
   delete ({ id }) {
