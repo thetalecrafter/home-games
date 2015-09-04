@@ -75,7 +75,7 @@ function transitionFromNight (state) {
     }
   })
   if ((result.victimId = victimId)) {
-    if ((result.victimDied = Math.random() < 0.5)) {
+    if ((result.victimDied = Math.random() < 0.7)) {
       players = killPlayer(victimId, players)
     }
   }
