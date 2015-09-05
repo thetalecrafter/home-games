@@ -1,5 +1,6 @@
 import React from 'react'
 import formatMessage from 'format-message'
+import resolve from '../../common/resolve-url'
 import PlayerPicker from '../../players/picker'
 import { MIN_PLAYERS } from '../constants'
 
@@ -68,6 +69,9 @@ export default class AddPlayerStage extends React.Component {
               selectedId={ this.state.selectedId }
               select={ this.select }
             />
+            <a href={ resolve('players/+') }>
+              { formatMessage('Add Player') }
+            </a>
             <button onClick={ this.join }>
               { formatMessage('Join Game') }
             </button>
