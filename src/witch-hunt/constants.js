@@ -5,7 +5,7 @@ export const stages = {
   NIGHT: 'night', // decide what to do
   MORNING: 'morning', // your decision results, decide who to put in trial
   AFTERNOON: 'afternoon', // trial result, possible execute vote
-  EVENING: 'evening', // execution result, vote to end trials
+  EVENING: 'evening', // execution result
   END: 'end' // final result
 }
 

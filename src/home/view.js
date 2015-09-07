@@ -9,8 +9,17 @@ export default class HomeView extends React.Component {
     return (
       <Shell>
         <h1>{ formatMessage('Home Games') }</h1>
-        <a href='players'>{ formatMessage('Manage Players') }</a>
-        <a href='witch-hunt'>{ formatMessage('Witch Hunt') }</a>
+        <ul>
+          <li>
+            <a href='players'>{ formatMessage('Manage Players') }</a>
+          </li>
+          <li>
+            <a href='witch-hunt'>{ formatMessage('Witch Hunt') }</a>
+          </li>
+          <li>
+            <a href='intercept'>{ formatMessage('Intercept') }</a>
+          </li>
+        </ul>
       </Shell>
     )
   }
