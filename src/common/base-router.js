@@ -36,6 +36,12 @@ export default function createRouter (options) {
         () => save(require('../witch-hunt/client-router')),
         'witch-hunt'
       )))
+
+      .use('/intercept', jitRouter(save => require.ensure(
+        [ '../intercept/client-router' ],
+        () => save(require('../intercept/client-router')),
+        'intercept'
+      )))
     )
 
     .get((ctx, next) => bail()) // 404
