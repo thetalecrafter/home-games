@@ -23,7 +23,8 @@ export default class RosterStage extends React.Component {
 
   render () {
     const { sid, game, addToRoster, removeFromRoster, ready } = this.props
-    const isLeader = game.currentLeader === game.players.findIndex(player => player.sid === sid)
+    const leader = game.players[game.currentLeader]
+    const isLeader = (leader.sid === sid)
     const { missions, currentMission } = game
     const mission = missions[currentMission]
     const canBeReady = mission.roster.length === mission.size
@@ -31,11 +32,12 @@ export default class RosterStage extends React.Component {
     return (
       <div>
         <h2>{ formatMessage('Team Selection') }</h2>
-        { isLeader &&
-          <p>
-            { formatMessage('You are the leader. Please choose your team.') }
-          </p>
-        }
+        <p>
+          { isLeader ?
+            formatMessage('You are the leader. Please choose your team.') :
+            formatMessage('{ name } will choose the team.', { name: leader.name })
+          }
+        </p>
         <p>
           { formatMessage(
             `{ numPlayers, plural,
