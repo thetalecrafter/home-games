@@ -73,7 +73,7 @@ export default class AddPlayerStage extends React.Component {
               selectedId={ this.state.selectedId }
               select={ this.select }
             />
-            <a href={ resolve('player/+') }>
+            <a href={ resolve('players/+') }>
               { formatMessage('Add Player') }
             </a>
             <button onClick={ this.join }>

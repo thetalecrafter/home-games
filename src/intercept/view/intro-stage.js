@@ -81,6 +81,25 @@ export default class IntroStage extends React.Component {
           currentPlayer.role === roles.DOUBLE ? doubleAgent :
           mole
         }
+        { currentPlayer.role === roles.SPY ?
+          <p>
+            { formatMessage(
+              'There are {count, number} Double Agents in this game.',
+              { count: game.players.filter(player => player.role === roles.DOUBLE).length }
+            ) }
+          </p> :
+          <p>
+            { formatMessage('Here are your fellow Double Agents:') }
+            <ul>
+              { game.players
+                .filter(player => player.role !== roles.SPY && player !== currentPlayer)
+                .map(player =>
+                  <li key={ player.id }>{ player.name }</li>
+                )
+              }
+            </ul>
+          </p>
+        }
         <ReadyButton
           player={ currentPlayer }
           game={ game }
