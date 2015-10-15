@@ -12,6 +12,11 @@ export default function createRouter (options) {
   const { render, request, bail } = options
 
   const router = Router()
+    .use(async (ctx, next) => {
+      try { await next() }
+      catch (err) { bail(err) } // 500
+    })
+
     .use((ctx, next) => {
       Object.assign(ctx, options)
       ctx.isServer = !!request
@@ -44,8 +49,6 @@ export default function createRouter (options) {
       )))
     )
 
-    .get((ctx, next) => bail()) // 404
-    .use((err, ctx, next) => bail(err)) // 500
-
+    .get(() => bail()) // 404
   return router
 }

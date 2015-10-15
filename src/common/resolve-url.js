@@ -1,3 +1,3 @@
 export default function resolve (path) {
-  return `/${process.env.LOCALE}/${path}`
+  return `/${process.env.LOCALE}/${path.replace(/^\/+/, '')}`
 }

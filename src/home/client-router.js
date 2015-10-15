@@ -3,6 +3,7 @@ import React from 'react'
 import View from './view'
 
 export default Router()
-  .get('/', (ctx, next) => {
+  .get('/', (ctx, next, stop) => {
     ctx.render(<View store={ ctx.store } />)
+    stop()
   })

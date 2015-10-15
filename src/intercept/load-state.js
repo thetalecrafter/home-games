@@ -1,9 +1,9 @@
 /* globals fetch */
 import { REPLACE_GAME } from './constants'
 
-export default function (ctx, next) {
-  const state = ctx.store.getState()
-  if (state.intercept) return next()
+export default async function (ctx) {
+  const fullState = ctx.store.getState()
+  if (fullState.intercept) return
 
   const headers = {}
   if (ctx.request) {
@@ -11,11 +11,8 @@ export default function (ctx, next) {
     headers['Cookie'] = ctx.request.get('Cookie')
   }
 
-  fetch(`${state.config.api}/intercept/state`, { headers })
+  const state = await fetch(`${fullState.config.api}/intercept/state`, { headers })
     .then(res => res.json())
-    .then(state => {
-      ctx.store.dispatch({ type: REPLACE_GAME, state, isRemote: true })
-      next()
-    })
-    .catch(next)
+
+  ctx.store.dispatch({ type: REPLACE_GAME, state, isRemote: true })
 }

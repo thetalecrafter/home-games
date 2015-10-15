@@ -12,9 +12,9 @@ formatMessage.setup({
 
 import { Router } from 'express'
 import React from 'react'
+import ReactDOMServer from 'react-dom/server'
 import { createServerStore as createStore } from './common/base-store'
 import createRouter from './common/base-router'
-import makeElement from './common/make-element'
 
 export default Router()
   .get('/', (_, res) => res.redirect('/en/'))
@@ -66,7 +66,7 @@ function client (request, response, next) {
   const router = createRouter({
     request, response, env, store,
     render (view) {
-      if (typeof view === 'function') view = makeElement(view)
+      if (typeof view === 'function') view = React.createElement(view)
       renderHtml({ view, request, response, store })
     },
     redirect (url) {
@@ -92,23 +92,25 @@ function renderHtml ({ view, request, response, store }) {
   formatMessage.setup({ locale })
   process.env.LOCALE = locale
 
-  const html = '<!doctype html>\n' + React.renderToStaticMarkup(
+  const html = '<!doctype html>\n' + ReactDOMServer.renderToStaticMarkup(
     <html lang={ locale }>
-      <meta charSet='utf-8' />
-      <meta name='viewport' content='width=device-width, initial-scale=1' />
-      <title>{ title }</title>
-      <link rel='stylesheet' href='/client.css' />
-      <script
-        type='application/json'
-        id='StoreState'
-        dangerouslySetInnerHTML={ {
-          __html: '\n' + JSON.stringify(state) + '\n'
-        } }
-      />
-      <script defer src={ '/client.' + locale + '.js' } />
+      <head>
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <title>{ title }</title>
+        <link rel='stylesheet' href='/client.css' />
+        <script
+          type='application/json'
+          id='StoreState'
+          dangerouslySetInnerHTML={ {
+            __html: '\n' + JSON.stringify(state) + '\n'
+          } }
+        />
+        <script defer src={ '/client.' + locale + '.js' } />
+      </head>
       <body>
         <div id='root' dangerouslySetInnerHTML={ {
-          __html: React.renderToString(view)
+          __html: ReactDOMServer.renderToString(view)
         } } />
       </body>
     </html>
@@ -119,4 +121,4 @@ function renderHtml ({ view, request, response, store }) {
     .type('html')
     .set(headers)
     .send(html)
-} 
+}

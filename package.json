@@ -5,7 +5,7 @@
   "dependencies": {
     "babel-core": "^5.8.23",
     "body-parser": "^1.13.3",
-    "connect-redis": "^2.5.0",
+    "connect-redis": "^3.0.0",
     "cookie": "^0.2.0",
     "cookie-signature": "^1.0.6",
     "express": "^4.13.3",
@@ -13,27 +13,29 @@
     "format-message": "^3.1.0",
     "format-message-core": "^3.1.0",
     "intl": "^1.0.0",
-    "middle-router": "^0.0.4",
+    "middle-router": "^0.1.0",
     "node-fetch": "^1.3.2",
-    "react": "^0.13.3",
-    "redis": "^1.0.0",
-    "redux": "^2.0.0"
+    "react": "^0.14.0",
+    "react-dom": "^0.14.0",
+    "redis": "^2.2.0",
+    "redux": "^3.0.0"
   },
   "devDependencies": {
     "babel-loader": "^5.3.2",
     "babel-plugin-format-message": "^0.1.0",
     "classnames": "^2.1.3",
-    "css-loader": "^0.16.0",
+    "css-loader": "^0.19.0",
     "cssnext-loader": "^1.0.1",
     "eventsource-polyfill": "^0.9.6",
     "extract-text-webpack-plugin": "^0.8.2",
     "file-loader": "^0.8.4",
     "forever": "^0.15.1",
+    "node-dev": "^2.7.1",
     "style-loader": "^0.12.3",
     "url-loader": "^0.5.6",
     "webpack": "^1.12.0",
     "webpack-dev-server": "^1.10.1",
-    "whatwg-fetch": "^0.9.0"
+    "whatwg-fetch": "^0.10.0"
   },
   "scripts": {
     "build": "webpack --colors",
@@ -42,7 +44,7 @@
     "redis": "redis-server redis.conf",
     "start": "forever start --uid \"home-games\" --minUptime 1000 --spinSleepTime 50 -a src/server.js",
     "stop": "forever stop \"home-games\"",
-    "watch": "webpack -d --colors --watch & forever --minUptime 1000 --spinSleepTime 50 -w --watchDirectory src src/server.js"
+    "watch": "webpack -d --colors --watch & node-dev src/server.js"
   },
   "author": "Andy VanWagoner <thetalecrafter@gmail.com>",
   "license": "MIT"
