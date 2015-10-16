@@ -1,7 +1,9 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import resolve from '../../common/resolve-url'
-import './list-item.css'
+import ListItem from 'material-ui/lib/lists/list-item'
+import Avatar from 'material-ui/lib/avatar'
+import FontIcon from 'material-ui/lib/font-icon'
 
 export default class PlayersListItem extends React.Component {
   static displayName = 'PlayersListItem'
@@ -17,26 +19,14 @@ export default class PlayersListItem extends React.Component {
   render () {
     const { player, actions } = this.props
     return (
-      <li>
-        <a className='PlayersListItem' href={ resolve(`players/${player.id}`) }>
-          { player.avatar &&
-            <img className='PlayersListItem-avatar'
-              alt={ player.name }
-              src={ player.avatar }
-            />
-          }
-          <span className='PlayersListItem-name'>
-            { player.name }
-          </span>
-          <span className='PlayersListItem-gender'>
-            {
-              player.gender === 'male' ? '♂' :
-              player.gender === 'female' ? '♀' :
-              ''
-            }
-          </span>
-        </a>
-      </li>
+      <ListItem
+        href={ resolve(`players/${player.id}`) }
+        leftAvatar={ player.avatar
+          ? <Avatar src={ player.avatar } />
+          : <Avatar>{ player.name[0] }</Avatar>
+        }
+        primaryText={ player.name }
+      />
     )
   }
 }

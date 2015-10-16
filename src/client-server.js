@@ -99,6 +99,8 @@ function renderHtml ({ view, request, response, store }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <title>{ title }</title>
         <link rel='stylesheet' href='/client.css' />
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' />
+        <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons' />
         <script
           type='application/json'
           id='StoreState'

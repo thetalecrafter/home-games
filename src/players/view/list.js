@@ -3,6 +3,14 @@ import formatMessage from 'format-message'
 import resolve from '../../common/resolve-url'
 import Shell from '../../common/shell'
 import Player from './list-item'
+import AppBar from 'material-ui/lib/app-bar'
+import Avatar from 'material-ui/lib/avatar'
+import Card from 'material-ui/lib/card/card'
+import List from 'material-ui/lib/lists/list'
+import ListItem from 'material-ui/lib/lists/list-item'
+import ListDivider from 'material-ui/lib/lists/list-divider'
+import FontIcon from 'material-ui/lib/font-icon'
+import IconButton from 'material-ui/lib/icon-button'
 import './list.css'
 
 export default class PlayersList extends React.Component {
@@ -20,18 +28,35 @@ export default class PlayersList extends React.Component {
     const { players } = this.props
     return (
       <Shell className='PlayersList u-chunk'>
-        <a href={ resolve('/') }>
-          &laquo; { formatMessage('Home') }
-        </a>
-        <h1>{ formatMessage('Players') }</h1>
-        <ul>
-          { players.map(player =>
-            <Player key={ player.id } player={ player } />
-          ) }
-        </ul>
-        <a href={ resolve('players/+') }>
-          { formatMessage('Add Player') }
-        </a>
+        <AppBar
+          title={ formatMessage('Manage Players') }
+          iconElementLeft={
+            <IconButton
+              iconClassName='material-icons'
+              linkButton={ true }
+              href={ resolve('/') }
+            >
+              chevron_left
+            </IconButton>
+          }
+        />
+        <Card>
+          <List>
+            { players.map(player =>
+              <Player key={ player.id } player={ player } />
+            ) }
+            <ListDivider />
+            <ListItem
+              href={ resolve('players/+') }
+              primaryText={ formatMessage('Add Player') }
+              leftAvatar={
+                <Avatar
+                  icon={ <FontIcon className='material-icons'>add</FontIcon> }
+                />
+              }
+            />
+          </List>
+        </Card>
       </Shell>
     )
   }
