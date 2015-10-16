@@ -1,0 +1,26 @@
+.EditPlayerAvatar {
+  box-sizing: content-box;
+  position: relative;
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-top-color: #c2c2c2;
+  border-bottom-color: #d6d6d6;
+  border-radius: 6px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.EditPlayerAvatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.EditPlayerAvatar-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.0001;
+}

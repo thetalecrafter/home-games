@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { createClientStore as createStore } from './common/base-store'
 import createRouter from './common/base-router'
+import 'elemental/less/elemental.less'
 
 const root = document.getElementById('root')
 const script = document.getElementById('StoreState') || {}
@@ -13,7 +14,7 @@ const router = createRouter({
   store,
   render (view) {
     function draw () {
-      ReactDOM.render(React.createElement(view), root)
+      ReactDOM.render(view(), root)
     }
     if (unsubscribe) unsubscribe()
     unsubscribe = store.subscribe(draw)

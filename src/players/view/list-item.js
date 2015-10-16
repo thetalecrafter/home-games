@@ -1,21 +1,27 @@
 import React from 'react'
 import formatMessage from 'format-message'
 import resolve from '../../common/resolve-url'
+import EditModal from './edit-modal'
 import './list-item.css'
 
 export default class PlayersListItem extends React.Component {
   static displayName = 'PlayersListItem'
 
   static propTypes = {
-    player: React.PropTypes.object.isRequired
+    player: React.PropTypes.object.isRequired,
+    isSelected: React.PropTypes.bool,
+    actions: React.PropTypes.object.isRequired
   }
 
   shouldComponentUpdate (nextProps) {
-    return nextProps.player !== this.props.player
+    return (
+      nextProps.player !== this.props.player
+      || nextProps.isSelected !== this.props.isSelected
+    )
   }
 
   render () {
-    const { player, actions } = this.props
+    const { player, isSelected, actions } = this.props
     return (
       <li>
         <a className='PlayersListItem' href={ resolve(`players/${player.id}`) }>
@@ -36,6 +42,12 @@ export default class PlayersListItem extends React.Component {
             }
           </span>
         </a>
+        <EditModal
+          player={ player }
+          isOpen={ isSelected }
+          onClose={ () => window.history.back() }
+          { ...actions }
+        />
       </li>
     )
   }

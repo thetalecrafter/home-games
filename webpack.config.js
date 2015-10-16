@@ -29,6 +29,10 @@ module.exports = Object.keys(translations).map(function(locale) {
           loader: ExtractTextPlugin.extract('style', 'css?-minimize&sourceMap!cssnext')
         },
         {
+          test: /\.less$/i,
+          loader: ExtractTextPlugin.extract('style', 'css?-minimize&sourceMap!less?sourceMap')
+        },
+        {
           test: /\.(gif|png|jpeg)$/i,
           loader: 'url?limit=10000&name=img/[name].[ext]'
         }
