@@ -1,12 +1,9 @@
 import { Router } from 'express'
 import persist from '../common/persist'
-import { eventSource } from '../dispatch-router'
+import { events } from '../dispatch-router'
 import { TRANSITION, REPLACE_GAME } from './constants'
 import reducer from './reducer'
 import transition from './transition'
-
-// FIXME: the following has a race condition
-// when there is more than one server process
 
 const initialState = {
   players: []
@@ -37,15 +34,12 @@ persist.subscribe('dispatch', action => {
   }
 })
 
-eventSource.on('connect', client => {
-  const sid = client.request.sessionID
+events.on('connect', ws => {
+  const sid = ws.upgradeReq.sessionID
   const isPlaying = !!state.players.find(player => player.sid === sid)
   if (!isPlaying) return
 
-  eventSource.send(client, {
-    name: 'dispatch',
-    data: { type: REPLACE_GAME, state }
-  })
+  ws.send(JSON.stringify({ type: REPLACE_GAME, state }))
 })
 
 export default Router()

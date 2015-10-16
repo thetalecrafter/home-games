@@ -1,11 +1,8 @@
 import { Router } from 'express'
 import persist from '../common/persist'
-import { eventSource } from '../dispatch-router'
+import { events } from '../dispatch-router'
 import { REPLACE_PLAYERS } from './constants'
 import reducer from './reducer'
-
-// FIXME: the following has a race condition
-// when there is more than one server process
 
 let players = []
 persist.read('players')
@@ -22,11 +19,8 @@ persist.subscribe('dispatch', action => {
   }
 })
 
-eventSource.on('connect', client => {
-  eventSource.send(client, {
-    name: 'dispatch',
-    data: { type: REPLACE_PLAYERS, players }
-  })
+events.on('connect', ws => {
+  ws.send(JSON.stringify({ type: REPLACE_PLAYERS, players }))
 })
 
 export default Router()

@@ -5,40 +5,19 @@ const REDIS_SOCKET = process.env.REDIS_SOCKET
 const rwClient = redis.createClient(REDIS_SOCKET)
 const subClient = redis.createClient(REDIS_SOCKET)
 const pubClient = redis.createClient(REDIS_SOCKET)
-const subscriptions = {}
-const PUBSUB_EVENT = 'next'
+const events = new EventEmitter()
+events.setMaxListeners(Infinity)
 
+subClient.subscribe('persist')
 subClient.on('message', (channel, message) => {
-  const obs = subscriptions[channel]
-  if (!obs) return
+  if (channel !== 'persist') return
   try {
-    obs.emit(PUBSUB_EVENT, JSON.parse(message))
+    let args = JSON.parse(message)
+    events.emit(...args)
   } catch (err) {
     console.error(err.message)
   }
 })
-
-function getObserver (name) {
-  let obs = subscriptions[name]
-  if (!obs) {
-    obs = new EventEmitter()
-    obs.setMaxListeners(0)
-    obs.subscribe = (fn) => {
-      obs.on(PUBSUB_EVENT, fn)
-      return obs
-    }
-    obs.unsubscribe = (fn) => {
-      obs.removeListener(PUBSUB_EVENT, fn)
-      if (!obs.listeners(PUBSUB_EVENT).length) {
-        subscriptions.delete(name)
-      }
-      return obs
-    }
-    subscriptions[name] = obs
-    subClient.subscribe(name)
-  }
-  return obs
-}
 
 export default {
   read (name) {
@@ -62,26 +41,20 @@ export default {
           console.error(err.message)
           return reject(err)
         }
-        pubClient.publish(name, JSON.stringify(content))
         resolve(content)
       })
     })
   },
 
   subscribe (name, onNext) {
-    const obs = getObserver(name)
-    if (onNext) obs.subscribe(onNext)
-    return obs
+    events.on(name, onNext)
   },
 
   unsubscribe (name, onNext) {
-    const obs = subscriptions[name]
-    if (obs && onNext) obs.unsubscribe(onNext)
-    return obs
+    events.removeListener(name, onNext)
   },
 
   publish (name, content) {
-    pubClient.publish(name, JSON.stringify(content))
-    return subscriptions[name]
+    pubClient.publish('persist', JSON.stringify([ name, content ]))
   }
 }

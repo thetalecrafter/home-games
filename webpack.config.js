@@ -14,7 +14,6 @@ module.exports = Object.keys(translations).map(function(locale) {
       client: [
         'babel-core/polyfill',
         'whatwg-fetch',
-        'eventsource-polyfill',
         './client-client.js'
       ]
     },

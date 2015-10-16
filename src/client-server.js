@@ -66,7 +66,7 @@ function client (request, response, next) {
   const router = createRouter({
     request, response, env, store,
     render (view) {
-      if (typeof view === 'function') view = React.createElement(view)
+      view = React.createElement(view)
       renderHtml({ view, request, response, store })
     },
     redirect (url) {

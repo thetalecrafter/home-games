@@ -12,6 +12,8 @@ const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
 const REDIS_SOCKET = process.env.REDIS_SOCKET ||
   (process.env.REDIS_SOCKET = '/tmp/redis.home-games.sock')
 
+const http = require('http')
+const WebSocketServer = require('ws').Server
 const express = require('express')
 const router = require('./server-router')
 const bodyParser = require('body-parser')
@@ -55,5 +57,14 @@ const app = module.exports = express()
   }))
 	.use(router)
 
-app.listen(app.get('port'))
+var server = http.createServer(app)
+var wss = new WebSocketServer({ server: server })
+wss.on('connection', function (ws) {
+  var req = ws.upgradeReq
+  var res = new http.ServerResponse(req)
+  res.ws = ws
+  app(req, res)
+})
+
+server.listen(app.get('port'))
 console.log('Started server on port ' + app.get('port'))
