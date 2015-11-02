@@ -16,8 +16,8 @@ export default class WitchNightStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 

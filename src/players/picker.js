@@ -19,11 +19,11 @@ export default class PlayerPicker extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.name !== this.props.name
-      || nextProps.players !== this.props.players
-      || nextProps.selectedId !== this.props.selectedId
-      || nextProps.select !== this.props.select
-      || nextProps.others !== this.props.others
+      nextProps.name !== this.props.name ||
+      nextProps.players !== this.props.players ||
+      nextProps.selectedId !== this.props.selectedId ||
+      nextProps.select !== this.props.select ||
+      nextProps.others !== this.props.others
     )
   }
 

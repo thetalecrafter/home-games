@@ -22,10 +22,10 @@ export default class AddPlayerStage extends React.Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
-      nextState.selectedId !== this.state.selectedId
-      || nextProps.players !== this.props.players
-      || nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextState.selectedId !== this.state.selectedId ||
+      nextProps.players !== this.props.players ||
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -37,15 +37,14 @@ export default class AddPlayerStage extends React.Component {
     const id = this.state.selectedId
     const { sid, game, players, addPlayer } = this.props
     const player = (
-      game.players.every(player => player.id !== id)
-      && players.find(player => player.id === id)
+      game.players.every(player => player.id !== id) &&
+      players.find(player => player.id === id)
     )
     if (player) addPlayer({ ...player, sid })
   }
 
   render () {
     const { sid, game, players, start } = this.props
-    const store = this.props.game.store
     const currentPlayer = game.players.find(player => player.sid === sid)
     const isPlaying = !!currentPlayer
     const count = game.players.length

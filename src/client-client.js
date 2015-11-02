@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
 import { createClientStore as createStore } from './common/base-store'
 import createRouter from './common/base-router'
@@ -8,23 +7,27 @@ const root = document.getElementById('root')
 const script = document.getElementById('StoreState') || {}
 const state = JSON.parse(script.textContent || '{}') || {}
 const store = createStore(state)
-let unsubscribe
+let view
+
+function draw () {
+  ReactDOM.render(view(), root)
+}
 
 const router = createRouter({
   store,
-  render (view) {
-    function draw () {
-      ReactDOM.render(view(), root)
-    }
-    if (unsubscribe) unsubscribe()
-    unsubscribe = store.subscribe(draw)
-    draw()
-  },
+  isClient: true,
+  isServer: false,
   redirect (url) {
-    router.go(url)
-  },
-  bail (err) {
-    if (err) console.error(err)
+    router.navigate(url)
+  }
+}).on('route', async (args, routing) => {
+  try {
+    let subscribed = !!view
+    view = await routing
+    draw()
+    if (!subscribed) store.subscribe(draw)
+  } catch (err) {
+    console.error(err)
   }
 })
 

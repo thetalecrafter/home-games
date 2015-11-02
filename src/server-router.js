@@ -25,11 +25,11 @@ const api = express.Router()
   .use('/intercept', interceptRouter)
 
 export default express.Router()
-	.use('/api/v1', api)
-	.use(express.static('dist', {
-		index: false,
-		redirect: false,
-		maxAge: 0
-	}))
-	.use(client)
+  .use('/api/v1', api)
+  .use(express.static('dist', {
+    index: false,
+    redirect: false,
+    maxAge: 0
+  }))
+  .use(client)
   .use(error)

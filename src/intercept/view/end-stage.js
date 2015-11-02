@@ -37,17 +37,17 @@ export default class EndStage extends React.Component {
       <div>
         <h2>{ formatMessage('Epilogue') }</h2>
         <p>
-        { (fails < 3 && successes < 3) ?
-          formatMessage(
+        { (fails < 3 && successes < 3)
+          ? formatMessage(
           `Indecision kept the team from intercepting vital enemy messages.
           Double Agents win.`
-          ) :
-          fails > successes ?
-          formatMessage(
+          )
+          : fails > successes
+          ? formatMessage(
           `The Double Agents successfully sabotaged the interception of enemy
           messages. Double Agents win.`
-          ) :
-          formatMessage(
+          )
+          : formatMessage(
           `The team of Spies successfully intercepted the enemy messages,
           avoiding disruption from the Double Agents. Spies win.`
           )
@@ -59,15 +59,15 @@ export default class EndStage extends React.Component {
             <th>{ player.name }</th>
             <td>
               {
-                player.role === roles.DOUBLE ? formatMessage('Double Agent') :
-                player.role === roles.MOLE ? formatMessage('Mole') :
-                formatMessage('Spy')
+                player.role === roles.DOUBLE ? formatMessage('Double Agent')
+                : player.role === roles.MOLE ? formatMessage('Mole')
+                : formatMessage('Spy')
               }
             </td>
             <td>
-              { this.didWin(fails, successes, player) ?
-                formatMessage('Won') :
-                formatMessage('Lost')
+              { this.didWin(fails, successes, player)
+                ? formatMessage('Won')
+                : formatMessage('Lost')
               }
             </td>
           </tr>

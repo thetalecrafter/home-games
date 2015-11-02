@@ -1,4 +1,4 @@
-import { roles, stages, MIN_PLAYERS, MAX_PLAYERS } from './constants'
+import { roles, stages } from './constants'
 
 const rosterSizes = [
   [ 2, 3, 2, 3, 3 ],
@@ -30,8 +30,8 @@ export default function newGame (state) {
 
   const missions = rosterSizes[index].map((size, index) => {
     const failLimit = (
-      index === twoFailsIndex
-      && count >= twoFailsLimit
+      index === twoFailsIndex &&
+      count >= twoFailsLimit
     ) ? 2 : 1
     return {
       size,
@@ -50,7 +50,7 @@ export default function newGame (state) {
     const player = players[Math.floor(Math.random() * count)]
     if (player.role === roles.SPY) {
       player.role = roles.DOUBLE
-      --doublesLeft;
+      --doublesLeft
     }
   }
 
@@ -59,7 +59,7 @@ export default function newGame (state) {
     const player = players[Math.floor(Math.random() * count)]
     if (player.role === roles.SPY) {
       player.role = roles.MOLE
-      --molesLeft;
+      --molesLeft
     }
   }
 

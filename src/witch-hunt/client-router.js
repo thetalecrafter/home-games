@@ -9,10 +9,10 @@ import View from './view'
 export default Router()
   .use(loadReducer, loadState)
 
-  .get('/', (ctx, next, stop) => {
-    const actions = bindActionCreators(actionCreators, ctx.store.dispatch)
-    ctx.render(() => {
-      const { witchHunt, players, config: { sid } } = ctx.store.getState()
+  .get('/', ({ resolve, store }) => {
+    const actions = bindActionCreators(actionCreators, store.dispatch)
+    resolve(() => {
+      const { witchHunt, players, config: { sid } } = store.getState()
       return (
         <View
           sid={ sid }
@@ -21,6 +21,5 @@ export default Router()
           { ...actions }
         />
       )
-    }),
-    stop()
+    })
   })

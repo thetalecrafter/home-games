@@ -24,20 +24,20 @@ export default class MoleMissionStage extends React.Component {
             agents.`
           ) }
         </p>
-        { result == null ?
-          <div>
+        { result == null
+          ? <div>
             <button onClick={ () => vote(true) }>
               { formatMessage('Intercept Message') }
             </button>
             <button onClick={ () => vote(false) }>
               { formatMessage('Sabotage Mission') }
             </button>
-          </div> :
-          result ?
-          <p>
+          </div>
+          : result
+          ? <p>
             { formatMessage('You have successfully completed your mission.') }
-          </p> :
-          <p>
+          </p>
+          : <p>
             { formatMessage('You have sabotaged the mission.') }
           </p>
         }
@@ -45,4 +45,3 @@ export default class MoleMissionStage extends React.Component {
     )
   }
 }
-

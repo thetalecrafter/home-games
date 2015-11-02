@@ -1,0 +1,29 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "plugins": [
+    "format-message"
+  ],
+  "rules": {
+    "strict": 0,
+    "format-message/literal-pattern": 2,
+    "format-message/literal-locale": 2,
+    "format-message/no-identical-translation": 0,
+    "format-message/no-invalid-pattern": 2,
+    "format-message/no-invalid-translation": 2,
+    "format-message/no-missing-params": [ 2, { allowNonLiteral: true } ],
+    "format-message/no-missing-translation": 0,
+    "format-message/translation-match-params": 2
+  },
+  "settings": {
+    "format-message": {
+      "sourceLocale": "en",
+      "keyType": "underscored_crc32",
+      "translations": "./locales"
+    }
+  },
+  "extends": [ "standard", "standard-react" ]
+}

@@ -5,69 +5,62 @@ import {
   MIN_PLAYERS,
   MAX_PLAYERS,
 
-  REPLACE_GAME,
-  CREATE_GAME,
   START_GAME,
-  ADD_PLAYER,
-  ADD_TO_ROSTER,
-  READY,
-  VOTE,
-  INTERCEPT,
-  END_GAME
+  READY
 } from './constants'
 
 export default function transition (state, action) {
   switch (state.stage) {
 
-  case stages.ADD_PLAYERS: {
-    const canStart = (
-      action.type === START_GAME
-      && state.players.length >= MIN_PLAYERS
-      && state.players.length <= MAX_PLAYERS
+    case stages.ADD_PLAYERS: {
+      const canStart = (
+      action.type === START_GAME &&
+      state.players.length >= MIN_PLAYERS &&
+      state.players.length <= MAX_PLAYERS
     )
-    if (!canStart) return state
-    return transitionFromAddPlayers(state)
-  }
+      if (!canStart) return state
+      return transitionFromAddPlayers(state)
+    }
 
-  case stages.INTRO: {
-    const isReady = state.players.every(player => (
+    case stages.INTRO: {
+      const isReady = state.players.every(player => (
       state.votes[player.id] != null
     ))
-    if (!isReady) return state
-    return transitionFromIntro(state)
-  }
+      if (!isReady) return state
+      return transitionFromIntro(state)
+    }
 
-  case stages.ROSTER: {
-    if (action.type !== READY) return state
-    const { missions, currentMission } = state
-    const mission = missions[currentMission]
-    if (!mission) return state
-    const hasTeam = mission.roster.length === mission.size
-    if (!hasTeam) return state
-    return transitionFromRoster(state)
-  }
+    case stages.ROSTER: {
+      if (action.type !== READY) return state
+      const { missions, currentMission } = state
+      const mission = missions[currentMission]
+      if (!mission) return state
+      const hasTeam = mission.roster.length === mission.size
+      if (!hasTeam) return state
+      return transitionFromRoster(state)
+    }
 
-  case stages.APPROVAL: {
-    const hasAllVotes = state.players.every(player => (
+    case stages.APPROVAL: {
+      const hasAllVotes = state.players.every(player => (
       state.votes[player.id] != null
     ))
-    if (!hasAllVotes) return state
-    return transitionFromApproval(state)
-  }
+      if (!hasAllVotes) return state
+      return transitionFromApproval(state)
+    }
 
-  case stages.MISSION: {
-    const { missions, currentMission } = state
-    const mission = missions[currentMission]
-    if (!mission) return state
-    const hasAllVotes = mission.roster.every(id => (
+    case stages.MISSION: {
+      const { missions, currentMission } = state
+      const mission = missions[currentMission]
+      if (!mission) return state
+      const hasAllVotes = mission.roster.every(id => (
       mission.results[id] != null
     ))
-    if (!hasAllVotes) return state
-    return transitionFromMission(state)
-  }
+      if (!hasAllVotes) return state
+      return transitionFromMission(state)
+    }
 
-  default:
-    return state
+    default:
+      return state
   }
 }
 

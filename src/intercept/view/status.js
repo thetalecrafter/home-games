@@ -11,8 +11,8 @@ export default class InterceptStatus extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.missions !== this.props.missions
-      || nextProps.current !== this.props.current
+      nextProps.missions !== this.props.missions ||
+      nextProps.current !== this.props.current
     )
   }
 
@@ -50,8 +50,9 @@ export default class InterceptStatus extends React.Component {
             title={ this.getMissionTooltip(mission, index, current) }
           >
           {
-            (index >= current) ? this.getMissionSize(mission) :
-            mission.isSuccessful ? '✔' : '✘'
+            (index >= current)
+            ? this.getMissionSize(mission)
+            : mission.isSuccessful ? '✔' : '✘'
           }
           </span>
         ) }

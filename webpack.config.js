@@ -6,7 +6,7 @@ const translations = require('./locales')
 const debug = process.argv.indexOf('-d') >= 0 ||
     process.argv.indexOf('--debug') >= 0
 
-module.exports = Object.keys(translations).map(function(locale) {
+module.exports = Object.keys(translations).map(function (locale) {
   return {
     cache: true,
     context: __dirname + '/src',
@@ -36,7 +36,7 @@ module.exports = Object.keys(translations).map(function(locale) {
           test: /\.(gif|png|jpeg)$/i,
           loader: 'url?limit=10000&name=img/[name].[ext]'
         }
-      ],
+      ]
     },
     output: {
       filename: '[name].' + locale + '.js',

@@ -14,8 +14,8 @@ export default class EditPlayerAvatar extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.value !== this.props.value
-      || nextProps.onChange !== this.props.onChange
+      nextProps.value !== this.props.value ||
+      nextProps.onChange !== this.props.onChange
     )
   }
 

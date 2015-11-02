@@ -11,8 +11,8 @@ export default class VoteResults extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.players !== this.props.players
-      || nextProps.votes !== this.props.votes
+      nextProps.players !== this.props.players ||
+      nextProps.votes !== this.props.votes
     )
   }
 

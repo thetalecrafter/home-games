@@ -16,8 +16,8 @@ export default class RosterStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -33,9 +33,9 @@ export default class RosterStage extends React.Component {
       <div>
         <h2>{ formatMessage('Team Selection') }</h2>
         <p>
-          { isLeader ?
-            formatMessage('You are the leader. Please choose your team.') :
-            formatMessage('{ name } will choose the team.', { name: leader.name })
+          { isLeader
+            ? formatMessage('You are the leader. Please choose your team.')
+            : formatMessage('{ name } will choose the team.', { name: leader.name })
           }
         </p>
         <p>

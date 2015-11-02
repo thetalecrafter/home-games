@@ -10,7 +10,6 @@ export function createServerStore (initialState = {}) {
 export function createClientStore (initialState = {}) {
   const createStoreWithMiddleware = applyMiddleware(websocketMiddleware)(createStore)
   return createBaseStore(createStoreWithMiddleware, initialState)
-  return store
 }
 
 function createBaseStore (createStoreWithMiddleware, initialState = {}) {

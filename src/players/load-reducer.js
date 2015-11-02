@@ -1,5 +1,5 @@
 import players from './reducer'
 
-export default function (ctx) {
-  ctx.store.addSubReducers({ players })
+export default function ({ store }) {
+  store.addSubReducers({ players })
 }

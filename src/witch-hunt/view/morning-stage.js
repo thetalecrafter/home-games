@@ -16,8 +16,8 @@ export default class MorningStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -47,12 +47,12 @@ export default class MorningStage extends React.Component {
       const followId = follow[currentPlayer.id].followId
       const followPlayer = game.players.find(player => player.id === followId)
       const name = followPlayer.name
-      followResult = follow[currentPlayer.id].wasAwake ?
-        formatMessage(`You followed { name } for much of the evening. { name }
+      followResult = follow[currentPlayer.id].wasAwake
+        ? formatMessage(`You followed { name } for much of the evening. { name }
         was sneaking about, but you couldn’t keep up without being noticed,
         so eventually you went back to bed without really seeing anything.`,
-        { name }) :
-        formatMessage(`You stayed up for a little while, but { name } just went
+        { name })
+        : formatMessage(`You stayed up for a little while, but { name } just went
         to sleep as usual, and then, so did you.`, { name })
     }
 
@@ -60,8 +60,8 @@ export default class MorningStage extends React.Component {
     if (victim) {
       const victimName = victim.name
       if (victimDied) {
-        victimResult = (victimId === currentPlayer.id) ?
-          <div>
+        victimResult = (victimId === currentPlayer.id)
+          ? <div>
             <h3>{ formatMessage('You have died') }</h3>
             <p>
               { formatMessage(`Shortly after you retired to your bed, a sudden
@@ -69,16 +69,16 @@ export default class MorningStage extends React.Component {
                 your life came to an end.`)
               }
             </p>
-          </div> :
-          <p>
+          </div>
+          : <p>
             { formatMessage(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was quickly found to be dead in
               bed.`, { name: victimName })
             }
           </p>
       } else {
-        victimResult = (victimId === currentPlayer.id) ?
-          <div>
+        victimResult = (victimId === currentPlayer.id)
+          ? <div>
             <h3>{ formatMessage('You have been cursed') }</h3>
             <p>
               { formatMessage(`You woke this morning with a terrible headache
@@ -86,8 +86,8 @@ export default class MorningStage extends React.Component {
                 immediately returned to bed.`)
               }
             </p>
-          </div> :
-          <p>
+          </div>
+          : <p>
             { formatMessage(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was then found to be terribly ill
               in bed.`, { name: victimName })
@@ -101,8 +101,8 @@ export default class MorningStage extends React.Component {
         <h2>{ formatMessage('Morning') }</h2>
         { followResult && <p>{ followResult }</p> }
 
-        { victimResult ?
-          <div>
+        { victimResult
+          ? <div>
             { victimResult }
             { !isDone &&
               <div>
@@ -115,8 +115,8 @@ export default class MorningStage extends React.Component {
                 />
               </div>
             }
-          </div> :
-          <p>
+          </div>
+          : <p>
             { formatMessage(`You all went about their usual tasks this morning.
               Everyone was accounted for.`)
             }

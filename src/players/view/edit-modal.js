@@ -49,12 +49,12 @@ export default class EditPlayerModal extends React.Component {
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
-      nextProps.player !== this.props.player
-      || nextProps.isOpen !== this.props.isOpen
-      || nextProps.onClose !== this.props.onClose
-      || nextState.name !== this.state.name
-      || nextState.gender !== this.state.gender
-      || nextState.avatar !== this.state.avatar
+      nextProps.player !== this.props.player ||
+      nextProps.isOpen !== this.props.isOpen ||
+      nextProps.onClose !== this.props.onClose ||
+      nextState.name !== this.state.name ||
+      nextState.gender !== this.state.gender ||
+      nextState.avatar !== this.state.avatar
     )
   }
 

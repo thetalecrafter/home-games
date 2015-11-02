@@ -1,5 +1,5 @@
 import intercept from './reducer'
 
-export default function (ctx) {
-  ctx.store.addSubReducers({ intercept })
+export default function ({ store }) {
+  store.addSubReducers({ intercept })
 }

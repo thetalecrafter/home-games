@@ -23,16 +23,16 @@ export default class SpyMissionStage extends React.Component {
             sabotage the mission.`
           ) }
         </p>
-        { result == null ?
-          <div>
+        { result == null
+          ? <div>
             <button onClick={ () => vote(true) }>
               { formatMessage('Intercept Message') }
             </button>
-            <button disabled={ true }>
+            <button disabled>
               { formatMessage('Sabotage Mission') }
             </button>
-          </div> :
-          result &&
+          </div>
+          : result &&
           <p>
             { formatMessage('You have successfully completed your mission.') }
           </p>
@@ -41,5 +41,3 @@ export default class SpyMissionStage extends React.Component {
     )
   }
 }
-
-

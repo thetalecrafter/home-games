@@ -74,9 +74,9 @@ export default class IntroStage extends React.Component {
     return (
       <div>
         <h2>
-          { isWitch ?
-            formatMessage('You are a witch!') :
-            formatMessage('You are a puritan')
+          { isWitch
+            ? formatMessage('You are a witch!')
+            : formatMessage('You are a puritan')
           }
         </h2>
         { isWitch ? witch : puritan }

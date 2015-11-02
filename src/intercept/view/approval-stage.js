@@ -13,8 +13,8 @@ export default class ApprovalStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 

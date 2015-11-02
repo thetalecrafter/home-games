@@ -12,9 +12,9 @@ export default class ReadyButton extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.player !== this.props.player
-      || nextProps.game !== this.props.game
-      || nextProps.confirm !== this.props.confirm
+      nextProps.player !== this.props.player ||
+      nextProps.game !== this.props.game ||
+      nextProps.confirm !== this.props.confirm
     )
   }
 
@@ -23,21 +23,21 @@ export default class ReadyButton extends React.Component {
   }
 
   render () {
-    const { player, game, confirm } = this.props
+    const { game, confirm } = this.props
     const count = this.getNotReadyCount(game)
 
     return (
       <div>
-        { !confirm ?
-          <span>
+        { !confirm
+          ? <span>
             { formatMessage(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}
               }...`, { count })
             }
-          </span> :
-          <button onClick={ confirm }>
+          </span>
+          : <button onClick={ confirm }>
             { formatMessage('I’m Ready') }
           </button>
         }

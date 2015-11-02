@@ -14,8 +14,8 @@ export default class AfternoonStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -35,8 +35,8 @@ export default class AfternoonStage extends React.Component {
     const victimName = victim.name
     let victimResult
     if (victimDied) {
-      victimResult = (victimId === currentPlayer.id) ?
-        <div>
+      victimResult = (victimId === currentPlayer.id)
+        ? <div>
           <h3>{ formatMessage('You have died') }</h3>
           <p>
             { formatMessage(`To prove your innocence, you were thrown into the
@@ -45,8 +45,8 @@ export default class AfternoonStage extends React.Component {
               given a proper christian burial.`)
             }
           </p>
-        </div> :
-        <p>
+        </div>
+        : <p>
           { formatMessage(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, but quickly sank into water and
             drowned. After the body was pulled from the lake, you gave { name }
@@ -54,15 +54,15 @@ export default class AfternoonStage extends React.Component {
           }
         </p>
     } else {
-      victimResult = (victimId === currentPlayer.id) ?
-        <p>
+      victimResult = (victimId === currentPlayer.id)
+        ? <p>
           { formatMessage(`To prove your innocence, you were thrown into the
             lake. You struggled and flailed, and managed to stay afloat. In
             horror, the others watched you exert inhuman power in returning to
             the shore.`)
           }
-        </p> :
-        <p>
+        </p>
+        : <p>
           { formatMessage(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, and managed to stay afloat. In
             horror, you watched the inhuman power { name } exerted to return to

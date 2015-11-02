@@ -1,5 +1,4 @@
 import React from 'react'
-import formatMessage from 'format-message'
 import resolve from '../../common/resolve-url'
 import EditModal from './edit-modal'
 import './list-item.css'
@@ -15,8 +14,8 @@ export default class PlayersListItem extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.player !== this.props.player
-      || nextProps.isSelected !== this.props.isSelected
+      nextProps.player !== this.props.player ||
+      nextProps.isSelected !== this.props.isSelected
     )
   }
 
@@ -36,9 +35,9 @@ export default class PlayersListItem extends React.Component {
           </span>
           <span className='PlayersListItem-gender'>
             {
-              player.gender === 'male' ? '♂' :
-              player.gender === 'female' ? '♀' :
-              ''
+              player.gender === 'male' ? '♂'
+              : player.gender === 'female' ? '♀'
+              : ''
             }
           </span>
         </a>

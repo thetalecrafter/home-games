@@ -17,8 +17,8 @@ export default class PlayersList extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.players !== this.props.players
-      || nextProps.selectedId !== this.props.selectedId
+      nextProps.players !== this.props.players ||
+      nextProps.selectedId !== this.props.selectedId
     )
   }
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import formatMessage from 'format-message'
 
 export default class PlayerPicker extends React.Component {
   static displayName = 'PlayerPicker'
@@ -18,11 +17,11 @@ export default class PlayerPicker extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.name !== this.props.name
-      || nextProps.players !== this.props.players
-      || nextProps.isSelected !== this.props.isSelected
-      || nextProps.isDisabled !== this.props.isDisabled
-      || nextProps.onChange !== this.props.onChange
+      nextProps.name !== this.props.name ||
+      nextProps.players !== this.props.players ||
+      nextProps.isSelected !== this.props.isSelected ||
+      nextProps.isDisabled !== this.props.isDisabled ||
+      nextProps.onChange !== this.props.onChange
     )
   }
 

@@ -4,7 +4,7 @@ export default function websocketMiddleware (store) {
   let buffer = []
   let ws
 
-  function onMessage(event) {
+  function onMessage (event) {
     try {
       const action = JSON.parse(event.data)
       action.isRemote = true

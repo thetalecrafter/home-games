@@ -1,6 +1,5 @@
 import React from 'react'
 import formatMessage from 'format-message'
-import { roles } from '../../constants'
 import PlayerPicker from '../../../players/picker'
 import ReadyButton from '../ready-button'
 
@@ -16,8 +15,8 @@ export default class PuritanNightStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 

@@ -25,9 +25,9 @@ export default class InterceptView extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.players !== this.props.players
-      || nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.players !== this.props.players ||
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -59,7 +59,7 @@ export default class InterceptView extends React.Component {
   }
 
   render () {
-    const { sid, game, players } = this.props
+    const { sid, game } = this.props
     const stage = game.stage
     const isPlaying = !!game.players.find(player => player.sid === sid)
     const Stage = this.getView(isPlaying, stage)
@@ -75,9 +75,9 @@ export default class InterceptView extends React.Component {
           <div>
             <Status missions={ game.missions } current={ game.currentMission } />
             <button onClick={ this.end } className='Intercept-abandon'>
-              { stage === stages.END ?
-                formatMessage('End Game') :
-                formatMessage('Abandon Game')
+              { stage === stages.END
+                ? formatMessage('End Game')
+                : formatMessage('Abandon Game')
               }
             </button>
           </div>

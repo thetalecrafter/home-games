@@ -13,9 +13,9 @@ export default class ReadyButton extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.disabled !== this.props.disabled
-      || nextProps.player !== this.props.player
-      || nextProps.game !== this.props.game
+      nextProps.disabled !== this.props.disabled ||
+      nextProps.player !== this.props.player ||
+      nextProps.game !== this.props.game
     )
   }
 
@@ -32,16 +32,16 @@ export default class ReadyButton extends React.Component {
 
     return (
       <div>
-        { player.isDead || player.isReady ?
-          <span>
+        { player.isDead || player.isReady
+          ? <span>
             { formatMessage(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}
               }...`, { count })
             }
-          </span> :
-          <button
+          </span>
+          : <button
             onClick={ disabled ? null : () => confirm(player) }
             disabled={ disabled }
           >

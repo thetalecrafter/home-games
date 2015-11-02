@@ -14,13 +14,13 @@ export default class EveningStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
   render () {
-    const { sid, game, vote, confirm } = this.props
+    const { sid, game, confirm } = this.props
     const currentPlayer = game.players.find(player => player.sid === sid)
 
     let victimResult
@@ -28,8 +28,8 @@ export default class EveningStage extends React.Component {
       const { victimId, victimDied } = game.result
       const { name: victimName } = game.players.find(player => player.id === victimId)
       if (victimDied) {
-        victimResult = (victimId === currentPlayer.id) ?
-          <div>
+        victimResult = (victimId === currentPlayer.id)
+          ? <div>
             <h3>{ formatMessage('You have died') }</h3>
             <p>
               { formatMessage(`Surviving the trial only further convinced your
@@ -38,8 +38,8 @@ export default class EveningStage extends React.Component {
                 down, your body was tossed into an open pit outside town.`)
               }
             </p>
-          </div> :
-          <p>
+          </div>
+          : <p>
             { formatMessage(`Surviving the trial only further convinced everyone
               of { name }’s wickedness. { name }’s soaked clothing continued to
               drip long after strangling on the gallows. When { name } was cut
@@ -48,13 +48,13 @@ export default class EveningStage extends React.Component {
             }
           </p>
       } else {
-        victimResult = (victimId === currentPlayer.id) ?
-          <p>
+        victimResult = (victimId === currentPlayer.id)
+          ? <p>
             { formatMessage(`Though you survived the trial, your struggle was
               enough to convince your fellows of your innocence... for now.`)
             }
-          </p> :
-          <p>
+          </p>
+          : <p>
             { formatMessage(`Though { name } survived the trial, the struggle was
               enough to convince everyone of { name }’s innocence... for now.`,
               { name: victimName })

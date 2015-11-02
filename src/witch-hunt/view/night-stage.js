@@ -16,8 +16,8 @@ export default class NightStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
@@ -28,9 +28,9 @@ export default class NightStage extends React.Component {
     return (
       <div>
         <h2>{ formatMessage('Night') }</h2>
-        { isWitch ?
-          <WitchNightStage { ...this.props } /> :
-          <PuritanNightStage { ...this.props } />
+        { isWitch
+          ? <WitchNightStage { ...this.props } />
+          : <PuritanNightStage { ...this.props } />
         }
       </div>
     )

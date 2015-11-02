@@ -31,21 +31,21 @@ export default class EndStage extends React.Component {
           <tr key={ player.id }>
             <th>{ player.name }</th>
             <td>
-              { player.role === roles.WITCH ?
-                formatMessage('Witch') :
-                formatMessage('Puritan')
+              { player.role === roles.WITCH
+                ? formatMessage('Witch')
+                : formatMessage('Puritan')
               }
             </td>
             <td>
-              { player.isDead ?
-                formatMessage('Died') :
-                formatMessage('Survived')
+              { player.isDead
+                ? formatMessage('Died')
+                : formatMessage('Survived')
               }
             </td>
             <td>
-              { this.didWin(game, player) ?
-                formatMessage('Won') :
-                formatMessage('Lost')
+              { this.didWin(game, player)
+                ? formatMessage('Won')
+                : formatMessage('Lost')
               }
             </td>
           </tr>

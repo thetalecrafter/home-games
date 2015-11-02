@@ -20,7 +20,7 @@ export default Router()
   .get('/', (_, res) => res.redirect('/en/'))
   .get('/:locale/*', canonicalizeLocale, client)
 
-function lookupClosestLocale(locale) {
+function lookupClosestLocale (locale) {
   const parts = locale.split('-')
   while (parts.length) {
     const current = parts.join('-')
@@ -41,7 +41,7 @@ function canonicalizeLocale (req, res, next) {
   res.redirect(pathParts.join('/'))
 }
 
-function client (request, response, next) {
+async function client (request, response, next) {
   const env = process.env
   const locale = request.params.locale
   const sid = request.sessionID
@@ -65,19 +65,20 @@ function client (request, response, next) {
 
   const router = createRouter({
     request, response, env, store,
-    render (view) {
-      view = view()
-      renderHtml({ view, request, response, store })
-    },
+    isClient: false,
+    isServer: true,
     redirect (url) {
       response.redirect(url)
-    },
-    bail (err) {
-      next(err)
     }
   })
 
-  router.route(request.url)
+  try {
+    let view = await router.route(request.url)
+    view = view()
+    renderHtml({ view, request, response, store })
+  } catch (err) {
+    next(err)
+  }
 }
 
 function renderHtml ({ view, request, response, store }) {

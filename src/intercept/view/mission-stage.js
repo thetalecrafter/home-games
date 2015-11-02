@@ -17,17 +17,17 @@ export default class MissionStage extends React.Component {
 
   shouldComponentUpdate (nextProps) {
     return (
-      nextProps.game !== this.props.game
-      || nextProps.sid !== this.props.sid
+      nextProps.game !== this.props.game ||
+      nextProps.sid !== this.props.sid
     )
   }
 
   getView (isOnTeam, role) {
     if (isOnTeam) {
       switch (role) {
-        case roles.SPY:    return SpyMissionStage
+        case roles.SPY: return SpyMissionStage
         case roles.DOUBLE: return DoubleMissionStage
-        case roles.MOLE:   return MoleMissionStage
+        case roles.MOLE: return MoleMissionStage
       }
     }
     return StandbyMissionStage

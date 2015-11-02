@@ -60,15 +60,15 @@ export default class GameDescription extends React.Component {
 
   render () {
     const { game, create } = this.props
-    const isStarted = !!game.stage 
+    const isStarted = !!game.stage
     const didClickStart = isStarted ? null : () => create()
     return (
       <div>
         { summary }
         <button onClick={ didClickStart } disabled={ isStarted }>
-          { isStarted ?
-            formatMessage('Game In Progress') :
-            formatMessage('Play Witch Hunt')
+          { isStarted
+            ? formatMessage('Game In Progress')
+            : formatMessage('Play Witch Hunt')
           }
         </button>
         { description }

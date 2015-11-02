@@ -77,18 +77,18 @@ export default class IntroStage extends React.Component {
     return (
       <div>
         {
-          currentPlayer.role === roles.SPY ? spy :
-          currentPlayer.role === roles.DOUBLE ? doubleAgent :
-          mole
+          currentPlayer.role === roles.SPY ? spy
+          : currentPlayer.role === roles.DOUBLE ? doubleAgent
+          : mole
         }
-        { currentPlayer.role === roles.SPY ?
-          <p>
+        { currentPlayer.role === roles.SPY
+          ? <p>
             { formatMessage(
               'There are {count, number} Double Agents in this game.',
               { count: game.players.filter(player => player.role === roles.DOUBLE).length }
             ) }
-          </p> :
-          <p>
+          </p>
+          : <p>
             { formatMessage('Here are your fellow Double Agents:') }
             <ul>
               { game.players

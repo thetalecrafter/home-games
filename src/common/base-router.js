@@ -9,20 +9,9 @@ import loadPlayerReducer from '../players/load-reducer'
 import loadPlayerState from '../players/load-state'
 
 export default function createRouter (options) {
-  const { render, request, bail } = options
-
   const router = Router()
-    .use(async (ctx, next) => {
-      try { await next() }
-      catch (err) { bail(err) } // 500
-    })
-
-    .use((ctx, next) => {
-      Object.assign(ctx, options)
-      ctx.isServer = !!request
-      ctx.isClient = !ctx.isServer
-
-      next()
+    .on('route', (args) => {
+      Object.assign(args, options)
     })
 
     .use(loadPlayerReducer, loadPlayerState)
@@ -48,7 +37,5 @@ export default function createRouter (options) {
         'intercept'
       )))
     )
-
-    .get(() => bail()) // 404
   return router
 }
