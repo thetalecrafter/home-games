@@ -4,15 +4,13 @@ import formatMessage from 'format-message'
 import Form from 'elemental/lib/components/Form'
 import FormField from 'elemental/lib/components/FormField'
 import FormInput from 'elemental/lib/components/FormInput'
-import Button from 'elemental/lib/components/Button'
-import Radio from 'elemental/lib/components/Radio'
-import InputGroup from 'elemental/lib/components/InputGroup'
-import Glyph from 'elemental/lib/components/Glyph'
 import Modal from 'elemental/lib/components/Modal'
 import ModalHeader from 'elemental/lib/components/ModalHeader'
 import ModalBody from 'elemental/lib/components/ModalBody'
 import ModalFooter from 'elemental/lib/components/ModalFooter'
+import EditPlayerGender from './edit-gender'
 import EditPlayerAvatar from './edit-avatar'
+import EditModalButtons from './edit-modal-buttons'
 
 export default class EditPlayerModal extends React.Component {
   static displayName = 'EditPlayerModal'
@@ -81,87 +79,45 @@ export default class EditPlayerModal extends React.Component {
   }
 
   render () {
-    const formId = this.props.player
-      ? 'player-' + this.props.player.id
-      : 'player-new'
+    const { player, isOpen, onClose } = this.props
+    const { id, name, gender, avatar } = this.state
     return (
-      <Modal isOpen={ this.props.isOpen } onCancel={ this.props.onClose } backdropClosesModal>
-        <ModalHeader
-          showCloseButton
-          onClose={ this.props.onClose }
-          text={ this.props.player
-            ? formatMessage('Update { name }', { name: this.props.player.name })
-            : formatMessage('Add Player')
-          }
-        />
-        <ModalBody>
-          <Form className='EditPlayerView' onSubmit={ this.didSubmit } id={ formId }>
-            <input type='hidden' name='id' value={ this.state.id } />
+      <Modal isOpen={ isOpen } onCancel={ onClose } backdropClosesModal>
+        <Form className='EditPlayerView' onSubmit={ this.didSubmit }>
+          <ModalHeader
+            showCloseButton
+            onClose={ onClose }
+            text={ player
+              ? formatMessage('Update { name }', { name: player.name })
+              : formatMessage('Add Player')
+            }
+          />
+          <ModalBody>
+            <input type='hidden' name='id' value={ id } />
             <FormField label={ formatMessage('Name') } htmlFor='name'>
               <FormInput
                 type='text'
                 name='name'
-                value={ this.state.name }
+                value={ name }
                 onChange={ ({ target }) => this.setState({ name: target.value }) }
               />
             </FormField>
-            <FormField
-              label={ formatMessage('Gender') }
-              title={ formatMessage('Used in choosing proper he / she / they in game text.') }
-            >
-              <div className='inline-controls'>
-                <Radio
-                  label={ formatMessage('Male') }
-                  name='gender' value='male'
-                  checked={ this.state.gender === 'male' }
-                  onChange={ () => this.setState({ gender: 'male' }) }
-                />
-                <Radio
-                  label={ formatMessage('Female') }
-                  name='gender' value='female'
-                  checked={ this.state.gender === 'female' }
-                  onChange={ () => this.setState({ gender: 'female' }) }
-                />
-                <Radio
-                  label={ formatMessage('Other') }
-                  name='gender' value='other'
-                  checked={ this.state.gender === 'other' }
-                  onChange={ () => this.setState({ gender: 'other' }) }
-                />
-              </div>
-            </FormField>
-            <EditPlayerAvatar
-              value={ this.state.avatar }
-              onChange={ ({ target }) => this.setState({ avatar: target.value }) }
+            <EditPlayerGender
+              value={ gender }
+              onChange={ gender => this.setState({ gender }) }
             />
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <InputGroup>
-            <InputGroup.Section>
-              <Button type='primary' submit form={ formId }>
-                { formatMessage('Save') }
-              </Button>
-            </InputGroup.Section>
-            <InputGroup.Section>
-              <Button type='link-cancel' onClick={ this.props.onClose }>
-                { formatMessage('Cancel') }
-              </Button>
-            </InputGroup.Section>
-            <InputGroup.Section grow />
-            { this.props.player &&
-              <InputGroup.Section>
-                <Button
-                  type='link-delete'
-                  title={ formatMessage('Remove Player') }
-                  onClick={ this.didClickRemove }
-                >
-                  <Glyph icon='trashcan' />
-                </Button>
-              </InputGroup.Section>
-            }
-          </InputGroup>
-        </ModalFooter>
+            <EditPlayerAvatar
+              value={ avatar }
+              onChange={ avatar => this.setState({ avatar }) }
+            />
+          </ModalBody>
+          <ModalFooter>
+            <EditModalButtons
+              cancel={ onClose }
+              remove={ player ? this.didClickRemove : null }
+            />
+          </ModalFooter>
+        </Form>
       </Modal>
     )
   }
