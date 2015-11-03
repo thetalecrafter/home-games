@@ -2,3 +2,10 @@
   visibility: visible;
   padding: 0.5em;
 }
+
+.PlayersList-list {
+  list-style: none;
+  padding: 0;
+  display: block;
+  max-width: 480px;
+}

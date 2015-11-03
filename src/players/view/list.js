@@ -1,9 +1,9 @@
 import React from 'react'
 import formatMessage from 'format-message'
+import Glyph from 'elemental/lib/components/Glyph'
 import resolve from '../../common/resolve-url'
 import Shell from '../../common/shell'
 import Player from './list-item'
-import EditModal from './edit-modal'
 import './list.css'
 
 const PlayersList = ({ players, selectedId, actions }) =>
@@ -11,8 +11,8 @@ const PlayersList = ({ players, selectedId, actions }) =>
     <a href={ resolve('/') }>
       &laquo; { formatMessage('Home') }
     </a>
-    <h1>{ formatMessage('Players') }</h1>
-    <ul>
+    <h2>{ formatMessage('Players') }</h2>
+    <ul className='PlayersList-list'>
       { players.map(player =>
         <Player
           key={ player.id }
@@ -21,15 +21,14 @@ const PlayersList = ({ players, selectedId, actions }) =>
           actions={ actions }
         />
       ) }
+      <Player
+        key={ '+' }
+        player={ { id: '+', name: formatMessage('Add Player') } }
+        isSelected={ selectedId === '+' || selectedId === ' ' }
+        actions={ actions }
+        icon={ <Glyph icon='plus' /> }
+      />
     </ul>
-    <a href={ resolve('players/+') }>
-      { formatMessage('Add Player') }
-    </a>
-    <EditModal
-      isOpen={ selectedId === '+' || selectedId === ' ' }
-      onClose={ () => window.history.back() }
-      { ...actions }
-    />
   </Shell>
 
 PlayersList.displayName = 'PlayersList'
