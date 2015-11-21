@@ -11,7 +11,7 @@ export default function jitRouter (ensure) {
     if (run) return run(step)
     let { isClient, store } = step
     if (isClient) store.dispatch({ type: SET_LOADING_CODE, value: true, isRemote: true })
-    return new Promise(resolve => ensure(router => {
+    return new Promise(resolve => ensure(({ default: router }) => {
       if (isClient) store.dispatch({ type: SET_LOADING_CODE, value: false, isRemote: true })
       run = middleRun(router.middleware)
       resolve(run(step))

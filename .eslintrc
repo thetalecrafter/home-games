@@ -1,8 +1,12 @@
 {
-  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "es6": true
+  },
+  "ecmaFeatures": {
+    "jsx": true,
+    "modules": true,
+    "experimentalObjectRestSpread": true
   },
   "plugins": [
     "format-message"
@@ -21,7 +25,7 @@
   "settings": {
     "format-message": {
       "sourceLocale": "en",
-      "keyType": "underscored_crc32",
+      "generateId": "underscored_crc32",
       "translations": "./locales"
     }
   },

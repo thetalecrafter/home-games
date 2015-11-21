@@ -56,7 +56,7 @@ export default class EditPlayerModal extends React.Component {
     )
   }
 
-  didClickRemove = evt => {
+  didClickRemove (evt) {
     const msg = formatMessage('Are you sure you want to remove { name }?', {
       name: this.state.name
     })
@@ -66,7 +66,7 @@ export default class EditPlayerModal extends React.Component {
     }
   }
 
-  didSubmit = evt => {
+  didSubmit (evt) {
     evt.preventDefault()
     let { id, name, gender, avatar } = this.state
     if (!id) {
@@ -83,7 +83,7 @@ export default class EditPlayerModal extends React.Component {
     const { id, name, gender, avatar } = this.state
     return (
       <Modal isOpen={ isOpen } onCancel={ onClose } backdropClosesModal>
-        <Form className='EditPlayerView' onSubmit={ this.didSubmit }>
+        <Form className='EditPlayerView' onSubmit={ e => this.didSubmit(e) }>
           <ModalHeader
             showCloseButton
             onClose={ onClose }
@@ -114,7 +114,7 @@ export default class EditPlayerModal extends React.Component {
           <ModalFooter>
             <EditModalButtons
               cancel={ onClose }
-              remove={ player ? this.didClickRemove : null }
+              remove={ player ? e => this.didClickRemove(e) : null }
             />
           </ModalFooter>
         </Form>

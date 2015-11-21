@@ -32,8 +32,7 @@ function didClickEnd (end) {
   const message = (
     formatMessage('Are you sure you want to end the game?') +
     '\n\n' +
-    formatMessage(`All players will be taken back to the game description and
-      a new game can be started.`).replace(/\s+/g, ' ')
+    formatMessage(`All players will be taken back to the game description and a new game can be started.`)
   )
   if (window.confirm(message)) end()
 }

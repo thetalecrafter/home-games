@@ -1,0 +1,47 @@
+{
+  "home_games_68cc7ea3": {
+    "message": "Jogos da Casa"
+  },
+  "manage_players_24032ab5": {
+    "message": "Gerir Jogadores"
+  },
+  "witch_hunt_b7d1bf3e": {
+    "message": "Caça às Bruxas"
+  },
+  "intercept_2cf595da": {
+    "message": "Interceptar"
+  },
+  "are_you_sure_you_want_to_end_the_game_d9d6c48d": {
+    "message": "Tem certeza de que quer terminar o jogo?"
+  },
+  "all_players_will_be_taken_back_to_the_game_descrip_8a33de75": {
+    "message": "Todos os jogadores serão levados de volta para a descrição do jogo e um novo jogo pode ser iniciado."
+  },
+  "home_351838cd": {
+    "message": "Pagina inicial"
+  },
+  "end_game_69bc3821": {
+    "message": "Terminar Jogo"
+  },
+  "abandon_game_a4d6011d": {
+    "message": "Abandonar Jogo"
+  },
+  "choose_players_8f9b3326": {
+    "message": "Escolha Jogadores"
+  },
+  "this_game_requires_5_to_10_players_306f0db": {
+    "message": "Este jogo requer 5 a 10 jogadores."
+  },
+  "add_player_ceeba2af": {
+    "message": "Adicionar Jogador"
+  },
+  "join_game_4a4ae4bc": {
+    "message": "Entrar no Jogo"
+  },
+  "count_plural_0_nobody_has_one_1_player_has_other_p_e010979d": {
+    "message": "{ count, plural,\n     =0 {ninguém se juntou}\n    one {1 jogador juntou-se}\n  other {# jogadores juntarem-se}\n} a este jogo."
+  },
+  "start_game_6082b87c": {
+    "message": "Começar o Jogo"
+  }
+}

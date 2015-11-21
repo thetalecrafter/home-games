@@ -1,87 +1,416 @@
 {
-  "en": {
-    "_50c5c416": ", ",
-    "a_swift_end_to_the_trials_is_your_safest_course_d85db590": "A swift end to the trials is your safest course.",
-    "add_player_ceeba2af": "Add Player",
-    "afternoon_8b0d8698": "Afternoon",
-    "all_players_will_be_taken_back_to_the_game_descrip_8a33de75": "All players will be taken back to the game description and a new game can be started.",
-    "an_early_ending_to_the_trials_may_leave_your_enemi_6cc7e211": "An early ending to the trials may leave your enemies a chance to drag you down to hell.",
-    "are_you_sure_you_want_to_end_the_game_d9d6c48d": "Are you sure you want to end the game?",
-    "are_you_sure_you_want_to_remove_name_6e5f7e66": "Are you sure you want to remove { name }?",
-    "as_a_trial_you_all_tossed_name_into_the_lake_name__9aeee810": "As a trial, you all tossed { name } into the lake. { name } struggled and flailed, and managed to stay afloat. In horror, you watched the inhuman power { name } exerted to return to the shore.",
-    "as_a_trial_you_all_tossed_name_into_the_lake_name__a010c226": "As a trial, you all tossed { name } into the lake. { name } struggled and flailed, but quickly sank into water and drowned. After the body was pulled from the lake, you gave { name } a proper christian burial.",
-    "cancel_caeb1e68": "Cancel",
-    "choose_players_8f9b3326": "Choose Players",
-    "count_plural_one_1_player_has_other_players_have_j_f9a7d686": "{ count, plural, one {1 player has} other {# players have} } joined this game.",
-    "died_c49d4159": "Died",
-    "does_this_prove_to_you_that_name_is_a_witch_and_sh_66fd89dc": "Does this prove to you that { name } is a witch, and should now be executed?",
-    "each_day_you_will_defend_your_friends_against_the__26b92e7b": "Each day you will defend your friends against the deadly trails, but do not let the commoners know that you are a witch, or who your fellow witches are.",
-    "each_day_you_will_put_to_trial_the_person_you_most_c1027793": "Each day you will put to trial the person you most think to be a witch. If they survive the trial, it is surely through the evil one’s power, and they must be executed immediately.",
-    "each_night_you_can_choose_to_sleep_or_to_follow_a__77035340": "Each night you can choose to sleep, or to follow a member of your community. Following can help you find who is a witch, but you may look a little suspicious in the process.",
-    "each_night_you_will_choose_with_your_cohorts_whom__6a7b5e69": "Each night you will choose with your cohorts whom you must curse, so that you may live.",
-    "end_game_69bc3821": "End Game",
-    "epilogue_9cd01a1e": "Epilogue",
-    "evening_96997872": "Evening",
-    "female_d6895176": "Female",
-    "game_in_progress_86c2b6a": "Game In Progress",
-    "gender_5bbad158": "Gender",
-    "home_351838cd": "Home",
-    "home_games_68cc7ea3": "Home Games",
-    "i_m_ready_940f3c7d": "I’m Ready",
-    "in_the_morning_you_find_out_who_has_been_killed_by_2e740e9e": "In the morning you find out who has been killed by the witches, and vote on a player to put on trial. The trial will likely kill an innocent person, but it is necessary to uncover the witches. If the player survives the trial, they have proven their wickedness. Vote again to execute them.",
-    "is_your_community_safe_at_last_only_if_everyone_ag_6faa1d43": "Is your community safe at last? Only if everyone agrees can the trials end, and the result be revealed.",
-    "join_game_4a4ae4bc": "Join Game",
-    "late_this_morning_someone_realized_name_wasn_t_abo_4708522a": "Late this morning someone realized { name } wasn’t about the usual tasks. { name } was quickly found to be dead in bed.",
-    "late_this_morning_someone_realized_name_wasn_t_abo_720223aa": "Late this morning someone realized { name } wasn’t about the usual tasks. { name } was then found to be terribly ill in bed.",
-    "lost_48bb0b7": "Lost",
-    "male_1143d4b4": "Male",
-    "manage_players_24032ab5": "Manage Players",
-    "morning_536f2ed4": "Morning",
-    "name_1aed4a1b": "Name",
-    "new_player_daafdba9": "New Player",
-    "night_d4efa6ce": "Night",
-    "no_e16d9132": "No",
-    "or_choose_someone_to_follow_59225f8d": "Or choose someone to follow.",
-    "other_1c6d9c79": "Other",
-    "picture_fc5e5f6b": "Picture",
-    "play_witch_hunt_4b560095": "Play Witch Hunt",
-    "players_cccb5344": "Players",
-    "puritan_80465ed6": "Puritan",
-    "remove_f47dc62a": "Remove",
-    "save_11a80ec3": "Save",
-    "select_a_puritan_to_curse_a400175d": "Select a Puritan to curse.",
-    "shortly_after_you_retired_to_your_bed_a_sudden_pai_d538bb14": "Shortly after you retired to your bed, a sudden pain flashed in your shoulder and chest. After a few moments your life came to an end.",
-    "sleep_ca066bf5": "Sleep",
-    "start_game_6082b87c": "Start Game",
-    "survived_3237c432": "Survived",
-    "surviving_the_trial_only_further_convinced_everyon_cc0d802c": "Surviving the trial only further convinced everyone of { name }’s wickedness. { name }’s soaked clothing continued to drip long after strangling on the gallows. When { name } was cut down, the body was tossed into an open pit outside town.",
-    "surviving_the_trial_only_further_convinced_your_co_1169ec95": "Surviving the trial only further convinced your community of your wickedness. Your soaked clothing continued to drip long after you strangled on the gallows. When they cut you down, your body was tossed into an open pit outside town.",
-    "the_game_is_set_in_a_location_similar_to_north_ame_7cd8fbc6": "The game is set in a location similar to North America during the early modern period. While the scenarios depicted in this game are fictional, an estimated 40,000 people were executed in real witch trials across Europe and in North America. Remember to be patient and tolerant with each other outside of the game, and that a bigot hunt is no different from a witch hunt.",
-    "the_game_takes_place_over_a_series_of_days_and_nig_2b0049f8": "The game takes place over a series of days and nights. Each night the witches conspire to curse their persecutors, while the pure in heart sleep, and the curious try to discover their peers.",
-    "this_game_requires_at_least_4_players_c2dfb510": "This game requires at least 4 players.",
-    "though_name_survived_the_trial_the_struggle_was_en_ff10a124": "Though { name } survived the trial, the struggle was enough to convince everyone of { name }’s innocence... for now.",
-    "though_you_survived_the_trial_your_struggle_was_en_c4f8bc8d": "Though you survived the trial, your struggle was enough to convince your fellows of your innocence... for now.",
-    "to_prove_your_innocence_you_were_thrown_into_the_l_21f4dcbc": "To prove your innocence, you were thrown into the lake. You struggled and flailed, and managed to stay afloat. In horror, the others watched you exert inhuman power in returning to the shore.",
-    "to_prove_your_innocence_you_were_thrown_into_the_l_ee04f72b": "To prove your innocence, you were thrown into the lake. You struggled and flailed, but you quickly sank into water and drowned. After your body was pulled from the lake, you were given a proper christian burial.",
-    "used_in_choosing_proper_he_she_they_in_game_text_f0334f0c": "Used in choosing proper he / she / they in game text.",
-    "waiting_for_count_plural_one_1_other_player_other__9935def5": "Waiting for { count, plural, one {1 other player} other {# other players} }...",
-    "who_are_the_devil_s_agents_among_you_convince_your_c8fda090": "Who are the devil’s agents among you? Convince your fellows of your innocence to survive, or prove your worth through a tortuous trial. Purge your community of the evil ones, or be the witch that destroys your enemies.",
-    "whom_shall_be_tried_for_this_tragedy_f07d73f9": "Whom shall be tried for this tragedy?",
-    "witch_508acb90": "Witch",
-    "witch_hunt_b7d1bf3e": "Witch Hunt",
-    "witch_hunt_requires_at_least_4_players_75f049cb": "Witch Hunt requires at least 4 players.",
-    "won_9ea92e8c": "Won",
-    "yes_dde87d5": "Yes",
-    "you_all_went_about_their_usual_tasks_this_morning__9d3022f9": "You all went about their usual tasks this morning. Everyone was accounted for.",
-    "you_are_a_puritan_daae71e0": "You are a puritan",
-    "you_are_a_witch_2eb37a3e": "You are a witch!",
-    "you_are_godly_and_kind_your_hard_work_will_ensure__acf2c55d": "You are godly and kind. Your hard work will ensure your place in heaven, but the Devil is among your community and will surely destroy everything you love, and take away your heavenly reward, unless you discover and destroy his agents.",
-    "you_followed_name_for_much_of_the_evening_name_was_fd3d13c2": "You followed { name } for much of the evening. { name } was sneaking about, but you couldn’t keep up without being noticed, so eventually you went back to bed without really seeing anything.",
-    "you_have_been_cursed_577c48e4": "You have been cursed",
-    "you_have_died_4fac841c": "You have died",
-    "you_have_found_that_you_have_uncanny_powers_to_inf_380f3f62": "You have found that you have uncanny powers to influence those around you, and can cause occurrences inexplicable to ordinary understanding. In order to survive, you must use this power to stop those who would destroy you.",
-    "you_stayed_up_for_a_little_while_but_name_just_wen_b1f2e344": "You stayed up for a little while, but { name } just went to sleep as usual, and then, so did you.",
-    "you_woke_this_morning_with_a_terrible_headache_and_725208bd": "You woke this morning with a terrible headache and fever. You tried to get out of bed but felt so dizzy you immediately returned to bed.",
-    "your_community_will_now_decide_your_fate_having_su_8cafc785": "Your community will now decide your fate. Having survived the trial, they undoubtedly will assume you are a witch."
+  "home_games_68cc7ea3": {
+    "message": "Home Games"
+  },
+  "manage_players_24032ab5": {
+    "message": "Manage Players"
+  },
+  "witch_hunt_b7d1bf3e": {
+    "message": "Witch Hunt"
+  },
+  "intercept_2cf595da": {
+    "message": "Intercept"
+  },
+  "are_you_sure_you_want_to_end_the_game_d9d6c48d": {
+    "message": "Are you sure you want to end the game?"
+  },
+  "all_players_will_be_taken_back_to_the_game_descrip_8a33de75": {
+    "message": "All players will be taken back to the game description and a new game can be started."
+  },
+  "home_351838cd": {
+    "message": "Home"
+  },
+  "end_game_69bc3821": {
+    "message": "End Game"
+  },
+  "abandon_game_a4d6011d": {
+    "message": "Abandon Game"
+  },
+  "choose_players_8f9b3326": {
+    "message": "Choose Players"
+  },
+  "this_game_requires_5_to_10_players_306f0db": {
+    "message": "This game requires 5 to 10 players."
+  },
+  "add_player_ceeba2af": {
+    "message": "Add Player"
+  },
+  "join_game_4a4ae4bc": {
+    "message": "Join Game"
+  },
+  "count_plural_0_nobody_has_one_1_player_has_other_p_e010979d": {
+    "message": "{ count, plural,\n     =0 {nobody has}\n    one {1 player has}\n  other {# players have}\n} joined this game."
+  },
+  "start_game_6082b87c": {
+    "message": "Start Game"
+  },
+  "team_approval_d334e0d0": {
+    "message": "Team Approval"
+  },
+  "current_votes_e024583b": {
+    "message": "Current Votes:"
+  },
+  "waiting_for_count_plural_one_1_other_player_other__9935def5": {
+    "message": "Waiting for { count, plural,\n    one {1 other player}\n  other {# other players}\n}..."
+  },
+  "approve_team_f2f485bf": {
+    "message": "Approve Team"
+  },
+  "reject_team_2b73d868": {
+    "message": "Reject Team"
+  },
+  "rejected_teams_count_b66c7851": {
+    "message": "Rejected teams: { count }"
+  },
+  "intercept_the_enemy_s_battle_plans_to_win_the_deci_6dff21a0": {
+    "message": "Intercept the enemy''s battle plans to win the decisive victory, but\n      beware the double agents that strive to sabotage our efforts."
+  },
+  "intercept_is_a_game_for_5_to_10_players_3de09b7f": {
+    "message": "Intercept is a game for 5 to 10 players."
+  },
+  "the_game_goes_through_up_to_5_missions_for_each_mi_1e6fcd31": {
+    "message": "The game goes through up to 5 missions. For each mission a team is\n        selected by the round-robin chosen leader. The rest of the team votes\n        to approve or reject the team, to make sure the right operatives are\n        sent. If the team is rejected, the next leader will propose a new team.\n        Once the team is approved, double agents will try to sabotage the\n        mission while avoiding detection."
+  },
+  "the_game_ends_when_either_3_mission_succeeded_or_3_49239784": {
+    "message": "The game ends when either 3 mission succeeded, or 3 missions failed.\n        The enemy will also immediately win if the proposed mission teams are\n        rejected 5 times in a row."
+  },
+  "can_you_send_the_right_operatives_to_intercept_the_90a842df": {
+    "message": "Can you send the right operatives to intercept the enemy''s plans? Or\n        will your armies be destroyed by superior intel?"
+  },
+  "game_in_progress_86c2b6a": {
+    "message": "Game In Progress"
+  },
+  "play_intercept_5839e07d": {
+    "message": "Play Intercept"
+  },
+  "epilogue_9cd01a1e": {
+    "message": "Epilogue"
+  },
+  "indecision_kept_the_team_from_intercepting_vital_e_f5931735": {
+    "message": "Indecision kept the team from intercepting vital enemy messages.\n          Double Agents win."
+  },
+  "the_double_agents_successfully_sabotaged_the_inter_d065e8e9": {
+    "message": "The Double Agents successfully sabotaged the interception of enemy\n          messages. Double Agents win."
+  },
+  "the_team_of_spies_successfully_intercepted_the_ene_82f32ba5": {
+    "message": "The team of Spies successfully intercepted the enemy messages,\n          avoiding disruption from the Double Agents. Spies win."
+  },
+  "double_agent_3fa3ec45": {
+    "message": "Double Agent"
+  },
+  "mole_1bddf9be": {
+    "message": "Mole"
+  },
+  "spy_d7290d09": {
+    "message": "Spy"
+  },
+  "won_9ea92e8c": {
+    "message": "Won"
+  },
+  "lost_48bb0b7": {
+    "message": "Lost"
+  },
+  "you_are_a_spy_e9e3fc07": {
+    "message": "You are a Spy!"
+  },
+  "you_have_been_tasked_with_intercepting_strategic_e_e02be9b5": {
+    "message": "You have been tasked with intercepting strategic enemy intel. The most\n        difficult part of your job will be decerning which of your fellow spies\n        is actually working for your enemy."
+  },
+  "you_should_always_include_yourself_to_go_on_missio_1734df11": {
+    "message": "You should always include yourself to go on missions you lead, since\n        you are the only one you can trust completely."
+  },
+  "you_are_a_double_agent_96bbb949": {
+    "message": "You are a Double Agent!"
+  },
+  "the_fools_around_you_have_no_idea_that_they_are_yo_64619b11": {
+    "message": "The fools around you have no idea that they are your true enemy. With\n        your cunning, you will sabotage this group so that your superior nation\n        can justly conquer."
+  },
+  "do_not_let_anyone_besides_your_fellow_double_agent_81897857": {
+    "message": "Do not let anyone besides your fellow double agents know where your\n        real allegiance lies. Act in every way as a normal spy, until you can\n        sabotage an interception."
+  },
+  "you_are_a_mole_de12c77f": {
+    "message": "You are a Mole!"
+  },
+  "you_are_a_triple_agent_the_double_agents_think_you_cd12efd9": {
+    "message": "You are a Triple Agent. The Double Agents think you are one of them,\n        and you must use this to your advantage. The Spies also rightly think\n        you are one of them, don''t let them down."
+  },
+  "pretend_to_be_a_double_agent_but_be_very_careful_y_6c7d8559": {
+    "message": "Pretend to be a Double Agent, but be very careful, you only win if the\n        missions are successful."
+  },
+  "there_are_count_number_double_agents_in_this_game_6f81b8d9": {
+    "message": "There are { count, number } Double Agents in this game."
+  },
+  "here_are_your_fellow_double_agents_c1b1857e": {
+    "message": "Here are your fellow Double Agents:"
+  },
+  "intercept_enemy_message_dcb80791": {
+    "message": "Intercept Enemy Message"
+  },
+  "count_plural_one_waiting_for_player_other_waiting__38435ec6": {
+    "message": "{ count, plural,\n    one {Waiting for # player...}\n  other {Waiting for # players...}\n}"
+  },
+  "as_a_double_agent_you_need_to_sabotage_missions_to_b4d75796": {
+    "message": "As a Double Agent, you need to sabotage missions to win, but you\n            may successfully intercept the message if needed to keep the trust\n            of the others."
+  },
+  "intercept_message_cd86965e": {
+    "message": "Intercept Message"
+  },
+  "sabotage_mission_b816d031": {
+    "message": "Sabotage Mission"
+  },
+  "you_have_successfully_completed_your_mission_ceac5141": {
+    "message": "You have successfully completed your mission."
+  },
+  "you_have_sabotaged_the_mission_f13884fa": {
+    "message": "You have sabotaged the mission."
+  },
+  "as_a_mole_you_need_to_intercept_messages_to_win_bu_241eb010": {
+    "message": "As a Mole, you need to intercept messages to win, but you may\n            sabotage the mission if needed to keep the trust of the double\n            agents."
+  },
+  "as_a_spy_you_need_to_intercept_messages_to_win_you_1b37a1df": {
+    "message": "As a Spy, you need to intercept messages to win, you cannot\n            sabotage the mission."
+  },
+  "please_wait_while_your_comrades_complete_their_ass_9e90e007": {
+    "message": "Please wait while your comrades complete their assignment."
+  },
+  "i_m_ready_940f3c7d": {
+    "message": "I’m Ready"
+  },
+  "team_selection_41f60b43": {
+    "message": "Team Selection"
+  },
+  "you_are_the_leader_please_choose_your_team_ef141cf7": {
+    "message": "You are the leader. Please choose your team."
+  },
+  "name_will_choose_the_team_f780ce6a": {
+    "message": "{ name } will choose the team."
+  },
+  "numplayers_plural_one_player_is_needed_for_this_mi_41accf87": {
+    "message": "{ numPlayers, plural,\n    one {# player is needed for this mission.}\n  other {# players are needed for this mission.}\n}"
+  },
+  "propose_team_974e40a9": {
+    "message": "Propose Team"
+  },
+  "last_rejected_team_votes_3b978f69": {
+    "message": "Last rejected team votes:"
+  },
+  "current_mission_ecead520": {
+    "message": "Current Mission"
+  },
+  "future_mission_902b94f6": {
+    "message": "Future Mission"
+  },
+  "intercepted_number_total_number_messages_intercept_f18507d7": {
+    "message": "{ intercepted, number } / { total, number } messages intercepted"
+  },
+  "count_number_f2dcdecb": {
+    "message": "{ count, number }"
+  },
+  "needed_number_total_number_6d548cc2": {
+    "message": "{ needed, number }/{ total, number }"
+  },
+  "vote_select_approve_name_approved_reject_name_reje_daab56a4": {
+    "message": "{ vote, select,\n  approve {{ name } approved}\n   reject {{ name } rejected}\n    other {}\n}"
+  },
+  "_50c5c416": {
+    "message": ", "
+  },
+  "picture_fc5e5f6b": {
+    "message": "Picture"
+  },
+  "gender_5bbad158": {
+    "message": "Gender"
+  },
+  "used_in_choosing_proper_he_she_they_in_game_text_f0334f0c": {
+    "message": "Used in choosing proper he / she / they in game text."
+  },
+  "male_1143d4b4": {
+    "message": "Male"
+  },
+  "female_d6895176": {
+    "message": "Female"
+  },
+  "other_1c6d9c79": {
+    "message": "Other"
+  },
+  "save_11a80ec3": {
+    "message": "Save"
+  },
+  "cancel_caeb1e68": {
+    "message": "Cancel"
+  },
+  "remove_player_8f0324ac": {
+    "message": "Remove Player"
+  },
+  "new_player_daafdba9": {
+    "message": "New Player"
+  },
+  "are_you_sure_you_want_to_remove_name_6e5f7e66": {
+    "message": "Are you sure you want to remove { name }?"
+  },
+  "update_name_7618bb4e": {
+    "message": "Update { name }"
+  },
+  "name_1aed4a1b": {
+    "message": "Name"
+  },
+  "players_cccb5344": {
+    "message": "Players"
+  },
+  "this_game_requires_at_least_4_players_c2dfb510": {
+    "message": "This game requires at least 4 players."
+  },
+  "count_plural_one_1_player_has_other_players_have_j_f9a7d686": {
+    "message": "{ count, plural,\n    one {1 player has}\n  other {# players have}\n} joined this game."
+  },
+  "you_have_died_4fac841c": {
+    "message": "You have died"
+  },
+  "to_prove_your_innocence_you_were_thrown_into_the_l_ee04f72b": {
+    "message": "To prove your innocence, you were thrown into the\n              lake. You struggled and flailed, but you quickly sank into water\n              and drowned. After your body was pulled from the lake, you were\n              given a proper christian burial."
+  },
+  "as_a_trial_you_all_tossed_name_into_the_lake_name__a010c226": {
+    "message": "As a trial, you all tossed { name } into the lake.\n            { name } struggled and flailed, but quickly sank into water and\n            drowned. After the body was pulled from the lake, you gave { name }\n            a proper christian burial."
+  },
+  "to_prove_your_innocence_you_were_thrown_into_the_l_21f4dcbc": {
+    "message": "To prove your innocence, you were thrown into the\n            lake. You struggled and flailed, and managed to stay afloat. In\n            horror, the others watched you exert inhuman power in returning to\n            the shore."
+  },
+  "as_a_trial_you_all_tossed_name_into_the_lake_name__9aeee810": {
+    "message": "As a trial, you all tossed { name } into the lake.\n            { name } struggled and flailed, and managed to stay afloat. In\n            horror, you watched the inhuman power { name } exerted to return to\n            the shore."
+  },
+  "afternoon_8b0d8698": {
+    "message": "Afternoon"
+  },
+  "does_this_prove_to_you_that_name_is_a_witch_and_sh_66fd89dc": {
+    "message": "Does this prove to you that { name } is a witch,\n                and should now be executed?"
+  },
+  "yes_dde87d5": {
+    "message": "Yes"
+  },
+  "no_e16d9132": {
+    "message": "No"
+  },
+  "your_community_will_now_decide_your_fate_having_su_8cafc785": {
+    "message": "Your community will now decide your fate. Having\n              survived the trial, they undoubtedly will assume you are a witch."
+  },
+  "who_are_the_devil_s_agents_among_you_convince_your_c8fda090": {
+    "message": "Who are the devil’s agents among you? Convince your\n      fellows of your innocence to survive, or prove your worth through a\n      tortuous trial. Purge your community of the evil ones, or be the witch\n      that destroys your enemies."
+  },
+  "witch_hunt_requires_at_least_4_players_75f049cb": {
+    "message": "Witch Hunt requires at least 4 players."
+  },
+  "the_game_takes_place_over_a_series_of_days_and_nig_2b0049f8": {
+    "message": "The game takes place over a series of days and nights.\n        Each night the witches conspire to curse their persecutors, while the\n        pure in heart sleep, and the curious try to discover their peers."
+  },
+  "in_the_morning_you_find_out_who_has_been_killed_by_2e740e9e": {
+    "message": "In the morning you find out who has been killed by the\n        witches, and vote on a player to put on trial. The trial will likely\n        kill an innocent person, but it is necessary to uncover the witches.\n        If the player survives the trial, they have proven their wickedness.\n        Vote again to execute them."
+  },
+  "is_your_community_safe_at_last_only_if_everyone_ag_6faa1d43": {
+    "message": "Is your community safe at last? Only if everyone agrees\n        can the trials end, and the result be revealed."
+  },
+  "the_game_is_set_in_a_location_similar_to_north_ame_7cd8fbc6": {
+    "message": "The game is set in a location similar to North America\n        during the early modern period. While the scenarios depicted in this\n        game are fictional, an estimated 40,000 people were executed in real\n        witch trials across Europe and in North America. Remember to be\n        patient and tolerant with each other outside of the game, and that a\n        bigot hunt is no different from a witch hunt."
+  },
+  "play_witch_hunt_4b560095": {
+    "message": "Play Witch Hunt"
+  },
+  "witch_508acb90": {
+    "message": "Witch"
+  },
+  "puritan_80465ed6": {
+    "message": "Puritan"
+  },
+  "died_c49d4159": {
+    "message": "Died"
+  },
+  "survived_3237c432": {
+    "message": "Survived"
+  },
+  "surviving_the_trial_only_further_convinced_your_co_1169ec95": {
+    "message": "Surviving the trial only further convinced your\n                community of your wickedness. Your soaked clothing continued to\n                drip long after you strangled on the gallows. When they cut you\n                down, your body was tossed into an open pit outside town."
+  },
+  "surviving_the_trial_only_further_convinced_everyon_cc0d802c": {
+    "message": "Surviving the trial only further convinced everyone\n              of { name }’s wickedness. { name }’s soaked clothing continued to\n              drip long after strangling on the gallows. When { name } was cut\n              down, the body was tossed into an open pit outside town."
+  },
+  "though_you_survived_the_trial_your_struggle_was_en_c4f8bc8d": {
+    "message": "Though you survived the trial, your struggle was\n              enough to convince your fellows of your innocence... for now."
+  },
+  "though_name_survived_the_trial_the_struggle_was_en_ff10a124": {
+    "message": "Though { name } survived the trial, the struggle was\n              enough to convince everyone of { name }’s innocence... for now."
+  },
+  "evening_96997872": {
+    "message": "Evening"
+  },
+  "you_have_found_that_you_have_uncanny_powers_to_inf_380f3f62": {
+    "message": "You have found that you have uncanny powers to influence\n        those around you, and can cause occurrences inexplicable to ordinary\n        understanding. In order to survive, you must use this power to stop\n        those who would destroy you."
+  },
+  "each_night_you_will_choose_with_your_cohorts_whom__6a7b5e69": {
+    "message": "Each night you will choose with your cohorts whom you\n        must curse, so that you may live."
+  },
+  "each_day_you_will_defend_your_friends_against_the__26b92e7b": {
+    "message": "Each day you will defend your friends against the deadly\n        trails, but do not let the commoners know that you are a witch, or who\n        your fellow witches are."
+  },
+  "a_swift_end_to_the_trials_is_your_safest_course_d85db590": {
+    "message": "A swift end to the trials is your safest course."
+  },
+  "you_are_godly_and_kind_your_hard_work_will_ensure__acf2c55d": {
+    "message": "You are godly and kind. Your hard work will ensure your\n        place in heaven, but the Devil is among your community and will surely\n        destroy everything you love, and take away your heavenly reward, unless\n        you discover and destroy his agents."
+  },
+  "each_night_you_can_choose_to_sleep_or_to_follow_a__77035340": {
+    "message": "Each night you can choose to sleep, or to follow a member\n        of your community. Following can help you find who is a witch, but you\n        may look a little suspicious in the process."
+  },
+  "each_day_you_will_put_to_trial_the_person_you_most_c1027793": {
+    "message": "Each day you will put to trial the person you most think\n        to be a witch. If they survive the trial, it is surely through the evil\n        one’s power, and they must be executed immediately."
+  },
+  "an_early_ending_to_the_trials_may_leave_your_enemi_6cc7e211": {
+    "message": "An early ending to the trials may leave your enemies a\n        chance to drag you down to hell."
+  },
+  "you_are_a_witch_2eb37a3e": {
+    "message": "You are a witch!"
+  },
+  "you_are_a_puritan_daae71e0": {
+    "message": "You are a puritan"
+  },
+  "you_followed_name_for_much_of_the_evening_name_was_fd3d13c2": {
+    "message": "You followed { name } for much of the evening. { name }\n        was sneaking about, but you couldn’t keep up without being noticed,\n        so eventually you went back to bed without really seeing anything."
+  },
+  "you_stayed_up_for_a_little_while_but_name_just_wen_b1f2e344": {
+    "message": "You stayed up for a little while, but { name } just went\n        to sleep as usual, and then, so did you."
+  },
+  "shortly_after_you_retired_to_your_bed_a_sudden_pai_d538bb14": {
+    "message": "Shortly after you retired to your bed, a sudden\n                pain flashed in your shoulder and chest. After a few moments\n                your life came to an end."
+  },
+  "late_this_morning_someone_realized_name_wasn_t_abo_4708522a": {
+    "message": "Late this morning someone realized { name } wasn’t\n              about the usual tasks. { name } was quickly found to be dead in\n              bed."
+  },
+  "you_have_been_cursed_577c48e4": {
+    "message": "You have been cursed"
+  },
+  "you_woke_this_morning_with_a_terrible_headache_and_725208bd": {
+    "message": "You woke this morning with a terrible headache\n                and fever. You tried to get out of bed but felt so dizzy you\n                immediately returned to bed."
+  },
+  "late_this_morning_someone_realized_name_wasn_t_abo_720223aa": {
+    "message": "Late this morning someone realized { name } wasn’t\n              about the usual tasks. { name } was then found to be terribly ill\n              in bed."
+  },
+  "morning_536f2ed4": {
+    "message": "Morning"
+  },
+  "whom_shall_be_tried_for_this_tragedy_f07d73f9": {
+    "message": "Whom shall be tried for this tragedy?"
+  },
+  "you_all_went_about_their_usual_tasks_this_morning__9d3022f9": {
+    "message": "You all went about their usual tasks this morning.\n              Everyone was accounted for."
+  },
+  "night_d4efa6ce": {
+    "message": "Night"
+  },
+  "sleep_ca066bf5": {
+    "message": "Sleep"
+  },
+  "or_choose_someone_to_follow_59225f8d": {
+    "message": "Or choose someone to follow."
+  },
+  "select_a_puritan_to_curse_a400175d": {
+    "message": "Select a Puritan to curse."
   }
 }

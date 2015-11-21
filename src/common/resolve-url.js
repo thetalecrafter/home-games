@@ -1,3 +1,7 @@
+let locale = 'en'
+
 export default function resolve (path) {
-  return `/${process.env.LOCALE}/${path.replace(/^\/+/, '')}`
+  return `/${locale}/${path.replace(/^\/+/, '')}`
 }
+
+resolve.setLocale = value => locale = value

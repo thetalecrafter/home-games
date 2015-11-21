@@ -29,11 +29,11 @@ export default class AddPlayerStage extends React.Component {
     )
   }
 
-  select = (selectedId) => {
+  select (selectedId) {
     this.setState({ selectedId })
   }
 
-  join = () => {
+  join () {
     const id = this.state.selectedId
     const { sid, game, players, addPlayer } = this.props
     const player = (
@@ -66,12 +66,12 @@ export default class AddPlayerStage extends React.Component {
             <PlayerPicker
               players={ availablePlayers }
               selectedId={ this.state.selectedId }
-              select={ this.select }
+              select={ id => this.select(id) }
             />
             <a href={ resolve('players/+') }>
               { formatMessage('Add Player') }
             </a>
-            <button onClick={ this.join }>
+            <button onClick={ () => this.join() }>
               { formatMessage('Join Game') }
             </button>
           </div>

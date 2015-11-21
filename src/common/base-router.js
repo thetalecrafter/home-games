@@ -4,6 +4,7 @@ if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(requi
 import Router from 'middle-router'
 import jitRouter from './jit-router'
 
+import resolveLocale from './resolve-locale'
 import homeRouter from '../home/client-router'
 import loadPlayerReducer from '../players/load-reducer'
 import loadPlayerState from '../players/load-state'
@@ -14,27 +15,21 @@ export default function createRouter (options) {
       Object.assign(args, options)
     })
 
+    .use('/', ({ redirect, resolve }) => { resolve(redirect('/en/')) })
+
     .use(loadPlayerReducer, loadPlayerState)
 
-    .use('/:locale', homeRouter)
-
-    .use('/:locale', Router()
+    .use('/:locale', resolveLocale, homeRouter, Router()
       .use('/players', jitRouter(save => require.ensure(
-        [ '../players/client-router' ],
-        () => save(require('../players/client-router')),
-        'players'
+        [], () => save(require('../players/client-router')), 'players'
       )))
 
       .use('/witch-hunt', jitRouter(save => require.ensure(
-        [ '../witch-hunt/client-router' ],
-        () => save(require('../witch-hunt/client-router')),
-        'witch-hunt'
+        [], () => save(require('../witch-hunt/client-router')), 'witch-hunt'
       )))
 
       .use('/intercept', jitRouter(save => require.ensure(
-        [ '../intercept/client-router' ],
-        () => save(require('../intercept/client-router')),
-        'intercept'
+        [], () => save(require('../intercept/client-router')), 'intercept'
       )))
     )
   return router

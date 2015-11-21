@@ -47,12 +47,11 @@ export default class WitchHuntView extends React.Component {
     }
   }
 
-  end = () => {
+  end () {
     const message = (
       formatMessage('Are you sure you want to end the game?') +
       '\n\n' +
-      formatMessage(`All players will be taken back to the game description and
-        a new game can be started.`).replace(/\s+/g, ' ')
+      formatMessage(`All players will be taken back to the game description and a new game can be started.`)
     )
     if (window.confirm(message)) {
       this.props.end()
@@ -73,7 +72,7 @@ export default class WitchHuntView extends React.Component {
         <h1>{ formatMessage('Witch Hunt') }</h1>
         <Stage { ...this.props } />
         { isPlaying &&
-          <button onClick={ this.end } className='WitchHuntView-abandon'>
+          <button onClick={ () => this.end() } className='WitchHuntView-abandon'>
             { stage === stages.END
               ? formatMessage('End Game')
               : formatMessage('Abandon Game')

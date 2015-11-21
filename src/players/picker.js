@@ -8,7 +8,7 @@ const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others =
         <label>
           <input type='radio'
             name={ name }
-            onChange={ select && () => select(player.id) }
+            onChange={ select ? () => select(player.id) : null }
             disabled={ !select || player.isDisabled }
             checked={ player.id === selectedId }
           />

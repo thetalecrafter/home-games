@@ -1,47 +1,21 @@
 global.fetch = require('node-fetch') // add fetch global
-if (typeof Intl === 'undefined') { require('intl') } // add Intl global, if needed
+if (typeof Intl === 'undefined') require('intl') // add Intl global, if needed
 
 import formatMessage from 'format-message'
-import { getTranslate } from 'format-message-core/util'
-import translations from '../locales'
-
-formatMessage.setup({
-  translate: getTranslate({ translations }),
-  missingTranslation: 'ignore'
-})
-
+import generateId from 'format-message-generate-id/underscored_crc32'
 import { Router } from 'express'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import { createServerStore as createStore } from './common/base-store'
 import createRouter from './common/base-router'
 
+formatMessage.setup({ generateId })
+
 export default Router()
   .get('/', (_, res) => res.redirect('/en/'))
-  .get('/:locale/*', canonicalizeLocale, client)
+  .get('/*', client)
 
-function lookupClosestLocale (locale) {
-  const parts = locale.split('-')
-  while (parts.length) {
-    const current = parts.join('-')
-    if (current in translations) {
-      return current
-    }
-    parts.pop()
-  }
-  return 'en'
-}
-
-function canonicalizeLocale (req, res, next) {
-  const locale = lookupClosestLocale(req.params.locale)
-  if (locale === req.params.locale) return next()
-
-  const pathParts = req.url.split('/')
-  pathParts[1] = locale
-  res.redirect(pathParts.join('/'))
-}
-
-async function client (request, response, next) {
+function client (request, response, next) {
   const env = process.env
   const locale = request.params.locale
   const sid = request.sessionID
@@ -72,13 +46,12 @@ async function client (request, response, next) {
     }
   })
 
-  try {
-    let view = await router.route(request.url)
-    view = view()
-    renderHtml({ view, request, response, store })
-  } catch (err) {
-    next(err)
-  }
+  router.route(request.url).then(view => {
+    if (view) {
+      view = view()
+      renderHtml({ view, request, response, store })
+    }
+  }).catch(next)
 }
 
 function renderHtml ({ view, request, response, store }) {
@@ -91,7 +64,6 @@ function renderHtml ({ view, request, response, store }) {
   const title = state.title || ''
 
   formatMessage.setup({ locale })
-  process.env.LOCALE = locale
 
   const html = '<!doctype html>\n' + ReactDOMServer.renderToStaticMarkup(
     <html lang={ locale }>
@@ -107,7 +79,7 @@ function renderHtml ({ view, request, response, store }) {
             __html: '\n' + JSON.stringify(state) + '\n'
           } }
         />
-        <script defer src={ '/client.' + locale + '.js' } />
+        <script defer src={ '/client.js' } />
       </head>
       <body>
         <div id='root' dangerouslySetInnerHTML={ {

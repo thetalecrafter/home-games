@@ -2,10 +2,10 @@
 require.extensions['.css'] = function () {}
 
 // use babel for new ES features
-require('babel-core/register')({
-  stage: 0,
-  loose: 'all'
-})
+require('babel-register')
+
+// long stack traces
+if (process.env.NODE_ENV !== 'production') require('longjohn')
 
 const cookieName = 'player'
 const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
@@ -15,7 +15,7 @@ const REDIS_SOCKET = process.env.REDIS_SOCKET ||
 const http = require('http')
 const WebSocketServer = require('ws').Server
 const express = require('express')
-const router = require('./server-router')
+const router = require('./server-router').default
 const bodyParser = require('body-parser')
 const cookieUtil = require('cookie')
 const signature = require('cookie-signature')

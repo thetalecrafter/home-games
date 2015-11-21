@@ -18,23 +18,24 @@ const router = createRouter({
   isClient: true,
   isServer: false,
   redirect (url) {
-    router.navigate(url)
+    router.replace(url)
   }
-}).on('route', async (args, routing) => {
-  try {
-    let subscribed = !!view
-    view = await routing
-    draw()
-    if (!subscribed) store.subscribe(draw)
-  } catch (err) {
-    console.error(err)
-  }
+}).on('route', (args, routing) => {
+  let subscribed = !!view
+  routing
+    .then(value => {
+      if (value) {
+        view = value
+        draw()
+        if (!subscribed) store.subscribe(draw)
+      }
+    })
+    .catch(err => console.error(err))
 })
 
 if (typeof Intl !== 'object') {
-  require.ensure([ 'intl', process.env.LOCALE_DATA ], (require) => {
+  require.ensure([], require => {
     require('intl')
-    require(process.env.LOCALE_DATA)
     router.start({ routeLinks: true })
   }, 'intl')
 } else {
