@@ -61,8 +61,8 @@ export default class EditPlayerModal extends React.Component {
       name: this.state.name
     })
     if (window.confirm(msg)) {
+      this.props.onClose()
       this.props.delete(this.props.player)
-      window.history.back()
     }
   }
 
