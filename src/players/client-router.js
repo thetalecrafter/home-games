@@ -5,7 +5,7 @@ import actionCreators from './actions'
 import List from './view/list'
 
 export default Router()
-  .get('/:id?', ({ params, resolve, store }) => {
+  .use('/:id?', ({ params, resolve, store }) => {
     const actions = bindActionCreators(actionCreators, store.dispatch)
     const id = params.id
     resolve(() => {

@@ -1,5 +1,4 @@
 global.fetch = require('node-fetch') // add fetch global
-if (typeof Intl === 'undefined') require('intl') // add Intl global, if needed
 
 import formatMessage from 'format-message'
 import generateId from 'format-message-generate-id/underscored_crc32'

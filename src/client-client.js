@@ -31,13 +31,4 @@ const router = createRouter({
       }
     })
     .catch(err => console.error(err))
-})
-
-if (typeof Intl !== 'object') {
-  require.ensure([], require => {
-    require('intl')
-    router.start({ routeLinks: true })
-  }, 'intl')
-} else {
-  router.start({ routeLinks: true })
-}
+}).start()

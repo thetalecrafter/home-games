@@ -9,7 +9,7 @@ import View from './view'
 export default Router()
   .use(loadReducer, loadState)
 
-  .get('/', ({ resolve, store }) => {
+  .use('/', ({ resolve, store }) => {
     const actions = bindActionCreators(actionCreators, store.dispatch)
     resolve(() => {
       const { witchHunt, players, config: { sid } } = store.getState()

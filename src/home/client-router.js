@@ -3,6 +3,6 @@ import React from 'react'
 import View from './view'
 
 export default Router()
-  .get('/', ({ resolve, store }) => {
+  .use('/', ({ resolve, store }) => {
     resolve(() => <View { ...store.getState() } />)
   })

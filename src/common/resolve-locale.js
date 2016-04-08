@@ -5,18 +5,12 @@ import lookupClosestLocale from 'lookup-closest-locale'
 import formatMessage from 'format-message'
 import resolveUrl from './resolve-url'
 
-function isNativeIntl () {
-  return typeof IntlPolyfill === 'undefined'
-}
-
 const translations = {}
 const locales = {
   en: () => new Promise(resolve => require.ensure([], require => {
-    if (!isNativeIntl()) require('intl/locale-data/jsonp/en')
     resolve(require('../../locales/en.json'))
   }, 'locale-en')),
   pt: () => new Promise(resolve => require.ensure([], require => {
-    if (!isNativeIntl()) require('intl/locale-data/jsonp/pt')
     resolve(require('../../locales/pt.json'))
   }, 'locale-pt'))
 }

@@ -20,16 +20,7 @@ module.exports = {
         test: /\.jsx?$/i,
         exclude: /node_modules/,
         loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: [ 'es2015', 'stage-0', 'react' ],
-          plugins: [
-            [ 'transform-format-message', {
-              generateId: 'underscored_crc32'
-            } ],
-            'transform-runtime'
-          ]
-        }
+        query: { cacheDirectory: true }
       },
       {
         test: /\.json$/i,
@@ -37,14 +28,14 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: ExtractTextPlugin.extract('style', 'css?-minimize&sourceMap!cssnext')
+        loader: ExtractTextPlugin.extract('style', 'css?&sourceMap!postcss')
       },
       {
         test: /\.less$/i,
-        loader: ExtractTextPlugin.extract('style', 'css?-minimize&sourceMap!less?sourceMap')
+        loader: ExtractTextPlugin.extract('style', 'css?&sourceMap!less?sourceMap')
       },
       {
-        test: /\.(gif|png|jpeg)$/i,
+        test: /\.(gif|png|jpe?g|svg)$/i,
         loader: 'url?limit=10000&name=img/[name].[ext]'
       }
     ]
@@ -76,10 +67,20 @@ module.exports = {
       }
     })
   ]),
-  cssnext: {
-    browsers: [ 'last 2 versions' ],
-    import: {
-      path: [ 'lib' ]
-    }
+  postcss: function (webpack) {
+    return [
+      require('postcss-import')({
+        addDependencyTo: webpack,
+        path: [ 'lib' ]
+      }),
+      require('postcss-url')({
+        url: 'rebase'
+      }),
+      require('postcss-cssnext')({
+        browsers: [ 'last 2 versions' ]
+      }),
+      require('postcss-browser-reporter')(),
+      require('postcss-reporter')()
+    ]
   }
 }

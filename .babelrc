@@ -1,6 +1,9 @@
 {
-  "presets": [ "es2015", "stage-0", "react" ],
+  "presets": [ "es2015", "stage-1", "react" ],
   "plugins": [
+    [ "transform-format-message", {
+      "generateId": "underscored_crc32"
+    } ],
     "transform-runtime"
   ]
 }
