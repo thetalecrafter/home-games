@@ -21,12 +21,12 @@ export default class EveningStage extends React.Component {
 
   render () {
     const { sid, game, confirm } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
 
     let victimResult
     if (game.result && game.result.victimId) {
       const { victimId, victimDied } = game.result
-      const { name: victimName } = game.players.find(player => player.id === victimId)
+      const { name: victimName } = game.players.find((player) => player.id === victimId)
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id)
           ? <div>

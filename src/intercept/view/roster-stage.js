@@ -14,6 +14,13 @@ export default class RosterStage extends React.Component {
     ready: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.isPickingDisabled = this.isPickingDisabled.bind(this)
+    this.isPlayerSelected = this.isPlayerSelected.bind(this)
+    this.didPickPlayer = this.didPickPlayer.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
@@ -21,8 +28,28 @@ export default class RosterStage extends React.Component {
     )
   }
 
+  isPickingDisabled () {
+    const { sid, game } = this.props
+    const leader = game.players[game.currentLeader]
+    const isLeader = (leader.sid === sid)
+    return !isLeader
+  }
+
+  isPlayerSelected (player) {
+    const { game } = this.props
+    const { missions, currentMission } = game
+    const mission = missions[currentMission]
+    return mission.roster.includes(player.id)
+  }
+
+  didPickPlayer ({ target }, player) {
+    const { addToRoster, removeFromRoster } = this.props
+    if (target.checked) addToRoster(player)
+    else removeFromRoster(player)
+  }
+
   render () {
-    const { sid, game, addToRoster, removeFromRoster, ready } = this.props
+    const { sid, game, ready } = this.props
     const leader = game.players[game.currentLeader]
     const isLeader = (leader.sid === sid)
     const { missions, currentMission } = game
@@ -49,12 +76,9 @@ export default class RosterStage extends React.Component {
         </p>
         <PlayerPicker
           players={ game.players }
-          isSelected={ player => mission.roster.includes(player.id) }
-          isDisabled={ player => !isLeader }
-          onChange={ ({ target }, player) => {
-            if (target.checked) addToRoster(player)
-            else removeFromRoster(player)
-          } }
+          isSelected={ this.isPlayerSelected }
+          isDisabled={ this.isPickingDisabled }
+          onChange={ this.didPickPlayer }
         />
         { isLeader &&
           <button onClick={ ready } disabled={ !canBeReady }>

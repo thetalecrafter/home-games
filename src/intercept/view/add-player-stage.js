@@ -18,6 +18,8 @@ export default class AddPlayerStage extends React.Component {
   constructor (props) {
     super(props)
     this.state = { selectedId: null }
+    this.select = this.select.bind(this)
+    this.join = this.join.bind(this)
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -37,15 +39,15 @@ export default class AddPlayerStage extends React.Component {
     const id = this.state.selectedId
     const { sid, game, players, addPlayer } = this.props
     const player = (
-      game.players.every(player => player.id !== id) &&
-      players.find(player => player.id === id)
+      game.players.every((player) => player.id !== id) &&
+      players.find((player) => player.id === id)
     )
     if (player) addPlayer({ ...player, sid })
   }
 
   render () {
     const { sid, game, players, start } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const isPlaying = !!currentPlayer
     const count = game.players.length
     const canStart = (
@@ -54,7 +56,7 @@ export default class AddPlayerStage extends React.Component {
       count <= MAX_PLAYERS
     )
 
-    const availablePlayers = isPlaying || players.map(player => {
+    const availablePlayers = isPlaying || players.map((player) => {
       const isDisabled = game.players.some(({ id }) => player.id === id)
       return { ...player, isDisabled }
     })
@@ -70,12 +72,12 @@ export default class AddPlayerStage extends React.Component {
             <PlayerPicker
               players={ availablePlayers }
               selectedId={ this.state.selectedId }
-              select={ id => this.select(id) }
+              select={ this.select }
             />
             <a href={ resolve('players/+') }>
               { formatMessage('Add Player') }
             </a>
-            <button onClick={ () => this.join() }>
+            <button onClick={ this.join }>
               { formatMessage('Join Game') }
             </button>
           </div>
@@ -91,7 +93,7 @@ export default class AddPlayerStage extends React.Component {
             }) }
         </p>
         <ol>
-          { game.players.map(player =>
+          { game.players.map((player) =>
             <li key={ player.id }>
               { player.name }
             </li>

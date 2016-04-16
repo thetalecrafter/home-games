@@ -3,7 +3,7 @@ import formatMessage from 'format-message'
 
 const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others = [] }) =>
   <div>
-    { players.map(player =>
+    { players.map((player) =>
       <div key={ player.id }>
         <label>
           <input type='radio'

@@ -13,63 +13,70 @@ import GameDescription from './view/description'
 import Status from './view/status'
 import './view/view.css'
 
-function getView (isPlaying, stage) {
-  if (!isPlaying && stage !== stages.ADD_PLAYERS) {
-    return GameDescription
+export default class Intercept extends React.Component {
+  static displayName = 'InterceptView'
+
+  static propTypes = {
+    sid: React.PropTypes.string.isRequired,
+    game: React.PropTypes.object.isRequired,
+    players: React.PropTypes.array.isRequired,
+    end: React.PropTypes.func.isRequired
   }
-  switch (stage) {
-    case stages.ADD_PLAYERS: return AddPlayerStage
-    case stages.INTRO: return IntroStage
-    case stages.ROSTER: return RosterStage
-    case stages.APPROVAL: return ApprovalStage
-    case stages.MISSION: return MissionStage
-    case stages.END: return EndStage
-    default: return GameDescription
+
+  constructor (props) {
+    super(props)
+    this.didClickEnd = this.didClickEnd.bind(this)
+  }
+
+  getView (isPlaying, stage) {
+    if (!isPlaying && stage !== stages.ADD_PLAYERS) {
+      return GameDescription
+    }
+    switch (stage) {
+      case stages.ADD_PLAYERS: return AddPlayerStage
+      case stages.INTRO: return IntroStage
+      case stages.ROSTER: return RosterStage
+      case stages.APPROVAL: return ApprovalStage
+      case stages.MISSION: return MissionStage
+      case stages.END: return EndStage
+      default: return GameDescription
+    }
+  }
+
+  didClickEnd (end) {
+    const message = (
+      formatMessage('Are you sure you want to end the game?') +
+      '\n\n' +
+      formatMessage('All players will be taken back to the game description and a new game can be started.')
+    )
+    if (window.confirm(message)) this.props.end()
+  }
+
+  render () {
+    const { sid, game } = this.props
+    const stage = game.stage
+    const isPlaying = !!game.players.find((player) => player.sid === sid)
+    const Stage = this.getView(isPlaying, stage)
+
+    return (
+      <div className={ 'InterceptView u-chunk InterceptView--' + stage }>
+        <a href={ resolve('/') }>
+          &laquo; { formatMessage('Home') }
+        </a>
+        <h1>{ formatMessage('Intercept') }</h1>
+        <Stage { ...this.props } />
+        { isPlaying &&
+          <div>
+            <Status missions={ game.missions } current={ game.currentMission } />
+            <button onClick={ this.didClickEnd } className='Intercept-abandon'>
+              { stage === stages.END
+                ? formatMessage('End Game')
+                : formatMessage('Abandon Game')
+              }
+            </button>
+          </div>
+        }
+      </div>
+    )
   }
 }
-
-function didClickEnd (end) {
-  const message = (
-    formatMessage('Are you sure you want to end the game?') +
-    '\n\n' +
-    formatMessage(`All players will be taken back to the game description and a new game can be started.`)
-  )
-  if (window.confirm(message)) end()
-}
-
-const Intercept = (props) => {
-  const { sid, game, end } = props
-  const stage = game.stage
-  const isPlaying = !!game.players.find(player => player.sid === sid)
-  const Stage = getView(isPlaying, stage)
-
-  return (
-    <div className={ 'InterceptView u-chunk InterceptView--' + stage }>
-      <a href={ resolve('/') }>
-        &laquo; { formatMessage('Home') }
-      </a>
-      <h1>{ formatMessage('Intercept') }</h1>
-      <Stage { ...props } />
-      { isPlaying &&
-        <div>
-          <Status missions={ game.missions } current={ game.currentMission } />
-          <button onClick={ () => didClickEnd(end) } className='Intercept-abandon'>
-            { stage === stages.END
-              ? formatMessage('End Game')
-              : formatMessage('Abandon Game')
-            }
-          </button>
-        </div>
-      }
-    </div>
-  )
-}
-
-Intercept.displayName = 'InterceptView'
-Intercept.propTypes = {
-  sid: React.PropTypes.string.isRequired,
-  game: React.PropTypes.object.isRequired,
-  players: React.PropTypes.array.isRequired,
-  end: React.PropTypes.func.isRequired
-}
-export default Intercept

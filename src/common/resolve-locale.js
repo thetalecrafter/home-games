@@ -7,10 +7,10 @@ import resolveUrl from './resolve-url'
 
 const translations = {}
 const locales = {
-  en: () => new Promise(resolve => require.ensure([], require => {
+  en: () => new Promise((resolve) => require.ensure([], (require) => {
     resolve(require('../../locales/en.json'))
   }, 'locale-en')),
-  pt: () => new Promise(resolve => require.ensure([], require => {
+  pt: () => new Promise((resolve) => require.ensure([], (require) => {
     resolve(require('../../locales/pt.json'))
   }, 'locale-pt'))
 }
@@ -33,5 +33,5 @@ export default function resolveLocale ({ location, params, redirect, resolve }) 
   formatMessage.setup({ locale })
   resolveUrl.setLocale(locale)
   if (translations[locale]) return
-  return locales[locale]().then(strings => { translations[locale] = strings })
+  return locales[locale]().then((strings) => { translations[locale] = strings })
 }

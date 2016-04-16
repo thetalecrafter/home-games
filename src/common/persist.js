@@ -36,7 +36,7 @@ export default {
 
   write (name, content) {
     return new Promise((resolve, reject) => {
-      rwClient.set(name, JSON.stringify(content, null, '  '), err => {
+      rwClient.set(name, JSON.stringify(content, null, '  '), (err) => {
         if (err) {
           console.error(err.message)
           return reject(err)

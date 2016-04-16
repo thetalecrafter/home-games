@@ -45,7 +45,7 @@ function client (request, response, next) {
     }
   })
 
-  router.route(request.url).then(view => {
+  router.route(request.url).then((view) => {
     if (view) {
       view = view()
       renderHtml({ view, request, response, store })

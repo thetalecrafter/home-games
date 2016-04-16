@@ -32,12 +32,12 @@ export default function websocketMiddleware (store) {
     ws.addEventListener('error', onError)
     ws.addEventListener('close', onClose)
 
-    buffer.forEach(action => ws.send(JSON.stringify(action)))
+    buffer.forEach((action) => ws.send(JSON.stringify(action)))
     buffer.length = 0
   }
 
   connect()
-  return dispatch => action => {
+  return (dispatch) => (action) => {
     if (action.isRemote) return dispatch(action)
 
     try {

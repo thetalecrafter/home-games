@@ -27,6 +27,9 @@ export default class EditPlayerModal extends React.Component {
   constructor (props) {
     super(props)
     this.state = this.getStateFromPlayer(props.player)
+    this.didClickRemove = this.didClickRemove.bind(this)
+    this.didSubmit = this.didSubmit.bind(this)
+    this.didChange = this.didChange.bind(this)
   }
 
   getStateFromPlayer (player) {
@@ -78,12 +81,16 @@ export default class EditPlayerModal extends React.Component {
     this.props.onClose()
   }
 
+  didChange (evt) {
+    this.setState({ [evt.target.name]: evt.target.value })
+  }
+
   render () {
     const { player, isOpen, onClose } = this.props
     const { id, name, gender, avatar } = this.state
     return (
       <Modal isOpen={ isOpen } onCancel={ onClose } backdropClosesModal>
-        <Form className='EditPlayerView' onSubmit={ e => this.didSubmit(e) }>
+        <Form className='EditPlayerView' onSubmit={ this.didSubmit }>
           <ModalHeader
             showCloseButton
             onClose={ onClose }
@@ -99,22 +106,22 @@ export default class EditPlayerModal extends React.Component {
                 type='text'
                 name='name'
                 value={ name }
-                onChange={ ({ target }) => this.setState({ name: target.value }) }
+                onChange={ this.didChange }
               />
             </FormField>
             <EditPlayerGender
               value={ gender }
-              onChange={ gender => this.setState({ gender }) }
+              onChange={ this.didChange }
             />
             <EditPlayerAvatar
               value={ avatar }
-              onChange={ avatar => this.setState({ avatar }) }
+              onChange={ this.didChange }
             />
           </ModalBody>
           <ModalFooter>
             <EditModalButtons
               cancel={ onClose }
-              remove={ player ? e => this.didClickRemove(e) : null }
+              remove={ player ? this.didClickRemove : null }
             />
           </ModalFooter>
         </Form>

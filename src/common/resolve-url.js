@@ -4,4 +4,4 @@ export default function resolve (path) {
   return `/${locale}/${path.replace(/^\/+/, '')}`
 }
 
-resolve.setLocale = value => locale = value
+resolve.setLocale = (value) => (locale = value)

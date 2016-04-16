@@ -16,12 +16,12 @@ const initialState = {
 
 let state = initialState
 persist.read('intercept')
-  .then(newState => {
+  .then((newState) => {
     state = newState || initialState
   })
   .catch(console.error)
 
-persist.subscribe('dispatch', action => {
+persist.subscribe('dispatch', (action) => {
   if (action.type === TRANSITION) return
 
   const interState = reducer(state, action)
@@ -39,9 +39,9 @@ persist.subscribe('dispatch', action => {
   }
 })
 
-events.on('connect', ws => {
+events.on('connect', (ws) => {
   const sid = ws.upgradeReq.sessionID
-  const isPlaying = !!state.players.find(player => player.sid === sid)
+  const isPlaying = !!state.players.find((player) => player.sid === sid)
   if (!isPlaying) return
 
   ws.send(JSON.stringify({ type: REPLACE_GAME, state }))

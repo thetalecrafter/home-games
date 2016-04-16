@@ -22,8 +22,8 @@ export default class AfternoonStage extends React.Component {
   render () {
     const { sid, game, vote, confirm } = this.props
     const { victimId, victimDied } = game.result
-    const victim = game.players.find(player => player.id === victimId)
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const victim = game.players.find((player) => player.id === victimId)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const canVote = (
       !victimDied &&
       victimId !== currentPlayer.id &&

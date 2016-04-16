@@ -3,6 +3,10 @@ import resolve from '../../common/resolve-url'
 import EditModal from './edit-modal'
 import './list-item.css'
 
+function back () {
+  window.history.back()
+}
+
 const PlayersListItem = ({ icon, player, isSelected, actions }) =>
   <li className='PlayersListItem'>
     <a className='PlayersListItem-link' href={ resolve(`players/${player.id}`) }>
@@ -27,7 +31,7 @@ const PlayersListItem = ({ icon, player, isSelected, actions }) =>
     <EditModal
       player={ player.id === '+' ? null : player }
       isOpen={ isSelected }
-      onClose={ () => window.history.back() }
+      onClose={ back }
       { ...actions }
     />
   </li>

@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "es6": true
@@ -20,7 +21,8 @@
     "format-message/no-invalid-translation": 2,
     "format-message/no-missing-params": [ 2, { allowNonLiteral: true } ],
     "format-message/no-missing-translation": 0,
-    "format-message/translation-match-params": 2
+    "format-message/translation-match-params": 2,
+    "react/jsx-curly-spacing": [ 2, "always" ]
   },
   "settings": {
     "format-message": {

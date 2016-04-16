@@ -17,7 +17,7 @@ export default class EndStage extends React.Component {
     if (player.isDead) return false
     if (player.role === roles.WITCH) return true
     return game.players.every(
-      player => player.isDead || player.role === roles.PURITAN
+      (player) => player.isDead || player.role === roles.PURITAN
     )
   }
 
@@ -27,7 +27,7 @@ export default class EndStage extends React.Component {
       <div>
         <h2>{ formatMessage('Epilogue') }</h2>
         <table>
-        { game.players.map(player =>
+        { game.players.map((player) =>
           <tr key={ player.id }>
             <th>{ player.name }</th>
             <td>

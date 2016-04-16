@@ -15,6 +15,11 @@ export default class MissionStage extends React.Component {
     intercept: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.intercept = this.intercept.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
@@ -33,18 +38,24 @@ export default class MissionStage extends React.Component {
     return StandbyMissionStage
   }
 
-  render () {
+  intercept (value) {
     const { sid, game, intercept } = this.props
+    const { id } = game.players.find((player) => player.sid === sid)
+    intercept({ id }, value)
+  }
+
+  render () {
+    const { sid, game } = this.props
     const { missions, currentMission } = game
     const { roster, results } = missions[currentMission]
-    const { id, role } = game.players.find(player => player.sid === sid)
+    const { id, role } = game.players.find((player) => player.sid === sid)
     const isOnTeam = roster.includes(id)
     const count = roster.length - Object.keys(results).length
     const View = this.getView(isOnTeam, role)
     return (
       <div>
         <h2>{ formatMessage('Intercept Enemy Message') }</h2>
-        <View result={ results[id] } vote={ value => intercept({ id }, value) } />
+        <View result={ results[id] } vote={ this.intercept } />
         <span>
           { formatMessage(
             `{ count, plural,

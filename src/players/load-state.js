@@ -12,8 +12,8 @@ export default function ({ store, request }) {
   }
 
   return fetch(`${state.config.api}/players/state`, { headers })
-    .then(res => res.json())
-    .then(players => {
+    .then((res) => res.json())
+    .then((players) => {
       store.dispatch({ type: REPLACE_PLAYERS, players, isRemote: true })
     })
 }

@@ -23,12 +23,12 @@ export default class WitchNightStage extends React.Component {
 
   render () {
     const { sid, game, vote, confirm } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const disabled = currentPlayer.isDead || currentPlayer.isReady
 
     const otherWitches = []
     const puritans = []
-    game.players.forEach(player => {
+    game.players.forEach((player) => {
       if (player.id === currentPlayer.id || player.isDead) return
       if (player.role === roles.WITCH) {
         otherWitches.push({ player, selectedId: player.vote })
@@ -39,7 +39,7 @@ export default class WitchNightStage extends React.Component {
 
     return (
       <div>
-        <p>{ formatMessage(`Select a Puritan to curse.`) }</p>
+        <p>{ formatMessage('Select a Puritan to curse.') }</p>
         <PlayerPicker
           players={ puritans }
           selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }

@@ -13,6 +13,11 @@ export default class PuritanNightStage extends React.Component {
     confirm: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.voteSleep = this.voteSleep.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
@@ -20,11 +25,23 @@ export default class PuritanNightStage extends React.Component {
     )
   }
 
+  voteSleep () {
+    const { sid, game, vote } = this.props
+    const currentPlayer = game.players.find((player) => player.sid === sid)
+    vote({ id: currentPlayer.id, vote: '' })
+  }
+
+  votePlayer (id) {
+    const { sid, game, vote } = this.props
+    const currentPlayer = game.players.find((player) => player.sid === sid)
+    vote({ id: currentPlayer.id, vote: id })
+  }
+
   render () {
-    const { sid, game, vote, confirm } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const { sid, game, confirm } = this.props
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const followees = game.players.filter(
-      player => (player !== currentPlayer && !player.isDead)
+      (player) => (player !== currentPlayer && !player.isDead)
     )
     const disabled = currentPlayer.isDead || currentPlayer.isReady
     return (
@@ -37,7 +54,7 @@ export default class PuritanNightStage extends React.Component {
                 name='playerId'
                 checked={ currentPlayer.vote === '' }
                 disabled={ disabled }
-                onChange={ () => vote({ id: currentPlayer.id, vote: '' }) }
+                onChange={ this.voteSleep }
               />
               { formatMessage('Sleep') }
             </label>
@@ -46,7 +63,7 @@ export default class PuritanNightStage extends React.Component {
               name='playerId'
               players={ followees }
               selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-              select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
+              select={ disabled ? null : this.votePlayer }
             />
           </div>
         }

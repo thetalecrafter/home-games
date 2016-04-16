@@ -72,7 +72,7 @@ export default class IntroStage extends React.Component {
 
   render () {
     const { sid, game, vote } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const isReady = game.votes[currentPlayer.id]
     return (
       <div>
@@ -85,15 +85,15 @@ export default class IntroStage extends React.Component {
           ? <p>
             { formatMessage(
               'There are {count, number} Double Agents in this game.',
-              { count: game.players.filter(player => player.role === roles.DOUBLE).length }
+              { count: game.players.filter((player) => player.role === roles.DOUBLE).length }
             ) }
           </p>
           : <p>
             { formatMessage('Here are your fellow Double Agents:') }
             <ul>
               { game.players
-                .filter(player => player.role !== roles.SPY && player !== currentPlayer)
-                .map(player =>
+                .filter((player) => player.role !== roles.SPY && player !== currentPlayer)
+                .map((player) =>
                   <li key={ player.id }>{ player.name }</li>
                 )
               }

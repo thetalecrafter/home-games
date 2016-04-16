@@ -32,12 +32,12 @@ export default class MorningStage extends React.Component {
   render () {
     const { sid, game, vote, confirm } = this.props
     const { victimId, victimDied, follow } = game.result
-    const victim = game.players.find(player => player.id === victimId)
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const victim = game.players.find((player) => player.id === victimId)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const others = game.players.filter(
-      player => (player !== currentPlayer && !player.isDead)
+      (player) => (player !== currentPlayer && !player.isDead)
     ).map(
-      player => ({ player, selectedId: player.vote })
+      (player) => ({ player, selectedId: player.vote })
     )
     const disabled = currentPlayer.isDead || currentPlayer.isReady
     const isDone = this.isAllSame(game.players)
@@ -45,7 +45,7 @@ export default class MorningStage extends React.Component {
     let followResult
     if (follow && follow[currentPlayer.id]) {
       const followId = follow[currentPlayer.id].followId
-      const followPlayer = game.players.find(player => player.id === followId)
+      const followPlayer = game.players.find((player) => player.id === followId)
       const name = followPlayer.name
       followResult = follow[currentPlayer.id].wasAwake
         ? formatMessage(`You followed { name } for much of the evening. { name }
@@ -108,7 +108,7 @@ export default class MorningStage extends React.Component {
               <div>
                 <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
                 <PlayerPicker
-                  players={ game.players.filter(player => !player.isDead) }
+                  players={ game.players.filter((player) => !player.isDead) }
                   selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
                   select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
                   others={ others }

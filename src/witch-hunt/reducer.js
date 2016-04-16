@@ -31,7 +31,7 @@ export default function witchHunt (state = initialState, action) {
     case START_GAME:
       return {
         ...state,
-        players: state.players.map(player => ({
+        players: state.players.map((player) => ({
           ...player, isReady: true
         }))
       }
@@ -50,7 +50,7 @@ export default function witchHunt (state = initialState, action) {
 
     case VOTE: {
       let isChanged = false
-      const players = state.players.map(player => {
+      const players = state.players.map((player) => {
         if (player.id !== action.player.id) return player
         if (player.vote === action.player.vote) return player
         isChanged = true
@@ -62,7 +62,7 @@ export default function witchHunt (state = initialState, action) {
 
     case CONFIRM: {
       let isChanged = false
-      const players = state.players.map(player => {
+      const players = state.players.map((player) => {
         if (player.id !== action.player.id) return player
         if (player.isReady) return player
         isChanged = true

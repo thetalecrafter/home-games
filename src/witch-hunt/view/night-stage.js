@@ -23,7 +23,7 @@ export default class NightStage extends React.Component {
 
   render () {
     const { sid, game } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const isWitch = currentPlayer.role === roles.WITCH
     return (
       <div>

@@ -14,21 +14,21 @@ const EditGender = ({ value, onChange }) =>
         name='gender'
         value='male'
         checked={ value === 'male' }
-        onChange={ () => onChange('male') }
+        onChange={ onChange }
       />
       <Radio
         label={ formatMessage('Female') }
         name='gender'
         value='female'
         checked={ value === 'female' }
-        onChange={ () => onChange('female') }
+        onChange={ onChange }
       />
       <Radio
         label={ formatMessage('Other') }
         name='gender'
         value='other'
         checked={ value === 'other' }
-        onChange={ () => onChange('other') }
+        onChange={ onChange }
       />
     </div>
   </FormField>

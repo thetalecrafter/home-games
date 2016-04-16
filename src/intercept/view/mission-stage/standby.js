@@ -15,7 +15,7 @@ export default class StandbyMissionStage extends React.Component {
     return (
       <p>
         { formatMessage(
-          `Please wait while your comrades complete their assignment.`
+          'Please wait while your comrades complete their assignment.'
         ) }
       </p>
     )

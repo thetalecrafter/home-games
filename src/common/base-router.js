@@ -20,15 +20,15 @@ export default function createRouter (options) {
     .use(loadPlayerReducer, loadPlayerState)
 
     .use('/:locale', resolveLocale, homeRouter, Router()
-      .use('/players', jitRouter(save => require.ensure(
+      .use('/players', jitRouter((save) => require.ensure(
         [], () => save(require('../players/client-router')), 'players'
       )))
 
-      .use('/witch-hunt', jitRouter(save => require.ensure(
+      .use('/witch-hunt', jitRouter((save) => require.ensure(
         [], () => save(require('../witch-hunt/client-router')), 'witch-hunt'
       )))
 
-      .use('/intercept', jitRouter(save => require.ensure(
+      .use('/intercept', jitRouter((save) => require.ensure(
         [], () => save(require('../intercept/client-router')), 'intercept'
       )))
     )

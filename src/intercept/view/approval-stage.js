@@ -11,6 +11,13 @@ export default class ApprovalStage extends React.Component {
     vote: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.approve = this.approve.bind(this)
+    this.reject = this.reject.bind(this)
+    this.isPlayerSelected = this.isPlayerSelected.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
@@ -18,25 +25,45 @@ export default class ApprovalStage extends React.Component {
     )
   }
 
-  render () {
+  approve () {
     const { sid, game, vote } = this.props
+    const currentPlayer = game.players.find((player) => player.sid === sid)
+    vote(currentPlayer, true)
+  }
+
+  reject () {
+    const { sid, game, vote } = this.props
+    const currentPlayer = game.players.find((player) => player.sid === sid)
+    vote(currentPlayer, false)
+  }
+
+  isPlayerSelected (player) {
+    const { game } = this.props
+    const { missions, currentMission } = game
+    const mission = missions[currentMission]
+    return mission.roster.includes(player.id)
+  }
+
+  renderPlayer (player) {
+    return (
+      <li key={ player.id }>
+        { player.name }
+      </li>
+    )
+  }
+
+  render () {
+    const { game } = this.props
     const { missions, currentMission } = game
     const mission = missions[currentMission]
     const { votes, players } = game
-    const currentPlayer = players.find(player => player.sid === sid)
     const count = players.length - Object.keys(votes).length
 
     return (
       <div>
         <h2>{ formatMessage('Team Approval') }</h2>
         <ul>
-        { players.filter(player => mission.roster.includes(player.id))
-          .map(player =>
-            <li key={ player.id }>
-              { player.name }
-            </li>
-          )
-        }
+        { players.filter(this.isPlayerSelected).map(this.renderPlayer) }
         </ul>
         <div>
           { formatMessage('Current Votes:') }
@@ -51,10 +78,10 @@ export default class ApprovalStage extends React.Component {
           </span>
         </div>
         <span>
-          <button onClick={ () => vote(currentPlayer, true) }>
+          <button onClick={ this.approve }>
             { formatMessage('Approve Team') }
           </button>
-          <button onClick={ () => vote(currentPlayer, false) }>
+          <button onClick={ this.reject }>
             { formatMessage('Reject Team') }
           </button>
         </span>

@@ -25,7 +25,7 @@ export default function players (state = initialState, action) {
 
     case UPDATE_PLAYER:
       return (state
-        .map(player => (
+        .map((player) => (
           (player.id !== action.player.id) ? player
           : { ...player, ...action.player }
         ))

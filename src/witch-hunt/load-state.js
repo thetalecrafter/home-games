@@ -12,8 +12,8 @@ export default function ({ store, request }) {
   }
 
   return fetch(`${fullState.config.api}/witch-hunt/state`, { headers })
-    .then(res => res.json())
-    .then(state => {
+    .then((res) => res.json())
+    .then((state) => {
       store.dispatch({ type: REPLACE_GAME, state, isRemote: true })
     })
 }

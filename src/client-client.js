@@ -23,12 +23,12 @@ const router = createRouter({
 }).on('route', (args, routing) => {
   let subscribed = !!view
   routing
-    .then(value => {
+    .then((value) => {
       if (value) {
         view = value
         draw()
         if (!subscribed) store.subscribe(draw)
       }
     })
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))
 }).start()

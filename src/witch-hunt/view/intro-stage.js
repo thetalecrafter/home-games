@@ -24,7 +24,7 @@ const witch = (
       }
     </p>
     <p>
-      { formatMessage(`A swift end to the trials is your safest course.`) }
+      { formatMessage('A swift end to the trials is your safest course.') }
     </p>
   </div>
 )
@@ -69,7 +69,7 @@ export default class IntroStage extends React.Component {
 
   render () {
     const { sid, game, confirm } = this.props
-    const currentPlayer = game.players.find(player => player.sid === sid)
+    const currentPlayer = game.players.find((player) => player.sid === sid)
     const isWitch = currentPlayer.role === roles.WITCH
     return (
       <div>

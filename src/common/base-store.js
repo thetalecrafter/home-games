@@ -16,7 +16,7 @@ function createBaseStore (createStoreWithMiddleware, initialState = {}) {
   const mutableReducers = { ...reducers }
   const store = createStoreWithMiddleware(compose(mutableReducers), initialState)
 
-  store.addSubReducers = reducers => Object.assign(mutableReducers, reducers)
+  store.addSubReducers = (reducers) => Object.assign(mutableReducers, reducers)
 
   return store
 }

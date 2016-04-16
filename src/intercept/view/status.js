@@ -20,7 +20,7 @@ export default class InterceptStatus extends React.Component {
     if (index === current) return formatMessage('Current Mission')
     if (index > current) return formatMessage('Future Mission')
     const intercepted = mission.roster
-      .filter(id => mission.results[id])
+      .filter((id) => mission.results[id])
       .length
     const total = mission.size
     return formatMessage(

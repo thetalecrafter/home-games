@@ -28,7 +28,7 @@ export default class EndStage extends React.Component {
 
     let fails = 0
     let successes = 0
-    game.missions.forEach(mission => {
+    game.missions.forEach((mission) => {
       if (mission.isSuccessful === true) ++successes
       if (mission.isSuccessful === false) ++fails
     })
@@ -54,7 +54,7 @@ export default class EndStage extends React.Component {
         }
         </p>
         <table>
-        { game.players.map(player =>
+        { game.players.map((player) =>
           <tr key={ player.id }>
             <th>{ player.name }</th>
             <td>

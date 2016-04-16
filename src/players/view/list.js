@@ -13,7 +13,7 @@ const PlayersList = ({ players, selectedId, actions }) =>
     </a>
     <h2>{ formatMessage('Players') }</h2>
     <ul className='PlayersList-list'>
-      { players.map(player =>
+      { players.map((player) =>
         <Player
           key={ player.id }
           player={ player }

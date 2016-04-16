@@ -9,12 +9,21 @@ export default class SpyMissionStage extends React.Component {
     vote: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.vote = this.vote.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return nextProps.result !== this.props.result
   }
 
+  vote () {
+    this.props.vote(true)
+  }
+
   render () {
-    const { result, vote } = this.props
+    const { result } = this.props
     return (
       <div>
         <p>
@@ -25,7 +34,7 @@ export default class SpyMissionStage extends React.Component {
         </p>
         { result == null
           ? <div>
-            <button onClick={ () => vote(true) }>
+            <button onClick={ this.vote }>
               { formatMessage('Intercept Message') }
             </button>
             <button disabled>
@@ -33,9 +42,9 @@ export default class SpyMissionStage extends React.Component {
             </button>
           </div>
           : result &&
-          <p>
-            { formatMessage('You have successfully completed your mission.') }
-          </p>
+            <p>
+              { formatMessage('You have successfully completed your mission.') }
+            </p>
         }
       </div>
     )

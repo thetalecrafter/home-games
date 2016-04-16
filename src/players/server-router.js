@@ -6,12 +6,12 @@ import reducer from './reducer'
 
 let players = []
 persist.read('players')
-  .then(newPlayers => {
+  .then((newPlayers) => {
     players = newPlayers || []
   })
   .catch(console.error)
 
-persist.subscribe('dispatch', action => {
+persist.subscribe('dispatch', (action) => {
   const newPlayers = reducer(players, action)
   if (newPlayers !== players) {
     players = newPlayers
@@ -19,7 +19,7 @@ persist.subscribe('dispatch', action => {
   }
 })
 
-events.on('connect', ws => {
+events.on('connect', (ws) => {
   ws.send(JSON.stringify({ type: REPLACE_PLAYERS, players }))
 })
 

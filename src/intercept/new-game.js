@@ -22,7 +22,7 @@ const twoFailsLimit = 7
 const twoFailsIndex = 3
 
 export default function newGame (state) {
-  const players = state.players.map(player => ({
+  const players = state.players.map((player) => ({
     ...player, role: roles.SPY
   }))
   const count = players.length

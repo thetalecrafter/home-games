@@ -16,27 +16,36 @@ export default class VoteResults extends React.Component {
     )
   }
 
+  hasPlayerVoted (player) {
+    const { votes } = this.props
+    return votes[player.id] != null
+  }
+
+  renderPlayer (player) {
+    const { votes } = this.props
+    return (
+      <li key={ player.id }>
+        { formatMessage(
+          `{ vote, select,
+            approve {{name} approved}
+             reject {{name} rejected}
+              other {}
+          }`,
+          {
+            name: player.name,
+            gender: player.gender,
+            vote: votes[player.id] ? 'approve' : 'reject'
+          }
+        ) }
+      </li>
+    )
+  }
+
   render () {
-    const { players, votes } = this.props
+    const { players } = this.props
     return (
       <ul>
-      { players.filter(player => votes[player.id] != null)
-        .map(player =>
-        <li key={ player.id }>
-          { formatMessage(
-            `{ vote, select,
-              approve {{name} approved}
-               reject {{name} rejected}
-                other {}
-            }`,
-            {
-              name: player.name,
-              gender: player.gender,
-              vote: votes[player.id] ? 'approve' : 'reject'
-            }
-          ) }
-        </li>
-      ) }
+      { players.filter(this.hasPlayerVoted).map(this.renderPlayer) }
       </ul>
     )
   }

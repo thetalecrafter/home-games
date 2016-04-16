@@ -1,12 +1,13 @@
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const path = require('path')
 
 const debug = process.argv.indexOf('-d') >= 0 ||
     process.argv.indexOf('--debug') >= 0
 
 module.exports = {
   cache: true,
-  context: __dirname + '/src',
+  context: path.join(__dirname, 'src'),
   entry: {
     client: [
       'babel-polyfill',
@@ -43,7 +44,7 @@ module.exports = {
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
-    path: __dirname + '/dist',
+    path: path.join(__dirname, 'dist'),
     publicPath: '/'
   },
   plugins: [

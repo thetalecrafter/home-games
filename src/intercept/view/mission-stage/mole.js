@@ -9,12 +9,26 @@ export default class MoleMissionStage extends React.Component {
     vote: React.PropTypes.func.isRequired
   }
 
+  constructor (props) {
+    super(props)
+    this.intercept = this.intercept.bind(this)
+    this.sabotage = this.sabotage.bind(this)
+  }
+
   shouldComponentUpdate (nextProps) {
     return nextProps.result !== this.props.result
   }
 
+  intercept () {
+    this.props.vote(true)
+  }
+
+  sabotage () {
+    this.props.vote(false)
+  }
+
   render () {
-    const { result, vote } = this.props
+    const { result } = this.props
     return (
       <div>
         <p>
@@ -26,10 +40,10 @@ export default class MoleMissionStage extends React.Component {
         </p>
         { result == null
           ? <div>
-            <button onClick={ () => vote(true) }>
+            <button onClick={ this.intercept }>
               { formatMessage('Intercept Message') }
             </button>
-            <button onClick={ () => vote(false) }>
+            <button onClick={ this.sabotage }>
               { formatMessage('Sabotage Mission') }
             </button>
           </div>

@@ -23,7 +23,7 @@ export default function transition (state, action) {
     }
 
     case stages.INTRO: {
-      const isReady = state.players.every(player => (
+      const isReady = state.players.every((player) => (
       state.votes[player.id] != null
     ))
       if (!isReady) return state
@@ -41,7 +41,7 @@ export default function transition (state, action) {
     }
 
     case stages.APPROVAL: {
-      const hasAllVotes = state.players.every(player => (
+      const hasAllVotes = state.players.every((player) => (
       state.votes[player.id] != null
     ))
       if (!hasAllVotes) return state
@@ -52,7 +52,7 @@ export default function transition (state, action) {
       const { missions, currentMission } = state
       const mission = missions[currentMission]
       if (!mission) return state
-      const hasAllVotes = mission.roster.every(id => (
+      const hasAllVotes = mission.roster.every((id) => (
       mission.results[id] != null
     ))
       if (!hasAllVotes) return state
@@ -84,7 +84,7 @@ function transitionFromApproval (state) {
 
   let pro = 0
   let con = 0
-  state.players.forEach(player => {
+  state.players.forEach((player) => {
     if (state.votes[player.id] === true) ++pro
     if (state.votes[player.id] === false) ++con
   })
@@ -121,7 +121,7 @@ function transitionFromMission (state) {
   const newState = { ...state, missions: newMissions, votes: {} }
 
   let fails = 0
-  mission.roster.forEach(id => {
+  mission.roster.forEach((id) => {
     if (mission.results[id] === false) ++fails
   })
 
@@ -133,7 +133,7 @@ function transitionFromMission (state) {
 
   fails = 0
   let successes = 0
-  newMissions.forEach(mission => {
+  newMissions.forEach((mission) => {
     if (mission.isSuccessful === true) ++successes
     if (mission.isSuccessful === false) ++fails
   })

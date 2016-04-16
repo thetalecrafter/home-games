@@ -2,7 +2,7 @@ import React from 'react'
 
 const PlayerPickerMulti = ({ name = 'playerIds', players, isSelected, isDisabled, onChange }) =>
   <div>
-    { players.map(player =>
+    { players.map((player) =>
       <div key={ player.id }>
         <label>
           <input type='checkbox'
