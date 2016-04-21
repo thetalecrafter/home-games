@@ -12,6 +12,7 @@ module.exports = {
     client: [
       'babel-polyfill',
       'whatwg-fetch',
+      'eventsource-polyfill',
       './client-client.js'
     ]
   },
@@ -47,6 +48,7 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     publicPath: '/'
   },
+  devtool: debug ? 'eval-source-map' : 'source-map',
   plugins: [
     new ExtractTextPlugin('[name].css'),
     new webpack.DefinePlugin({

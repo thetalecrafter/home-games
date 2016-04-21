@@ -1,14 +1,14 @@
 import { createStore, applyMiddleware } from 'redux'
 import compose from './compose-reducers'
 import reducers from './base-reducers'
-import websocketMiddleware from './redux-websocket-middleware'
+import eventSourceMiddleware from './redux-eventsource-middleware'
 
 export function createServerStore (initialState = {}) {
   return createBaseStore(createStore, initialState)
 }
 
 export function createClientStore (initialState = {}) {
-  const createStoreWithMiddleware = applyMiddleware(websocketMiddleware)(createStore)
+  const createStoreWithMiddleware = applyMiddleware(eventSourceMiddleware)(createStore)
   return createBaseStore(createStoreWithMiddleware, initialState)
 }
 

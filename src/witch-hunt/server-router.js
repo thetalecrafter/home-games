@@ -34,12 +34,12 @@ persist.subscribe('dispatch', (action) => {
   }
 })
 
-events.on('connect', (ws) => {
-  const sid = ws.upgradeReq.sessionID
+events.on('connect', ({ request, send }) => {
+  const sid = request.sessionID
   const isPlaying = !!state.players.find((player) => player.sid === sid)
   if (!isPlaying) return
 
-  ws.send(JSON.stringify({ type: REPLACE_GAME, state }))
+  send(JSON.stringify({ type: REPLACE_GAME, state }))
 })
 
 export default Router()

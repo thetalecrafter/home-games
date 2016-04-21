@@ -19,8 +19,8 @@ persist.subscribe('dispatch', (action) => {
   }
 })
 
-events.on('connect', (ws) => {
-  ws.send(JSON.stringify({ type: REPLACE_PLAYERS, players }))
+events.on('connect', ({ send }) => {
+  send(JSON.stringify({ type: REPLACE_PLAYERS, players }))
 })
 
 export default Router()
