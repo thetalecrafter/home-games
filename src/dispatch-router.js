@@ -16,6 +16,7 @@ export default Router()
       const msg = JSON.stringify(data, null, '  ')
         .replace(/\r?\n/g, '\ndata: ')
       res.write(`event: dispatch\ndata: ${msg}\n\n`)
+      res.flush()
     }
 
     res.writeHead(200, {
@@ -27,6 +28,7 @@ export default Router()
       res.write(':' + preamble + '\n') // 2kB padding for IE
     }
     res.write('retry: 10000\n')
+    res.flush()
     res.socket.setTimeout(0)
 
     const timer = setInterval(() => {

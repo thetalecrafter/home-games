@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import cookieUtil from 'cookie'
 import signature from 'cookie-signature'
 import session from 'express-session'
+import compression from 'compression'
 import redis from 'redis'
 import RedisStore from 'connect-redis'
 import crypto from 'crypto'
@@ -44,6 +45,7 @@ const app = express()
     }),
     genid
   }))
-	.use(router)
+  .use(compression())
+  .use(router)
 
 export default app
