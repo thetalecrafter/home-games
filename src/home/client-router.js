@@ -1,8 +1,8 @@
-import Router from 'middle-router'
-import React from 'react'
-import View from './view'
+const Router = require('middle-router')
+const { createElement: h } = require('react')
+const View = require('./view')
 
-export default Router()
+module.exports = Router()
   .use('/', ({ resolve, store }) => {
-    resolve(() => <View { ...store.getState() } />)
+    resolve(() => h(View, store.getState()))
   })

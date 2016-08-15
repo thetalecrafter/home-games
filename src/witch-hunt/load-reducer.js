@@ -1,5 +1,5 @@
-import witchHunt from './reducer'
+const witchHunt = require('./reducer')
 
-export default function ({ store }) {
+module.exports = function ({ store }) {
   store.addSubReducers({ witchHunt })
 }

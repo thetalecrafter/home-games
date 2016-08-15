@@ -1,36 +1,32 @@
 /* global window */
-import React from 'react'
-import formatMessage from 'format-message'
-import Form from 'elemental/lib/components/Form'
-import FormField from 'elemental/lib/components/FormField'
-import FormInput from 'elemental/lib/components/FormInput'
-import Modal from 'elemental/lib/components/Modal'
-import ModalHeader from 'elemental/lib/components/ModalHeader'
-import ModalBody from 'elemental/lib/components/ModalBody'
-import ModalFooter from 'elemental/lib/components/ModalFooter'
-import EditPlayerGender from './edit-gender'
-import EditPlayerAvatar from './edit-avatar'
-import EditModalButtons from './edit-modal-buttons'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const Form = require('elemental/lib/components/Form')
+const FormField = require('elemental/lib/components/FormField')
+const FormInput = require('elemental/lib/components/FormInput')
+const Modal = require('elemental/lib/components/Modal')
+const ModalHeader = require('elemental/lib/components/ModalHeader')
+const ModalBody = require('elemental/lib/components/ModalBody')
+const ModalFooter = require('elemental/lib/components/ModalFooter')
+const EditPlayerGender = require('./edit-gender')
+const EditPlayerAvatar = require('./edit-avatar')
+const EditModalButtons = require('./edit-modal-buttons')
 
-export default class EditPlayerModal extends React.Component {
-  static displayName = 'EditPlayerModal'
+module.exports = createClass({
+  displayName: 'EditPlayerModal',
 
-  static propTypes = {
-    player: React.PropTypes.object,
-    create: React.PropTypes.func.isRequired,
-    update: React.PropTypes.func.isRequired,
-    delete: React.PropTypes.func.isRequired,
-    isOpen: React.PropTypes.bool,
-    onClose: React.PropTypes.func.isRequired
-  }
+  propTypes: {
+    player: PropTypes.object,
+    create: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired,
+    delete: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool,
+    onClose: PropTypes.func.isRequired
+  },
 
-  constructor (props) {
-    super(props)
-    this.state = this.getStateFromPlayer(props.player)
-    this.didClickRemove = this.didClickRemove.bind(this)
-    this.didSubmit = this.didSubmit.bind(this)
-    this.didChange = this.didChange.bind(this)
-  }
+  getInitialState () {
+    return this.getStateFromPlayer(this.props.player)
+  },
 
   getStateFromPlayer (player) {
     const {
@@ -40,13 +36,13 @@ export default class EditPlayerModal extends React.Component {
       avatar = null
     } = player || {}
     return { id, name, gender, avatar }
-  }
+  },
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.player !== this.props.player) {
-      this.state = this.getStateFromPlayer(nextProps.player)
+      this.setState(this.getStateFromPlayer(nextProps.player))
     }
-  }
+  },
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
@@ -57,7 +53,7 @@ export default class EditPlayerModal extends React.Component {
       nextState.gender !== this.state.gender ||
       nextState.avatar !== this.state.avatar
     )
-  }
+  },
 
   didClickRemove (evt) {
     const msg = formatMessage('Are you sure you want to remove { name }?', {
@@ -67,7 +63,7 @@ export default class EditPlayerModal extends React.Component {
       this.props.onClose()
       this.props.delete(this.props.player)
     }
-  }
+  },
 
   didSubmit (evt) {
     evt.preventDefault()
@@ -79,53 +75,53 @@ export default class EditPlayerModal extends React.Component {
       this.props.update({ id, name, gender, avatar })
     }
     this.props.onClose()
-  }
+  },
 
   didChange (evt) {
     this.setState({ [evt.target.name]: evt.target.value })
-  }
+  },
 
   render () {
     const { player, isOpen, onClose } = this.props
     const { id, name, gender, avatar } = this.state
+    console.log('rendering modal', this.props)
     return (
-      <Modal isOpen={ isOpen } onCancel={ onClose } backdropClosesModal>
-        <Form className='EditPlayerView' onSubmit={ this.didSubmit }>
-          <ModalHeader
-            showCloseButton
-            onClose={ onClose }
-            text={ player
+      h(Modal, { isOpen, onCancel: onClose, backdropClosesModal: true },
+        h(Form, { className: 'EditPlayerView', onSubmit: this.didSubmit },
+          h(ModalHeader, {
+            showCloseButton: true,
+            onClose: onClose,
+            text: player
               ? formatMessage('Update { name }', { name: player.name })
               : formatMessage('Add Player')
-            }
-          />
-          <ModalBody>
-            <input type='hidden' name='id' value={ id } />
-            <FormField label={ formatMessage('Name') } htmlFor='name'>
-              <FormInput
-                type='text'
-                name='name'
-                value={ name }
-                onChange={ this.didChange }
-              />
-            </FormField>
-            <EditPlayerGender
-              value={ gender }
-              onChange={ this.didChange }
-            />
-            <EditPlayerAvatar
-              value={ avatar }
-              onChange={ this.didChange }
-            />
-          </ModalBody>
-          <ModalFooter>
-            <EditModalButtons
-              cancel={ onClose }
-              remove={ player ? this.didClickRemove : null }
-            />
-          </ModalFooter>
-        </Form>
-      </Modal>
+          }),
+          h(ModalBody, null,
+            h('input', { type: 'hidden', name: 'id', value: id }),
+            h(FormField, { label: formatMessage('Name'), htmlFor: 'name' },
+              h(FormInput, {
+                type: 'text',
+                name: 'name',
+                value: name,
+                onChange: this.didChange
+              })
+            ),
+            h(EditPlayerGender, {
+              value: gender,
+              onChange: this.didChange
+            }),
+            h(EditPlayerAvatar, {
+              value: avatar,
+              onChange: this.didChange
+            })
+          ),
+          h(ModalFooter, null,
+            h(EditModalButtons, {
+              cancel: onClose,
+              remove: player ? this.didClickRemove : null
+            })
+          )
+        )
+      )
     )
   }
-}
+})

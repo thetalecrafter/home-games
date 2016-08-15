@@ -1,5 +1,5 @@
-import compare from '../../lib/natural-compare'
-import {
+const compare = require('../../lib/natural-compare')
+const {
   stages,
 
   MAX_PLAYERS,
@@ -15,7 +15,7 @@ import {
   VOTE,
   INTERCEPT,
   END_GAME
-} from './constants'
+} = require('./constants')
 
 const initialState = {
   stage: null,
@@ -26,7 +26,7 @@ const initialState = {
   votes: {}
 }
 
-export default function intercept (state = initialState, action) {
+module.exports = function intercept (state = initialState, action) {
   switch (action.type) {
 
     case REPLACE_GAME:
@@ -34,10 +34,9 @@ export default function intercept (state = initialState, action) {
       return action.state
 
     case CREATE_GAME:
-      return {
-        ...initialState,
+      return Object.assign({}, initialState, {
         stage: stages.ADD_PLAYERS
-      }
+      })
 
     case START_GAME:
     case READY:
@@ -48,13 +47,12 @@ export default function intercept (state = initialState, action) {
       const isPlaying = state.players.some(({ id }) => id === action.player.id)
       const tooManyPlayers = state.players.length >= MAX_PLAYERS
       if (isPlaying || tooManyPlayers) return state
-      return {
-        ...state,
+      return Object.assign({}, state, {
         players: (state.players
-        .concat(action.player)
-        .sort((a, b) => compare(a.name, b.name))
-      )
-      }
+          .concat(action.player)
+          .sort((a, b) => compare(a.name, b.name))
+        )
+      })
     }
 
     case ADD_TO_ROSTER: {
@@ -71,8 +69,8 @@ export default function intercept (state = initialState, action) {
 
       newRoster.push(action.player.id)
       const newMissions = missions.slice()
-      newMissions[currentMission] = { ...mission, roster: newRoster.sort() }
-      return { ...state, missions: newMissions }
+      newMissions[currentMission] = Object.assign({}, mission, { roster: newRoster.sort() })
+      return Object.assign({}, state, { missions: newMissions })
     }
 
     case REMOVE_FROM_ROSTER: {
@@ -89,8 +87,8 @@ export default function intercept (state = initialState, action) {
 
       newRoster.splice(newRoster.indexOf(action.player.id), 1)
       const newMissions = missions.slice()
-      newMissions[currentMission] = { ...mission, roster: newRoster.sort() }
-      return { ...state, missions: newMissions }
+      newMissions[currentMission] = Object.assign({}, mission, { roster: newRoster.sort() })
+      return Object.assign({}, state, { missions: newMissions })
     }
 
     case VOTE: {
@@ -99,11 +97,10 @@ export default function intercept (state = initialState, action) {
       if (!mission) return state
       let isChanged = state.votes[action.player.id] !== action.vote
       if (!isPlaying || !isChanged) return state
-      const votes = {
-        ...state.votes,
+      const votes = Object.assign({}, state.votes, {
         [action.player.id]: action.vote
-      }
-      return { ...state, votes }
+      })
+      return Object.assign({}, state, { votes })
     }
 
     case INTERCEPT: {
@@ -112,13 +109,12 @@ export default function intercept (state = initialState, action) {
       const isOnTeam = mission.roster.includes(action.player.id)
       let isChanged = mission.results[action.player.id] !== action.result
       if (!isOnTeam || !isChanged) return state
-      const results = {
-        ...mission.results,
+      const results = Object.assign({}, mission.results, {
         [action.player.id]: action.result
-      }
+      })
       const newMissions = state.missions.slice()
-      newMissions[state.currentMission] = { ...mission, results }
-      return { ...state, missions: newMissions }
+      newMissions[state.currentMission] = Object.assign({}, mission, { results })
+      return Object.assign({}, state, { missions: newMissions })
     }
 
     case END_GAME:

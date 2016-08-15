@@ -1,32 +1,27 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import { stages } from './constants'
-import resolve from '../common/resolve-url'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const { stages } = require('./constants')
+const resolve = require('../common/resolve-url')
 
-import AddPlayerStage from './view/add-player-stage'
-import IntroStage from './view/intro-stage'
-import RosterStage from './view/roster-stage'
-import ApprovalStage from './view/approval-stage'
-import MissionStage from './view/mission-stage'
-import EndStage from './view/end-stage'
-import GameDescription from './view/description'
-import Status from './view/status'
-import './view/view.css'
+const AddPlayerStage = require('./view/add-player-stage')
+const IntroStage = require('./view/intro-stage')
+const RosterStage = require('./view/roster-stage')
+const ApprovalStage = require('./view/approval-stage')
+const MissionStage = require('./view/mission-stage')
+const EndStage = require('./view/end-stage')
+const GameDescription = require('./view/description')
+const Status = require('./view/status')
+require('./view/view.css')
 
-export default class Intercept extends React.Component {
-  static displayName = 'InterceptView'
+module.exports = createClass({
+  displayName: 'InterceptView',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    players: React.PropTypes.array.isRequired,
-    end: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.didClickEnd = this.didClickEnd.bind(this)
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired,
+    end: PropTypes.func.isRequired
+  },
 
   getView (isPlaying, stage) {
     if (!isPlaying && stage !== stages.ADD_PLAYERS) {
@@ -41,7 +36,7 @@ export default class Intercept extends React.Component {
       case stages.END: return EndStage
       default: return GameDescription
     }
-  }
+  },
 
   didClickEnd (end) {
     const message = (
@@ -50,7 +45,7 @@ export default class Intercept extends React.Component {
       formatMessage('All players will be taken back to the game description and a new game can be started.')
     )
     if (window.confirm(message)) this.props.end()
-  }
+  },
 
   render () {
     const { sid, game } = this.props
@@ -59,24 +54,22 @@ export default class Intercept extends React.Component {
     const Stage = this.getView(isPlaying, stage)
 
     return (
-      <div className={ 'InterceptView u-chunk InterceptView--' + stage }>
-        <a href={ resolve('/') }>
-          &laquo; { formatMessage('Home') }
-        </a>
-        <h1>{ formatMessage('Intercept') }</h1>
-        <Stage { ...this.props } />
-        { isPlaying &&
-          <div>
-            <Status missions={ game.missions } current={ game.currentMission } />
-            <button onClick={ this.didClickEnd } className='Intercept-abandon'>
-              { stage === stages.END
+      h('div', { className: 'InterceptView u-chunk InterceptView--' + stage },
+        h('a', { href: resolve('/') },
+          `« ${formatMessage('Home')}`
+        ),
+        h('h1', null, formatMessage('Intercept')),
+        h(Stage, this.props),
+        isPlaying &&
+          h('div', null,
+            h(Status, { missions: game.missions, current: game.currentMission }),
+            h('button', { onClick: this.didClickEnd, className: 'Intercept-abandon' },
+              stage === stages.END
                 ? formatMessage('End Game')
                 : formatMessage('Abandon Game')
-              }
-            </button>
-          </div>
-        }
-      </div>
+            )
+          )
+      )
     )
   }
-}
+})

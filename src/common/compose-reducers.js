@@ -1,4 +1,4 @@
-export default function compose (reducers) {
+module.exports = function compose (reducers) {
   return (state, action) => {
     let isChanged = false
     const newState = Object.keys(reducers).reduce((newState, key) => {

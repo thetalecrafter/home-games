@@ -1,21 +1,16 @@
 /* global window */
-import React from 'react'
-import formatMessage from 'format-message'
-import FormField from 'elemental/lib/components/FormField'
-import './edit-avatar.css'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const FormField = require('elemental/lib/components/FormField')
+require('./edit-avatar.css')
 
-export default class EditPlayerAvatar extends React.Component {
-  static displayName = 'EditPlayerAvatar'
+module.exports = createClass({
+  displayName: 'EditPlayerAvatar',
 
-  static propTypes = {
-    value: React.PropTypes.string,
-    onChange: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.didChangeImage = this.didChangeImage.bind(this)
-  }
+  propTypes: {
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired
+  },
 
   didChangeImage (evt) {
     const name = evt.target.name
@@ -49,26 +44,25 @@ export default class EditPlayerAvatar extends React.Component {
       URL.revokeObjectURL(img.src)
     }
     img.src = URL.createObjectURL(file)
-  }
+  },
 
   render () {
     const { value } = this.props
     return (
-      <FormField label={ formatMessage('Picture') } htmlFor='avatar'>
-        <div className='EditPlayerAvatar'>
-          { value &&
-            <img
-              className='EditPlayerAvatar-img'
-              src={ value }
-            />
-          }
-          <input
-            className='EditPlayerAvatar-input'
-            type='file' name='avatar' defaultValue=''
-            onChange={ this.didChangeImage }
-          />
-        </div>
-      </FormField>
+      h(FormField, { label: formatMessage('Picture'), htmlFor: 'avatar' },
+        h('div', { className: 'EditPlayerAvatar' },
+          value &&
+            h('img', {
+              className: 'EditPlayerAvatar-img',
+              src: value
+            }),
+          h('input', {
+            className: 'EditPlayerAvatar-input',
+            type: 'file', name: 'avatar', defaultValue: '',
+            onChange: this.didChangeImage
+          })
+        )
+      )
     )
   }
-}
+})

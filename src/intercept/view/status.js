@@ -1,20 +1,20 @@
-import React from 'react'
-import formatMessage from 'format-message'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
 
-export default class InterceptStatus extends React.Component {
-  static displayName = 'InterceptStatus'
+module.exports = createClass({
+  displayName: 'InterceptStatus',
 
-  static propTypes = {
-    missions: React.PropTypes.array.isRequired,
-    current: React.PropTypes.number.isRequired
-  }
+  propTypes: {
+    missions: PropTypes.array.isRequired,
+    current: PropTypes.number.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.missions !== this.props.missions ||
       nextProps.current !== this.props.current
     )
-  }
+  },
 
   getMissionTooltip (mission, index, current) {
     if (index === current) return formatMessage('Current Mission')
@@ -27,7 +27,7 @@ export default class InterceptStatus extends React.Component {
       '{intercepted, number} / {total, number} messages intercepted',
       { intercepted, total }
     )
-  }
+  },
 
   getMissionSize (mission) {
     if (mission.failLimit === 1) {
@@ -37,26 +37,22 @@ export default class InterceptStatus extends React.Component {
       needed: mission.size - mission.failLimit + 1,
       total: mission.size
     })
-  }
+  },
 
   render () {
     const { missions, current } = this.props
     return (
-      <div>
-        { missions.map((mission, index) =>
-          <span
-            key={ index }
-            className='InterceptStatus-mission'
-            title={ this.getMissionTooltip(mission, index, current) }
-          >
-          {
-            (index >= current)
+      h('div', null, missions.map((mission, index) =>
+        h('span', {
+          key: index,
+          className: 'InterceptStatus-mission',
+          title: this.getMissionTooltip(mission, index, current)
+        },
+          (index >= current)
             ? this.getMissionSize(mission)
             : mission.isSuccessful ? '✔' : '✘'
-          }
-          </span>
-        ) }
-      </div>
+        )
+      ))
     )
   }
-}
+})

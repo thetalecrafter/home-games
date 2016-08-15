@@ -1,4 +1,4 @@
-import {
+const {
   CREATE_GAME,
   START_GAME,
   ADD_PLAYER,
@@ -8,9 +8,9 @@ import {
   VOTE,
   INTERCEPT,
   END_GAME
-} from './constants'
+} = require('./constants')
 
-export default {
+module.exports = {
   create () {
     return { type: CREATE_GAME }
   },

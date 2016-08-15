@@ -1,5 +1,5 @@
 // where the overall game is at
-export const stages = {
+exports.stages = {
   ADD_PLAYERS: 'add-players', // setup your player
   INTRO: 'intro', // assigned roles, read begining of story
   NIGHT: 'night', // decide what to do
@@ -9,27 +9,27 @@ export const stages = {
   END: 'end' // final result
 }
 
-export const roles = {
+exports.roles = {
   WITCH: 'witch',
   PURITAN: 'puritan',
   UNKNOWN: 'unknown'
 }
 
-export const errors = {
+exports.errors = {
   BAD_TRANSITION: 'bad-transition',
   NUM_PLAYERS: 'num-players',
   WITCH_MUST_VOTE: 'witch-must-vote',
   EVERYONE_MUST_VOTE: 'everyone-must-vote'
 }
 
-export const MIN_PLAYERS = 4
+exports.MIN_PLAYERS = 4
 
 // actions
-export const REPLACE_GAME = 'wha-replace-game'
-export const TRANSITION = 'wha-transition'
-export const CREATE_GAME = 'wha-create-game'
-export const START_GAME = 'wha-start-game'
-export const ADD_PLAYER = 'wha-add-player'
-export const VOTE = 'wha-vote'
-export const CONFIRM = 'wha-confirm'
-export const END_GAME = 'wha-end-game'
+exports.REPLACE_GAME = 'wha-replace-game'
+exports.TRANSITION = 'wha-transition'
+exports.CREATE_GAME = 'wha-create-game'
+exports.START_GAME = 'wha-start-game'
+exports.ADD_PLAYER = 'wha-add-player'
+exports.VOTE = 'wha-vote'
+exports.CONFIRM = 'wha-confirm'
+exports.END_GAME = 'wha-end-game'

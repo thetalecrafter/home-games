@@ -1,25 +1,25 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import { roles } from '../../constants'
-import PlayerPicker from '../../../players/picker'
-import ReadyButton from '../ready-button'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const { roles } = require('../../constants')
+const PlayerPicker = require('../../../players/picker')
+const ReadyButton = require('../ready-button')
 
-export default class WitchNightStage extends React.Component {
-  static displayName = 'WitchNightStage'
+module.exports = createClass({
+  displayName: 'WitchNightStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    vote: React.PropTypes.func.isRequired,
-    confirm: React.PropTypes.func.isRequired
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    vote: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   render () {
     const { sid, game, vote, confirm } = this.props
@@ -38,21 +38,21 @@ export default class WitchNightStage extends React.Component {
     })
 
     return (
-      <div>
-        <p>{ formatMessage('Select a Puritan to curse.') }</p>
-        <PlayerPicker
-          players={ puritans }
-          selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-          select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
-          others={ otherWitches }
-        />
-        <ReadyButton
-          player={ currentPlayer }
-          game={ game }
-          disabled={ !currentPlayer.vote }
-          confirm={ confirm }
-        />
-      </div>
+      h('div', null,
+        h('p', null, formatMessage('Select a Puritan to curse.')),
+        h(PlayerPicker, {
+          players: puritans,
+          selectedId: currentPlayer.isDead ? null : currentPlayer.vote,
+          select: disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }),
+          others: otherWitches
+        }),
+        h(ReadyButton, {
+          player: currentPlayer,
+          game,
+          disabled: !currentPlayer.vote,
+          confirm
+        })
+      )
     )
   }
-}
+})

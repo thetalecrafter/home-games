@@ -1,7 +1,7 @@
 /* globals fetch */
-import { REPLACE_GAME } from './constants'
+const { REPLACE_GAME } = require('./constants')
 
-export default function ({ store, request }) {
+module.exports = function ({ store, request }) {
   const fullState = store.getState()
   if (fullState.witchHunt) return
 

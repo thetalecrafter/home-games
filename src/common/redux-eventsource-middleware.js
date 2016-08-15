@@ -1,5 +1,5 @@
 /* global EventSource, fetch */
-export default function serverMiddleware (store) {
+module.exports = function serverMiddleware (store) {
   const url = `${store.getState().config.api}/actions`
   let source
 

@@ -1,7 +1,7 @@
 /* globals fetch */
-import { REPLACE_PLAYERS } from './constants'
+const { REPLACE_PLAYERS } = require('./constants')
 
-export default function ({ store, request }) {
+module.exports = function ({ store, request }) {
   const state = store.getState()
   if (state.players) return
 

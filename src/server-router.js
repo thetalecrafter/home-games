@@ -1,9 +1,9 @@
-import express from 'express'
-import client from './client-server'
-import dispatchRouter from './dispatch-router'
-import playersRouter from './players/server-router'
-import witchHuntRouter from './witch-hunt/server-router'
-import interceptRouter from './intercept/server-router'
+const express = require('express')
+const client = require('./client-server')
+const dispatchRouter = require('./dispatch-router')
+const playersRouter = require('./players/server-router')
+const witchHuntRouter = require('./witch-hunt/server-router')
+const interceptRouter = require('./intercept/server-router')
 
 function error (err, req, res, next) {
   let status = err.status || 500
@@ -24,7 +24,7 @@ const api = express.Router()
   .use('/witch-hunt', witchHuntRouter)
   .use('/intercept', interceptRouter)
 
-export default express.Router()
+module.exports = express.Router()
   .use('/api/v1', api)
   .use(express.static('dist', {
     index: false,

@@ -1,20 +1,16 @@
-import React from 'react'
-import classnames from 'classnames'
-import './shell.css'
+const { createElement: h, PropTypes } = require('react')
+const classnames = require('classnames')
+require('./shell.css')
 
-export default class ShellView extends React.Component {
-  static displayName = 'ShellView'
+const ShellView = ({ className, children }) =>
+  h('div', { className: classnames('Shell', className) },
+    children
+  )
 
-  static propTypes = {
-    className: React.PropTypes.string,
-    children: React.PropTypes.node
-  }
-
-  render () {
-    return (
-      <div className={ classnames('Shell', this.props.className) }>
-        { this.props.children }
-      </div>
-    )
-  }
+ShellView.displayName = 'ShellView'
+ShellView.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node
 }
+
+module.exports = ShellView

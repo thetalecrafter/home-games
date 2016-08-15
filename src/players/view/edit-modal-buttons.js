@@ -1,38 +1,37 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import InputGroup from 'elemental/lib/components/InputGroup'
-import Glyph from 'elemental/lib/components/Glyph'
-import Button from 'elemental/lib/components/Button'
+const { createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const InputGroup = require('elemental/lib/components/InputGroup')
+const Glyph = require('elemental/lib/components/Glyph')
+const Button = require('elemental/lib/components/Button')
 
 const EditModalButtons = ({ cancel, remove }) =>
-  <InputGroup>
-    <InputGroup.Section>
-      <Button type='primary' submit>
-        { formatMessage('Save') }
-      </Button>
-    </InputGroup.Section>
-    <InputGroup.Section>
-      <Button type='link-cancel' onClick={ cancel }>
-        { formatMessage('Cancel') }
-      </Button>
-    </InputGroup.Section>
-    <InputGroup.Section grow />
-    { remove &&
-      <InputGroup.Section>
-        <Button
-          type='link-delete'
-          title={ formatMessage('Remove Player') }
-          onClick={ remove }
-        >
-          <Glyph icon='trashcan' />
-        </Button>
-      </InputGroup.Section>
-    }
-  </InputGroup>
+  h(InputGroup, null,
+    h(InputGroup.Section, null,
+      h(Button, { type: 'primary', submit: true },
+        formatMessage('Save')
+      )
+    ),
+    h(InputGroup.Section, null,
+      h(Button, { type: 'link-cancel', onClick: cancel },
+        formatMessage('Cancel')
+      )
+    ),
+    h(InputGroup.Section, { grow: true }),
+    remove &&
+      h(InputGroup.Section, null,
+        h(Button, {
+          type: 'link-delete',
+          title: formatMessage('Remove Player'),
+          onClick: remove
+        },
+          h(Glyph, { icon: 'trashcan' })
+        )
+      )
+  )
 
 EditModalButtons.displayName = 'EditModalButtons'
 EditModalButtons.propTypes = {
-  cancel: React.PropTypes.func.isRequired,
-  remove: React.PropTypes.func
+  cancel: PropTypes.func.isRequired,
+  remove: PropTypes.func
 }
-export default EditModalButtons
+module.exports = EditModalButtons

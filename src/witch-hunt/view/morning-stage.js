@@ -1,25 +1,25 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import PlayerPicker from '../../players/picker'
-import ReadyButton from './ready-button'
-import { roles } from '../constants'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const PlayerPicker = require('../../players/picker')
+const ReadyButton = require('./ready-button')
+const { roles } = require('../constants')
 
-export default class MorningStage extends React.Component {
-  static displayName = 'MorningStage'
+module.exports = createClass({
+  displayName: 'MorningStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    vote: React.PropTypes.func.isRequired,
-    confirm: React.PropTypes.func.isRequired
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    vote: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   isAllSame (players) {
     return players.every(
@@ -27,7 +27,7 @@ export default class MorningStage extends React.Component {
     ) || players.every(
       ({ isDead, role }) => isDead || role === roles.PURITAN
     )
-  }
+  },
 
   render () {
     const { sid, game, vote, confirm } = this.props
@@ -61,74 +61,67 @@ export default class MorningStage extends React.Component {
       const victimName = victim.name
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id)
-          ? <div>
-            <h3>{ formatMessage('You have died') }</h3>
-            <p>
-              { formatMessage(`Shortly after you retired to your bed, a sudden
+          ? h('div', null,
+            h('h3', null, formatMessage('You have died')),
+            h('p', null,
+              formatMessage(`Shortly after you retired to your bed, a sudden
                 pain flashed in your shoulder and chest. After a few moments
                 your life came to an end.`)
-              }
-            </p>
-          </div>
-          : <p>
-            { formatMessage(`Late this morning someone realized { name } wasn’t
+            )
+          )
+          : h('p', null,
+            formatMessage(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was quickly found to be dead in
               bed.`, { name: victimName })
-            }
-          </p>
+          )
       } else {
         victimResult = (victimId === currentPlayer.id)
-          ? <div>
-            <h3>{ formatMessage('You have been cursed') }</h3>
-            <p>
-              { formatMessage(`You woke this morning with a terrible headache
+          ? h('div', null,
+            h('h3', null, formatMessage('You have been cursed')),
+            h('p', null,
+              formatMessage(`You woke this morning with a terrible headache
                 and fever. You tried to get out of bed but felt so dizzy you
                 immediately returned to bed.`)
-              }
-            </p>
-          </div>
-          : <p>
-            { formatMessage(`Late this morning someone realized { name } wasn’t
+            )
+          )
+          : h('p', null,
+            formatMessage(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was then found to be terribly ill
               in bed.`, { name: victimName })
-            }
-          </p>
+          )
       }
     }
 
     return (
-      <div>
-        <h2>{ formatMessage('Morning') }</h2>
-        { followResult && <p>{ followResult }</p> }
+      h('div', null,
+        h('h2', null, formatMessage('Morning')),
+        followResult && h('p', null, followResult),
 
-        { victimResult
-          ? <div>
-            { victimResult }
-            { !isDone &&
-              <div>
-                <p>{ formatMessage('Whom shall be tried for this tragedy?') }</p>
-                <PlayerPicker
-                  players={ game.players.filter((player) => !player.isDead) }
-                  selectedId={ currentPlayer.isDead ? null : currentPlayer.vote }
-                  select={ disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }) }
-                  others={ others }
-                />
-              </div>
-            }
-          </div>
-          : <p>
-            { formatMessage(`You all went about their usual tasks this morning.
+        victimResult
+          ? h('div', null,
+            victimResult,
+            !isDone &&
+              h('div', null,
+                h('p', null, formatMessage('Whom shall be tried for this tragedy?')),
+                h(PlayerPicker, {
+                  players: game.players.filter((player) => !player.isDead),
+                  selectedId: currentPlayer.isDead ? null : currentPlayer.vote,
+                  select: disabled ? null : (id) => vote({ id: currentPlayer.id, vote: id }),
+                  others
+                })
+              )
+          )
+          : h('p', null,
+            formatMessage(`You all went about their usual tasks this morning.
               Everyone was accounted for.`)
-            }
-          </p>
-        }
-        <ReadyButton
-          player={ currentPlayer }
-          game={ game }
-          disabled={ !!victimResult && !isDone && currentPlayer.vote == null }
-          confirm={ confirm }
-        />
-      </div>
+          ),
+        h(ReadyButton, {
+          player: currentPlayer,
+          game,
+          disabled: !!victimResult && !isDone && currentPlayer.vote == null,
+          confirm
+        })
+      )
     )
   }
-}
+})

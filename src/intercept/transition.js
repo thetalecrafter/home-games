@@ -1,5 +1,5 @@
-import newGame from './new-game'
-import {
+const newGame = require('./new-game')
+const {
   stages,
 
   MIN_PLAYERS,
@@ -7,9 +7,9 @@ import {
 
   START_GAME,
   READY
-} from './constants'
+} = require('./constants')
 
-export default function transition (state, action) {
+module.exports = function transition (state, action) {
   switch (state.stage) {
 
     case stages.ADD_PLAYERS: {
@@ -69,18 +69,18 @@ function transitionFromAddPlayers (state) {
 }
 
 function transitionFromIntro (state) {
-  return { ...state, stage: stages.ROSTER, votes: {} }
+  return Object.assign({}, state, { stage: stages.ROSTER, votes: {} })
 }
 
 function transitionFromRoster (state) {
-  return { ...state, stage: stages.APPROVAL, votes: {} }
+  return Object.assign({}, state, { stage: stages.APPROVAL, votes: {} })
 }
 
 function transitionFromApproval (state) {
   const { players, missions, currentMission } = state
   const mission = missions[currentMission]
   const newMissions = missions.slice()
-  const newState = { ...state, missions: newMissions, votes: {} }
+  const newState = Object.assign({}, state, { missions: newMissions, votes: {} })
 
   let pro = 0
   let con = 0
@@ -96,19 +96,17 @@ function transitionFromApproval (state) {
       newState.stage = stages.ROSTER
       newState.currentLeader = (state.currentLeader + 1) % players.length
     }
-    newMissions[currentMission] = {
-      ...mission,
+    newMissions[currentMission] = Object.assign({}, mission, {
       votes: state.votes,
       roster: [],
       rejectedRosters: mission.rejectedRosters + 1
-    }
+    })
   } else {
     newState.stage = stages.MISSION
-    newMissions[currentMission] = {
-      ...mission,
+    newMissions[currentMission] = Object.assign({}, mission, {
       votes: state.votes,
       leader: players[state.currentLeader].id
-    }
+    })
   }
 
   return newState
@@ -118,7 +116,7 @@ function transitionFromMission (state) {
   const { players, missions, currentMission } = state
   const mission = missions[currentMission]
   const newMissions = missions.slice()
-  const newState = { ...state, missions: newMissions, votes: {} }
+  const newState = Object.assign({}, state, { missions: newMissions, votes: {} })
 
   let fails = 0
   mission.roster.forEach((id) => {
@@ -126,10 +124,9 @@ function transitionFromMission (state) {
   })
 
   const isSuccessful = (fails < mission.failLimit)
-  newMissions[currentMission] = {
-    ...mission,
+  newMissions[currentMission] = Object.assign({}, mission, {
     isSuccessful: isSuccessful
-  }
+  })
 
   fails = 0
   let successes = 0

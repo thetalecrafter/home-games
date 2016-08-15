@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import persist from './common/persist'
-import { EventEmitter } from 'events'
+const { Router } = require('express')
+const persist = require('./common/persist')
+const { EventEmitter } = require('events')
 
-export const events = new EventEmitter()
+const events = new EventEmitter()
 events.setMaxListeners(Infinity)
 
 let preamble = []
@@ -10,7 +10,7 @@ preamble.length = 2049
 preamble = preamble.join(' ')
 const heartbeatTime = 10 * 1000
 
-export default Router()
+module.exports = Router()
   .get('/actions', (req, res, next) => {
     const send = (data) => {
       const msg = JSON.stringify(data, null, '  ')
@@ -47,3 +47,5 @@ export default Router()
     persist.publish('dispatch', req.body)
     res.status(204).end()
   })
+
+module.exports.events = events

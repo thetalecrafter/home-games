@@ -1,5 +1,5 @@
-import redis from 'redis'
-import { EventEmitter } from 'events'
+const redis = require('redis')
+const { EventEmitter } = require('events')
 
 const REDIS_SOCKET = process.env.REDIS_SOCKET
 const rwClient = redis.createClient(REDIS_SOCKET)
@@ -19,7 +19,7 @@ subClient.on('message', (channel, message) => {
   }
 })
 
-export default {
+module.exports = {
   read (name) {
     return new Promise((resolve, reject) => {
       rwClient.get(name, (err, content) => {

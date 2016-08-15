@@ -1,4 +1,4 @@
-import { stages, roles, errors, MIN_PLAYERS } from './constants'
+const { stages, roles, errors, MIN_PLAYERS } = require('./constants')
 const { ADD_PLAYERS, INTRO, NIGHT, MORNING, AFTERNOON, EVENING, END } = stages
 const { WITCH, PURITAN } = roles
 
@@ -11,15 +11,15 @@ const transitions = {
   [EVENING]: transitionFromEvening
 }
 
-export default function transition (state) {
+module.exports = function transition (state) {
   if (!isEveryoneReady(state)) return state
 
   const to = transitions[state.stage]
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
   const newState = to(state)
-  newState.players = newState.players.map((player) => ({
-    ...player, isReady: undefined, vote: undefined
-  }))
+  newState.players = newState.players.map((player) =>
+    Object.assign({}, player, { isReady: undefined, vote: undefined })
+  )
   return newState
 }
 
@@ -30,7 +30,7 @@ function transitionFromAddPlayers (state) {
   const stage = INTRO
   const result = null
   const players = state.players.map(
-    (player) => ({ ...player, role: PURITAN })
+    (player) => Object.assign({}, player, { role: PURITAN })
   )
   let witchesLeft = Math.round(numPlayers / 4)
   while (witchesLeft > 0) {
@@ -112,7 +112,7 @@ function transitionFromMorning (state) {
         player.role === WITCH ? 0.2 : 0.6
       )
       result.victimDied = isDead
-      return { ...player, isDead }
+      return Object.assign({}, player, { isDead })
     })
   }
 
@@ -160,7 +160,7 @@ function transitionFromEvening (state) {
 function killPlayer (victimId, players) {
   return players.map((player) => {
     if (player.id !== victimId) return player
-    return { ...player, isDead: true }
+    return Object.assign({}, player, { isDead: true })
   })
 }
 

@@ -1,26 +1,23 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import resolve from '../../common/resolve-url'
-import PlayerPicker from '../../players/picker'
-import { MIN_PLAYERS, MAX_PLAYERS } from '../constants'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const resolve = require('../../common/resolve-url')
+const PlayerPicker = require('../../players/picker')
+const { MIN_PLAYERS, MAX_PLAYERS } = require('../constants')
 
-export default class AddPlayerStage extends React.Component {
-  static displayName = 'AddPlayerStage'
+module.exports = createClass({
+  displayName: 'AddPlayerStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    players: React.PropTypes.array.isRequired,
-    addPlayer: React.PropTypes.func.isRequired,
-    start: React.PropTypes.func.isRequired
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired,
+    addPlayer: PropTypes.func.isRequired,
+    start: PropTypes.func.isRequired
+  },
 
-  constructor (props) {
-    super(props)
-    this.state = { selectedId: null }
-    this.select = this.select.bind(this)
-    this.join = this.join.bind(this)
-  }
+  getInitialState () {
+    return { selectedId: null }
+  },
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
@@ -29,11 +26,11 @@ export default class AddPlayerStage extends React.Component {
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   select (selectedId) {
     this.setState({ selectedId })
-  }
+  },
 
   join () {
     const id = this.state.selectedId
@@ -42,8 +39,8 @@ export default class AddPlayerStage extends React.Component {
       game.players.every((player) => player.id !== id) &&
       players.find((player) => player.id === id)
     )
-    if (player) addPlayer({ ...player, sid })
-  }
+    if (player) addPlayer(Object.assign({}, player, { sid }))
+  },
 
   render () {
     const { sid, game, players, start } = this.props
@@ -58,56 +55,50 @@ export default class AddPlayerStage extends React.Component {
 
     const availablePlayers = isPlaying || players.map((player) => {
       const isDisabled = game.players.some(({ id }) => player.id === id)
-      return { ...player, isDisabled }
+      return Object.assign({}, player, { isDisabled })
     })
 
     return (
-      <div>
-        <h2>{ formatMessage('Choose Players') }</h2>
-        <p>
-          { formatMessage('This game requires 5 to 10 players.') }
-        </p>
-        { !isPlaying &&
-          <div>
-            <PlayerPicker
-              players={ availablePlayers }
-              selectedId={ this.state.selectedId }
-              select={ this.select }
-            />
-            <a href={ resolve('players/+') }>
-              { formatMessage('Add Player') }
-            </a>
-            <button onClick={ this.join }>
-              { formatMessage('Join Game') }
-            </button>
-          </div>
-        }
-        <p>
-          { formatMessage(`{
+      h('div', null,
+        h('h2', null, formatMessage('Choose Players')),
+        h('p', null,
+          formatMessage('This game requires 5 to 10 players.')
+        ),
+        !isPlaying &&
+          h('div', null,
+            h(PlayerPicker, {
+              players: availablePlayers,
+              selectedId: this.state.selectedId,
+              select: this.select
+            }),
+            h('a', { href: resolve('players/+') },
+              formatMessage('Add Player')
+            ),
+            h('button', { onClick: this.join },
+              formatMessage('Join Game')
+            )
+          ),
+        h('p', null,
+          formatMessage(`{
               count, plural,
               =0 {nobody has}
               one {1 player has}
               other {# players have}
             } joined this game.`, {
               count
-            }) }
-        </p>
-        <ol>
-          { game.players.map((player) =>
-            <li key={ player.id }>
-              { player.name }
-            </li>
-          ) }
-        </ol>
-        { isPlaying &&
-          <button
-            onClick={ canStart ? start : null }
-            disabled={ !canStart }
-          >
-            { formatMessage('Start Game') }
-          </button>
-        }
-      </div>
+            })
+        ),
+        h('ol', null, game.players.map((player) =>
+          h('li', { key: player.id }, player.name)
+        )),
+        isPlaying &&
+          h('button', {
+            onClick: canStart ? start : null,
+            disabled: !canStart
+          },
+            formatMessage('Start Game')
+          )
+      )
     )
   }
-}
+})

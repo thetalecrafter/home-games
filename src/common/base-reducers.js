@@ -1,6 +1,6 @@
-import { SET_LOADING_CODE } from './constants'
+const { SET_LOADING_CODE } = require('./constants')
 
-export default {
+module.exports = {
   isLoadingCode (state = false, action) {
     switch (action.type) {
       case SET_LOADING_CODE:

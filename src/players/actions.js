@@ -1,10 +1,10 @@
-import {
+const {
   CREATE_PLAYER,
   UPDATE_PLAYER,
   DELETE_PLAYER
-} from './constants'
+} = require('./constants')
 
-export default {
+module.exports = {
   create (player) {
     return { type: CREATE_PLAYER, player }
   },

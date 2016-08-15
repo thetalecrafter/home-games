@@ -1,5 +1,5 @@
-import intercept from './reducer'
+const intercept = require('./reducer')
 
-export default function ({ store }) {
+module.exports = function ({ store }) {
   store.addSubReducers({ intercept })
 }

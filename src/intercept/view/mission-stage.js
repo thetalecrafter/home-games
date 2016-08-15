@@ -1,31 +1,26 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import SpyMissionStage from './mission-stage/spy'
-import DoubleMissionStage from './mission-stage/double'
-import MoleMissionStage from './mission-stage/mole'
-import StandbyMissionStage from './mission-stage/standby'
-import { roles } from '../constants'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const SpyMissionStage = require('./mission-stage/spy')
+const DoubleMissionStage = require('./mission-stage/double')
+const MoleMissionStage = require('./mission-stage/mole')
+const StandbyMissionStage = require('./mission-stage/standby')
+const { roles } = require('../constants')
 
-export default class MissionStage extends React.Component {
-  static displayName = 'MissionStage'
+module.exports = createClass({
+  displayName: 'MissionStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    intercept: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.intercept = this.intercept.bind(this)
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    intercept: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   getView (isOnTeam, role) {
     if (isOnTeam) {
@@ -36,13 +31,13 @@ export default class MissionStage extends React.Component {
       }
     }
     return StandbyMissionStage
-  }
+  },
 
   intercept (value) {
     const { sid, game, intercept } = this.props
     const { id } = game.players.find((player) => player.sid === sid)
     intercept({ id }, value)
-  }
+  },
 
   render () {
     const { sid, game } = this.props
@@ -53,19 +48,19 @@ export default class MissionStage extends React.Component {
     const count = roster.length - Object.keys(results).length
     const View = this.getView(isOnTeam, role)
     return (
-      <div>
-        <h2>{ formatMessage('Intercept Enemy Message') }</h2>
-        <View result={ results[id] } vote={ this.intercept } />
-        <span>
-          { formatMessage(
+      h('div', null,
+        h('h2', null, formatMessage('Intercept Enemy Message')),
+        h(View, { result: results[id], vote: this.intercept }),
+        h('span', null,
+          formatMessage(
             `{ count, plural,
                 one {Waiting for # player...}
               other {Waiting for # players...}
             }`,
             { count }
-          ) }
-        </span>
-      </div>
+          )
+        )
+      )
     )
   }
-}
+})

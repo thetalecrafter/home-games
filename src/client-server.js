@@ -1,16 +1,16 @@
 global.fetch = require('node-fetch') // add fetch global
 
-import formatMessage from 'format-message'
-import generateId from 'format-message-generate-id/underscored_crc32'
-import { Router } from 'express'
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import { createServerStore as createStore } from './common/base-store'
-import createRouter from './common/base-router'
+const formatMessage = require('format-message')
+const generateId = require('format-message-generate-id/underscored_crc32')
+const { Router } = require('express')
+const { createElement: h } = require('react')
+const ReactDOMServer = require('react-dom/server')
+const { createServerStore: createStore } = require('./common/base-store')
+const createRouter = require('./common/base-router')
 
 formatMessage.setup({ generateId })
 
-export default Router()
+module.exports = Router()
   .get('/', (_, res) => res.redirect('/en/'))
   .get('/*', client)
 
@@ -65,27 +65,27 @@ function renderHtml ({ view, request, response, store }) {
   formatMessage.setup({ locale })
 
   const html = '<!doctype html>\n' + ReactDOMServer.renderToStaticMarkup(
-    <html lang={ locale }>
-      <head>
-        <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <title>{ title }</title>
-        <link rel='stylesheet' href='/client.css' />
-        <script
-          type='application/json'
-          id='StoreState'
-          dangerouslySetInnerHTML={ {
-            __html: '\n' + JSON.stringify(state) + '\n'
-          } }
-        />
-        <script defer src={ '/client.js' } />
-      </head>
-      <body>
-        <div id='root' dangerouslySetInnerHTML={ {
+    h('html', { lang: locale },
+      h('head', null,
+        h('meta', { charSet: 'utf-8' }),
+        h('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
+        h('title', null, title),
+        h('link', { rel: 'stylesheet', href: '/client.css' }),
+        h('script', {
+          type: 'application/json',
+          id: 'StoreState',
+          dangerouslySetInnerHTML: {
+            __html: `\n${JSON.stringify(state)}\n`
+          }
+        }),
+        h('script', { defer: true, src: '/client.js' })
+      ),
+      h('body', null,
+        h('div', { id: 'root', dangerouslySetInnerHTML: {
           __html: ReactDOMServer.renderToString(view)
-        } } />
-      </body>
-    </html>
+        } })
+      )
+    )
   )
 
   return response

@@ -1,25 +1,22 @@
-import React from 'react'
-import Router from 'middle-router'
-import { bindActionCreators } from 'redux'
-import loadReducer from './load-reducer'
-import loadState from './load-state'
-import actionCreators from './actions'
-import View from './view'
+const { createElement: h } = require('react')
+const Router = require('middle-router')
+const { bindActionCreators } = require('redux')
+const loadReducer = require('./load-reducer')
+const loadState = require('./load-state')
+const actionCreators = require('./actions')
+const View = require('./view')
 
-export default Router()
+module.exports = Router()
   .use(loadReducer, loadState)
 
   .use('/', ({ resolve, store }) => {
     const actions = bindActionCreators(actionCreators, store.dispatch)
     resolve(() => {
       const { witchHunt, players, config: { sid } } = store.getState()
-      return (
-        <View
-          sid={ sid }
-          game={ witchHunt }
-          players={ players }
-          { ...actions }
-        />
-      )
+      return h(View, Object.assign({
+        sid: sid,
+        game: witchHunt,
+        players: players
+      }, actions))
     })
   })

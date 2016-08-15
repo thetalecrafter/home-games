@@ -1,56 +1,45 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import VoteResults from './vote-results'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const VoteResults = require('./vote-results')
 
-export default class ApprovalStage extends React.Component {
-  static displayName = 'ApprovalStage'
+module.exports = createClass({
+  displayName: 'ApprovalStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    vote: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.approve = this.approve.bind(this)
-    this.reject = this.reject.bind(this)
-    this.isPlayerSelected = this.isPlayerSelected.bind(this)
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    vote: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   approve () {
     const { sid, game, vote } = this.props
     const currentPlayer = game.players.find((player) => player.sid === sid)
     vote(currentPlayer, true)
-  }
+  },
 
   reject () {
     const { sid, game, vote } = this.props
     const currentPlayer = game.players.find((player) => player.sid === sid)
     vote(currentPlayer, false)
-  }
+  },
 
   isPlayerSelected (player) {
     const { game } = this.props
     const { missions, currentMission } = game
     const mission = missions[currentMission]
     return mission.roster.includes(player.id)
-  }
+  },
 
   renderPlayer (player) {
-    return (
-      <li key={ player.id }>
-        { player.name }
-      </li>
-    )
-  }
+    return h('li', { key: player.id }, player.name)
+  },
 
   render () {
     const { game } = this.props
@@ -60,40 +49,38 @@ export default class ApprovalStage extends React.Component {
     const count = players.length - Object.keys(votes).length
 
     return (
-      <div>
-        <h2>{ formatMessage('Team Approval') }</h2>
-        <ul>
-        { players.filter(this.isPlayerSelected).map(this.renderPlayer) }
-        </ul>
-        <div>
-          { formatMessage('Current Votes:') }
-          <VoteResults players={ players } votes={ votes } />
-          <span>
-            { formatMessage(`Waiting for {
+      h('div', null,
+        h('h2', null, formatMessage('Team Approval')),
+        h('ul', null,
+          players.filter(this.isPlayerSelected).map(this.renderPlayer)
+        ),
+        h('div', null,
+          formatMessage('Current Votes:'),
+          h(VoteResults, { players, votes }),
+          h('span', null,
+            formatMessage(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}
               }...`, { count })
-            }
-          </span>
-        </div>
-        <span>
-          <button onClick={ this.approve }>
-            { formatMessage('Approve Team') }
-          </button>
-          <button onClick={ this.reject }>
-            { formatMessage('Reject Team') }
-          </button>
-        </span>
-        { mission.votes &&
-          <p>
-            { formatMessage(
+          )
+        ),
+        h('span', null,
+          h('button', { onClick: this.approve },
+            formatMessage('Approve Team')
+          ),
+          h('button', { onClick: this.reject },
+            formatMessage('Reject Team')
+          )
+        ),
+        mission.votes &&
+          h('p', null,
+            formatMessage(
               'Rejected teams: { count }',
               { count: mission.rejectedRosters }
-            ) }
-          </p>
-        }
-      </div>
+            )
+          )
+      )
     )
   }
-}
+})

@@ -1,23 +1,29 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import Shell from '../common/shell'
-import resolveUrl from '../common/resolve-url'
+const { createElement: h } = require('react')
+const formatMessage = require('format-message')
+const Shell = require('../common/shell')
+const resolveUrl = require('../common/resolve-url')
 
 const Home = () =>
-  <Shell>
-    <h1>{ formatMessage('Home Games') }</h1>
-    <ul>
-      <li>
-        <a href={ resolveUrl('/players/') }>{ formatMessage('Manage Players') }</a>
-      </li>
-      <li>
-        <a href={ resolveUrl('/witch-hunt/') }>{ formatMessage('Witch Hunt') }</a>
-      </li>
-      <li>
-        <a href={ resolveUrl('/intercept/') }>{ formatMessage('Intercept') }</a>
-      </li>
-    </ul>
-  </Shell>
+  h(Shell, null,
+    h('h1', null, formatMessage('Home Games')),
+    h('ul', null,
+      h('li', null,
+        h('a', { href: resolveUrl('/players/') },
+          formatMessage('Manage Players')
+        )
+      ),
+      h('li', null,
+        h('a', { href: resolveUrl('/witch-hunt/') },
+          formatMessage('Witch Hunt')
+        )
+      ),
+      h('li', null,
+        h('a', { href: resolveUrl('/intercept/') },
+          formatMessage('Intercept')
+        )
+      )
+    )
+  )
 
 Home.displayName = 'Home'
-export default Home
+module.exports = Home

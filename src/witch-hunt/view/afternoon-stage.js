@@ -1,23 +1,23 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import ReadyButton from './ready-button'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const ReadyButton = require('./ready-button')
 
-export default class AfternoonStage extends React.Component {
-  static displayName = 'AfternoonStage'
+module.exports = createClass({
+  displayName: 'AfternoonStage',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    vote: React.PropTypes.func.isRequired,
-    confirm: React.PropTypes.func.isRequired
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    vote: PropTypes.func.isRequired,
+    confirm: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   render () {
     const { sid, game, vote, confirm } = this.props
@@ -36,86 +36,80 @@ export default class AfternoonStage extends React.Component {
     let victimResult
     if (victimDied) {
       victimResult = (victimId === currentPlayer.id)
-        ? <div>
-          <h3>{ formatMessage('You have died') }</h3>
-          <p>
-            { formatMessage(`To prove your innocence, you were thrown into the
+        ? h('div', null,
+          h('h3', null, formatMessage('You have died')),
+          h('p', null,
+            formatMessage(`To prove your innocence, you were thrown into the
               lake. You struggled and flailed, but you quickly sank into water
               and drowned. After your body was pulled from the lake, you were
               given a proper christian burial.`)
-            }
-          </p>
-        </div>
-        : <p>
-          { formatMessage(`As a trial, you all tossed { name } into the lake.
+          )
+        )
+        : h('p', null,
+          formatMessage(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, but quickly sank into water and
             drowned. After the body was pulled from the lake, you gave { name }
             a proper christian burial.`, { name: victimName })
-          }
-        </p>
+        )
     } else {
       victimResult = (victimId === currentPlayer.id)
-        ? <p>
-          { formatMessage(`To prove your innocence, you were thrown into the
+        ? h('p', null,
+          formatMessage(`To prove your innocence, you were thrown into the
             lake. You struggled and flailed, and managed to stay afloat. In
             horror, the others watched you exert inhuman power in returning to
             the shore.`)
-          }
-        </p>
-        : <p>
-          { formatMessage(`As a trial, you all tossed { name } into the lake.
+        )
+        : h('p', null,
+          formatMessage(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, and managed to stay afloat. In
             horror, you watched the inhuman power { name } exerted to return to
             the shore.`, { name: victimName })
-          }
-        </p>
+        )
     }
 
     return (
-      <div>
-        <h2>{ formatMessage('Afternoon') }</h2>
-        { victimResult }
-        { !victimDied && victimId !== currentPlayer.id &&
-          <div>
-            <p>
-              { formatMessage(`Does this prove to you that { name } is a witch,
+      h('div', null,
+        h('h2', null, formatMessage('Afternoon')),
+        victimResult,
+        !victimDied && victimId !== currentPlayer.id &&
+          h('div', null,
+            h('p', null,
+              formatMessage(`Does this prove to you that { name } is a witch,
                 and should now be executed?`, { name: victimName })
-              }
-            </p>
-            <label>
-              <input
-                type='radio'
-                name='vote'
-                checked={ currentPlayer.vote === true }
-                disabled={ disabled }
-                onChange={ disabled ? null : () => vote({ id: currentPlayer.id, vote: true }) } />
-              { formatMessage('Yes') }
-            </label>
-            <label>
-              <input
-                type='radio'
-                name='vote'
-                checked={ currentPlayer.vote === false }
-                disabled={ disabled }
-                onChange={ disabled ? null : () => vote({ id: currentPlayer.id, vote: false }) } />
-              { formatMessage('No') }
-            </label>
-          </div>
-        }
-        { !victimDied && victimId === currentPlayer.id &&
-          <p>
-            { formatMessage(`Your community will now decide your fate. Having
+            ),
+            h('label', null,
+              h('input', {
+                type: 'radio',
+                name: 'vote',
+                checked: currentPlayer.vote === true,
+                disabled: disabled,
+                onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: true })
+              }),
+              formatMessage('Yes')
+            ),
+            h('label', null,
+              h('input', {
+                type: 'radio',
+                name: 'vote',
+                checked: currentPlayer.vote === false,
+                disabled: disabled,
+                onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: false })
+              }),
+              formatMessage('No')
+            )
+          ),
+        !victimDied && victimId === currentPlayer.id &&
+          h('p', null,
+            formatMessage(`Your community will now decide your fate. Having
               survived the trial, they undoubtedly will assume you are a witch.`)
-            }
-          </p>
-        }
-        <ReadyButton
-          player={ currentPlayer }
-          game={ game }
-          disabled={ needsToVote }
-          confirm={ confirm }
-        />
-      </div>
+          ),
+        h(ReadyButton, {
+          player: currentPlayer,
+          game,
+          disabled: needsToVote,
+          confirm
+        })
+      )
     )
   }
-}
+})

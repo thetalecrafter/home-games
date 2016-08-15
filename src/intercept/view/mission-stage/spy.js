@@ -1,52 +1,46 @@
-import React from 'react'
-import formatMessage from 'format-message'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
 
-export default class SpyMissionStage extends React.Component {
-  static displayName = 'SpyMissionStage'
+module.exports = createClass({
+  displayName: 'SpyMissionStage',
 
-  static propTypes = {
-    result: React.PropTypes.bool,
-    vote: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.vote = this.vote.bind(this)
-  }
+  propTypes: {
+    result: PropTypes.bool,
+    vote: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return nextProps.result !== this.props.result
-  }
+  },
 
   vote () {
     this.props.vote(true)
-  }
+  },
 
   render () {
     const { result } = this.props
     return (
-      <div>
-        <p>
-          { formatMessage(
+      h('div', null,
+        h('p', null,
+          formatMessage(
             `As a Spy, you need to intercept messages to win, you cannot
             sabotage the mission.`
-          ) }
-        </p>
-        { result == null
-          ? <div>
-            <button onClick={ this.vote }>
-              { formatMessage('Intercept Message') }
-            </button>
-            <button disabled>
-              { formatMessage('Sabotage Mission') }
-            </button>
-          </div>
+          )
+        ),
+        result == null
+          ? h('div', null,
+            h('button', { onClick: this.vote },
+              formatMessage('Intercept Message')
+            ),
+            h('button', { disabled: true },
+              formatMessage('Sabotage Mission')
+            )
+          )
           : result &&
-            <p>
-              { formatMessage('You have successfully completed your mission.') }
-            </p>
-        }
-      </div>
+            h('p', null,
+              formatMessage('You have successfully completed your mission.')
+            )
+      )
     )
   }
-}
+})

@@ -1,5 +1,5 @@
-import players from './reducer'
+const players = require('./reducer')
 
-export default function ({ store }) {
+module.exports = function ({ store }) {
   store.addSubReducers({ players })
 }

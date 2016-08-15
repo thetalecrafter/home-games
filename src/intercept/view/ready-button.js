@@ -1,14 +1,14 @@
-import React from 'react'
-import formatMessage from 'format-message'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
 
-export default class ReadyButton extends React.Component {
-  static displayName = 'ReadyButton'
+module.exports = createClass({
+  displayName: 'ReadyButton',
 
-  static propTypes = {
-    player: React.PropTypes.object.isRequired,
-    game: React.PropTypes.object.isRequired,
-    confirm: React.PropTypes.func
-  }
+  propTypes: {
+    player: PropTypes.object.isRequired,
+    game: PropTypes.object.isRequired,
+    confirm: PropTypes.func
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
@@ -16,32 +16,30 @@ export default class ReadyButton extends React.Component {
       nextProps.game !== this.props.game ||
       nextProps.confirm !== this.props.confirm
     )
-  }
+  },
 
   getNotReadyCount (game) {
     return game.players.length - Object.keys(game.votes).length
-  }
+  },
 
   render () {
     const { game, confirm } = this.props
     const count = this.getNotReadyCount(game)
 
     return (
-      <div>
-        { !confirm
-          ? <span>
-            { formatMessage(`Waiting for {
+      h('div', null,
+        confirm
+          ? h('button', { onClick: confirm },
+            formatMessage('I’m Ready')
+          )
+          : h('span', null,
+            formatMessage(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}
               }...`, { count })
-            }
-          </span>
-          : <button onClick={ confirm }>
-            { formatMessage('I’m Ready') }
-          </button>
-        }
-      </div>
+          )
+      )
     )
   }
-}
+})

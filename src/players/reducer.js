@@ -1,14 +1,14 @@
-import compare from '../../lib/natural-compare'
-import {
+const compare = require('../../lib/natural-compare')
+const {
   REPLACE_PLAYERS,
   CREATE_PLAYER,
   UPDATE_PLAYER,
   DELETE_PLAYER
-} from './constants'
+} = require('./constants')
 
 const initialState = []
 
-export default function players (state = initialState, action) {
+module.exports = function players (state = initialState, action) {
   switch (action.type) {
 
     case REPLACE_PLAYERS:
@@ -27,7 +27,7 @@ export default function players (state = initialState, action) {
       return (state
         .map((player) => (
           (player.id !== action.player.id) ? player
-          : { ...player, ...action.player }
+          : Object.assign({}, player, action.player)
         ))
         .sort((a, b) => compare(a.name, b.name))
       )

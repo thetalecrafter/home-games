@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import persist from '../common/persist'
-import { events } from '../dispatch-router'
-import { REPLACE_PLAYERS } from './constants'
-import reducer from './reducer'
+const { Router } = require('express')
+const persist = require('../common/persist')
+const { events } = require('../dispatch-router')
+const { REPLACE_PLAYERS } = require('./constants')
+const reducer = require('./reducer')
 
 let players = []
 persist.read('players')
@@ -20,8 +20,8 @@ persist.subscribe('dispatch', (action) => {
 })
 
 events.on('connect', ({ send }) => {
-  send(JSON.stringify({ type: REPLACE_PLAYERS, players }))
+  send({ type: REPLACE_PLAYERS, players })
 })
 
-export default Router()
+module.exports = Router()
   .get('/state', (req, res, next) => res.send(players))

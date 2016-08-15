@@ -1,23 +1,22 @@
-import React from 'react'
-import formatMessage from 'format-message'
+const { createClass, createElement: h } = require('react')
+const formatMessage = require('format-message')
 
-export default class StandbyMissionStage extends React.Component {
-  static displayName = 'StandbyMissionStage'
+module.exports = createClass({
+  displayName: 'StandbyMissionStage',
 
-  static propTypes = {
-  }
+  propTypes: {},
 
   shouldComponentUpdate (nextProps) {
     return false
-  }
+  },
 
   render () {
     return (
-      <p>
-        { formatMessage(
+      h('p', null,
+        formatMessage(
           'Please wait while your comrades complete their assignment.'
-        ) }
-      </p>
+        )
+      )
     )
   }
-}
+})

@@ -1,13 +1,10 @@
 {
-  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "es6": true
   },
   "ecmaFeatures": {
-    "jsx": true,
-    "modules": true,
-    "experimentalObjectRestSpread": true
+    "modules": true
   },
   "plugins": [
     "format-message"

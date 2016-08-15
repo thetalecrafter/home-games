@@ -1,4 +1,4 @@
-import { roles, stages } from './constants'
+const { roles, stages } = require('./constants')
 
 const rosterSizes = [
   [ 2, 3, 2, 3, 3 ],
@@ -21,10 +21,10 @@ const doubleAgents = [
 const twoFailsLimit = 7
 const twoFailsIndex = 3
 
-export default function newGame (state) {
-  const players = state.players.map((player) => ({
-    ...player, role: roles.SPY
-  }))
+module.exports = function newGame (state) {
+  const players = state.players.map((player) =>
+    Object.assign({}, player, { role: roles.SPY })
+  )
   const count = players.length
   const index = count - 5
 
@@ -63,12 +63,11 @@ export default function newGame (state) {
     }
   }
 
-  return {
-    ...state,
+  return Object.assign({}, state, {
     stage: stages.INTRO,
     players,
     missions,
     currentMission: 0,
     currentLeader: Math.floor(Math.random() * count)
-  }
+  })
 }

@@ -10,7 +10,6 @@ module.exports = {
   context: path.join(__dirname, 'src'),
   entry: {
     client: [
-      'babel-polyfill',
       'whatwg-fetch',
       'eventsource-polyfill',
       './client-client.js'
@@ -18,12 +17,6 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /\.jsx?$/i,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: { cacheDirectory: true }
-      },
       {
         test: /\.json$/i,
         loader: 'json'

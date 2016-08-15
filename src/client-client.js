@@ -1,7 +1,7 @@
-import ReactDOM from 'react-dom'
-import { createClientStore as createStore } from './common/base-store'
-import createRouter from './common/base-router'
-import 'elemental/less/elemental.less'
+const ReactDOM = require('react-dom')
+const { createClientStore: createStore } = require('./common/base-store')
+const createRouter = require('./common/base-router')
+require('elemental/less/elemental.less')
 
 const root = document.getElementById('root')
 const script = document.getElementById('StoreState') || {}
@@ -10,7 +10,7 @@ const store = createStore(state)
 let view
 
 function draw () {
-  ReactDOM.render(view(), root)
+  if (view) ReactDOM.render(view(), root)
 }
 
 const router = createRouter({
@@ -21,14 +21,12 @@ const router = createRouter({
     router.replace(url)
   }
 }).on('route', (args, routing) => {
-  let subscribed = !!view
   routing
     .then((value) => {
-      if (value) {
-        view = value
-        draw()
-        if (!subscribed) store.subscribe(draw)
-      }
+      view = value
+      draw()
     })
     .catch((err) => console.error(err))
 }).start()
+
+store.subscribe(draw)

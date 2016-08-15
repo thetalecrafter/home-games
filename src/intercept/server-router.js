@@ -1,9 +1,9 @@
-import { Router } from 'express'
-import persist from '../common/persist'
-import { events } from '../dispatch-router'
-import { TRANSITION, REPLACE_GAME } from './constants'
-import reducer from './reducer'
-import transition from './transition'
+const { Router } = require('express')
+const persist = require('../common/persist')
+const { events } = require('../dispatch-router')
+const { TRANSITION, REPLACE_GAME } = require('./constants')
+const reducer = require('./reducer')
+const transition = require('./transition')
 
 const initialState = {
   stage: null,
@@ -44,8 +44,8 @@ events.on('connect', ({ request, send }) => {
   const isPlaying = !!state.players.find((player) => player.sid === sid)
   if (!isPlaying) return
 
-  send(JSON.stringify({ type: REPLACE_GAME, state }))
+  send({ type: REPLACE_GAME, state })
 })
 
-export default Router()
+module.exports = Router()
   .get('/state', (req, res, next) => res.send(state))

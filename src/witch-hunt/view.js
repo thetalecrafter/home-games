@@ -1,32 +1,27 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import { stages } from './constants'
-import resolve from '../common/resolve-url'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const { stages } = require('./constants')
+const resolve = require('../common/resolve-url')
 
-import AddPlayerStage from './view/add-player-stage'
-import IntroStage from './view/intro-stage'
-import NightStage from './view/night-stage'
-import MorningStage from './view/morning-stage'
-import AfternoonStage from './view/afternoon-stage'
-import EveningStage from './view/evening-stage'
-import EndStage from './view/end-stage'
-import GameDescription from './view/description'
-import './view/view.css'
+const AddPlayerStage = require('./view/add-player-stage')
+const IntroStage = require('./view/intro-stage')
+const NightStage = require('./view/night-stage')
+const MorningStage = require('./view/morning-stage')
+const AfternoonStage = require('./view/afternoon-stage')
+const EveningStage = require('./view/evening-stage')
+const EndStage = require('./view/end-stage')
+const GameDescription = require('./view/description')
+require('./view/view.css')
 
-export default class WitchHuntView extends React.Component {
-  static displayName = 'WitchHuntView'
+module.exports = createClass({
+  displayName: 'WitchHuntView',
 
-  static propTypes = {
-    sid: React.PropTypes.string.isRequired,
-    game: React.PropTypes.object.isRequired,
-    players: React.PropTypes.array.isRequired,
-    end: React.PropTypes.func.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.end = this.end.bind(this)
-  }
+  propTypes: {
+    sid: PropTypes.string.isRequired,
+    game: PropTypes.object.isRequired,
+    players: PropTypes.array.isRequired,
+    end: PropTypes.func.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return (
@@ -34,7 +29,7 @@ export default class WitchHuntView extends React.Component {
       nextProps.game !== this.props.game ||
       nextProps.sid !== this.props.sid
     )
-  }
+  },
 
   getView (isPlaying, stage) {
     if (!isPlaying && stage !== stages.ADD_PLAYERS) {
@@ -50,7 +45,7 @@ export default class WitchHuntView extends React.Component {
       case stages.END: return EndStage
       default: return GameDescription
     }
-  }
+  },
 
   end () {
     const message = (
@@ -61,7 +56,7 @@ export default class WitchHuntView extends React.Component {
     if (window.confirm(message)) {
       this.props.end()
     }
-  }
+  },
 
   render () {
     const { sid, game } = this.props
@@ -70,21 +65,19 @@ export default class WitchHuntView extends React.Component {
     const Stage = this.getView(isPlaying, stage)
 
     return (
-      <div className={ 'WitchHuntView u-chunk WitchHuntView--' + stage }>
-        <a href={ resolve('/') }>
-          &laquo; { formatMessage('Home') }
-        </a>
-        <h1>{ formatMessage('Witch Hunt') }</h1>
-        <Stage { ...this.props } />
-        { isPlaying &&
-          <button onClick={ this.end } className='WitchHuntView-abandon'>
-            { stage === stages.END
+      h('div', { className: 'WitchHuntView u-chunk WitchHuntView--' + stage },
+        h('a', { href: resolve('/') },
+          `« ${formatMessage('Home')}`
+        ),
+        h('h1', null, formatMessage('Witch Hunt')),
+        h(Stage, this.props),
+        isPlaying &&
+          h('button', { onClick: this.end, className: 'WitchHuntView-abandon' },
+            stage === stages.END
               ? formatMessage('End Game')
               : formatMessage('Abandon Game')
-            }
-          </button>
-        }
-      </div>
+          )
+      )
     )
   }
-}
+})

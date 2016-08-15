@@ -1,17 +1,17 @@
-import React from 'react'
-import formatMessage from 'format-message'
-import { roles } from '../constants'
+const { createClass, createElement: h, PropTypes } = require('react')
+const formatMessage = require('format-message')
+const { roles } = require('../constants')
 
-export default class EndStage extends React.Component {
-  static displayName = 'EndStage'
+module.exports = createClass({
+  displayName: 'EndStage',
 
-  static propTypes = {
-    game: React.PropTypes.object.isRequired
-  }
+  propTypes: {
+    game: PropTypes.object.isRequired
+  },
 
   shouldComponentUpdate (nextProps) {
     return nextProps.game !== this.props.game
-  }
+  },
 
   didWin (game, player) {
     if (player.isDead) return false
@@ -19,39 +19,34 @@ export default class EndStage extends React.Component {
     return game.players.every(
       (player) => player.isDead || player.role === roles.PURITAN
     )
-  }
+  },
 
   render () {
     const { game } = this.props
     return (
-      <div>
-        <h2>{ formatMessage('Epilogue') }</h2>
-        <table>
-        { game.players.map((player) =>
-          <tr key={ player.id }>
-            <th>{ player.name }</th>
-            <td>
-              { player.role === roles.WITCH
+      h('div', null,
+        h('h2', null, formatMessage('Epilogue')),
+        h('table', null, game.players.map((player) =>
+          h('tr', { key: player.id },
+            h('th', null, player.name),
+            h('td', null,
+              player.role === roles.WITCH
                 ? formatMessage('Witch')
                 : formatMessage('Puritan')
-              }
-            </td>
-            <td>
-              { player.isDead
+            ),
+            h('td', null,
+              player.isDead
                 ? formatMessage('Died')
                 : formatMessage('Survived')
-              }
-            </td>
-            <td>
-              { this.didWin(game, player)
+            ),
+            h('td', null,
+              this.didWin(game, player)
                 ? formatMessage('Won')
                 : formatMessage('Lost')
-              }
-            </td>
-          </tr>
-        ) }
-        </table>
-      </div>
+            )
+          )
+        ))
+      )
     )
   }
-}
+})

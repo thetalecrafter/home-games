@@ -1,13 +1,13 @@
-import express from 'express'
-import router from './server-router'
-import bodyParser from 'body-parser'
-import cookieUtil from 'cookie'
-import signature from 'cookie-signature'
-import session from 'express-session'
-import compression from 'compression'
-import redis from 'redis'
-import RedisStore from 'connect-redis'
-import crypto from 'crypto'
+const express = require('express')
+const router = require('./server-router')
+const bodyParser = require('body-parser')
+const cookieUtil = require('cookie')
+const signature = require('cookie-signature')
+const session = require('express-session')
+const compression = require('compression')
+const redis = require('redis')
+const RedisStore = require('connect-redis')
+const crypto = require('crypto')
 
 const cookieName = 'player'
 const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
@@ -48,4 +48,4 @@ const app = express()
   .use(compression())
   .use(router)
 
-export default app
+module.exports = app

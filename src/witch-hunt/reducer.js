@@ -1,5 +1,5 @@
-import compare from '../../lib/natural-compare'
-import {
+const compare = require('../../lib/natural-compare')
+const {
   stages,
 
   REPLACE_GAME,
@@ -10,11 +10,11 @@ import {
   VOTE,
   CONFIRM,
   END_GAME
-} from './constants'
+} = require('./constants')
 
 const initialState = { players: [] }
 
-export default function witchHunt (state = initialState, action) {
+module.exports = function witchHunt (state = initialState, action) {
   switch (action.type) {
 
     case REPLACE_GAME:
@@ -29,23 +29,21 @@ export default function witchHunt (state = initialState, action) {
       }
 
     case START_GAME:
-      return {
-        ...state,
-        players: state.players.map((player) => ({
-          ...player, isReady: true
-        }))
-      }
+      return Object.assign({}, state, {
+        players: state.players.map((player) =>
+          Object.assign({}, player, { isReady: true })
+        )
+      })
 
     case ADD_PLAYER: {
       const isPlaying = state.players.some(({ id }) => id === action.player.id)
       if (isPlaying) return state
-      return {
-        ...state,
+      return Object.assign({}, state, {
         players: (state.players
           .concat(action.player)
           .sort((a, b) => compare(a.name, b.name))
         )
-      }
+      })
     }
 
     case VOTE: {
@@ -54,10 +52,10 @@ export default function witchHunt (state = initialState, action) {
         if (player.id !== action.player.id) return player
         if (player.vote === action.player.vote) return player
         isChanged = true
-        return { ...player, vote: action.player.vote }
+        return Object.assign({}, player, { vote: action.player.vote })
       })
       if (!isChanged) return state
-      return { ...state, players }
+      return Object.assign({}, state, { players })
     }
 
     case CONFIRM: {
@@ -66,10 +64,10 @@ export default function witchHunt (state = initialState, action) {
         if (player.id !== action.player.id) return player
         if (player.isReady) return player
         isChanged = true
-        return { ...player, isReady: true }
+        return Object.assign({}, player, { isReady: true })
       })
       if (!isChanged) return state
-      return { ...state, players }
+      return Object.assign({}, state, { players })
     }
 
     case END_GAME:

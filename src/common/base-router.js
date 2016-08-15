@@ -1,15 +1,15 @@
 // allow client code-split to just sync require on server
 if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(require) }
 
-import Router from 'middle-router'
-import jitRouter from './jit-router'
+const Router = require('middle-router')
+const jitRouter = require('./jit-router')
 
-import resolveLocale from './resolve-locale'
-import homeRouter from '../home/client-router'
-import loadPlayerReducer from '../players/load-reducer'
-import loadPlayerState from '../players/load-state'
+const resolveLocale = require('./resolve-locale')
+const homeRouter = require('../home/client-router')
+const loadPlayerReducer = require('../players/load-reducer')
+const loadPlayerState = require('../players/load-state')
 
-export default function createRouter (options) {
+module.exports = function createRouter (options) {
   const router = Router()
     .on('route', (args) => {
       Object.assign(args, options)
