@@ -1,5 +1,5 @@
 const ReactDOM = require('react-dom')
-const { createClientStore: createStore } = require('./common/base-store')
+const createStore = require('./common/base-store').createClientStore
 const createRouter = require('./common/base-router')
 require('elemental/less/elemental.less')
 

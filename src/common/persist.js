@@ -1,7 +1,8 @@
 const redis = require('redis')
 const { EventEmitter } = require('events')
 
-const REDIS_SOCKET = process.env.REDIS_SOCKET
+const REDIS_SOCKET = process.env.REDIS_SOCKET ||
+  (process.env.REDIS_SOCKET = '/tmp/redis.home-games.sock')
 const rwClient = redis.createClient(REDIS_SOCKET)
 const subClient = redis.createClient(REDIS_SOCKET)
 const pubClient = redis.createClient(REDIS_SOCKET)

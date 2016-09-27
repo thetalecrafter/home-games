@@ -51,8 +51,8 @@ module.exports = {
       }
     })
   ].concat(!debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
+    new webpack.optimize.DedupePlugin()/*,
+    new webpack.optimize.UglifyJsPlugin({ // doesn't support ES6 yet :(
       compress: {
         screw_ie8: true, // please don't use IE8
         unsafe: true,
@@ -61,7 +61,7 @@ module.exports = {
       mangle: {
         screw_ie8: true
       }
-    })
+    })*/
   ]),
   postcss: function (webpack) {
     return [

@@ -20,16 +20,16 @@ module.exports = function createRouter (options) {
     .use(loadPlayerReducer, loadPlayerState)
 
     .use('/:locale', resolveLocale, homeRouter, Router()
-      .use('/players', jitRouter((save) => require.ensure(
-        [], () => save(require('../players/client-router')), 'players'
+      .lazy('/players', jitRouter((save) => require.ensure(
+        [], function () { save(require('../players/client-router')) }, 'witch-hunt'
       )))
 
-      .use('/witch-hunt', jitRouter((save) => require.ensure(
-        [], () => save(require('../witch-hunt/client-router')), 'witch-hunt'
+      .lazy('/witch-hunt', jitRouter((save) => require.ensure(
+        [], function () { save(require('../witch-hunt/client-router')) }, 'witch-hunt'
       )))
 
-      .use('/intercept', jitRouter((save) => require.ensure(
-        [], () => save(require('../intercept/client-router')), 'intercept'
+      .lazy('/intercept', jitRouter((save) => require.ensure(
+        [], function () { save(require('../intercept/client-router')) }, 'intercept'
       )))
     )
   return router

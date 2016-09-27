@@ -84,7 +84,6 @@ module.exports = createClass({
   render () {
     const { player, isOpen, onClose } = this.props
     const { id, name, gender, avatar } = this.state
-    console.log('rendering modal', this.props)
     return (
       h(Modal, { isOpen, onCancel: onClose, backdropClosesModal: true },
         h(Form, { className: 'EditPlayerView', onSubmit: this.didSubmit },
