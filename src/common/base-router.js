@@ -19,7 +19,9 @@ module.exports = function createRouter (options) {
 
     .use(loadPlayerReducer, loadPlayerState)
 
-    .use('/:locale', resolveLocale, homeRouter, Router()
+    .use('/:locale/*', resolveLocale)
+
+    .use('/:locale', homeRouter, Router()
       .lazy('/players', jitRouter((save) => require.ensure(
         [], function () { save(require('../players/client-router')) }, 'witch-hunt'
       )))

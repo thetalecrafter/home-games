@@ -1,18 +1,13 @@
 global.fetch = require('node-fetch') // add fetch global
 
-const formatMessage = require('format-message')
-const generateId = require('format-message-generate-id/underscored_crc32')
 const { Router } = require('express')
-const { createElement: h } = require('react')
 const ReactDOMServer = require('react-dom/server')
 const { createServerStore: createStore } = require('./common/base-store')
 const createRouter = require('./common/base-router')
 
-formatMessage.setup({ generateId })
-
 module.exports = Router()
   .get('/', (_, res) => res.redirect('/en/'))
-  .get('/*', client)
+  .get('/:locale/*', client)
 
 function client (request, response, next) {
   const env = process.env
@@ -62,31 +57,20 @@ function renderHtml ({ view, request, response, store }) {
   const headers = http.headers || {}
   const title = state.title || ''
 
-  formatMessage.setup({ locale })
-
-  const html = '<!doctype html>\n' + ReactDOMServer.renderToStaticMarkup(
-    h('html', { lang: locale },
-      h('head', null,
-        h('meta', { charSet: 'utf-8' }),
-        h('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1' }),
-        h('title', null, title),
-        h('link', { rel: 'stylesheet', href: '/client.css' }),
-        h('script', {
-          type: 'application/json',
-          id: 'StoreState',
-          dangerouslySetInnerHTML: {
-            __html: `\n${JSON.stringify(state)}\n`
-          }
-        }),
-        h('script', { defer: true, src: '/client.js' })
-      ),
-      h('body', null,
-        h('div', { id: 'root', dangerouslySetInnerHTML: {
-          __html: ReactDOMServer.renderToString(view)
-        } })
-      )
-    )
-  )
+  const html = `<!doctype html>
+<html lang=${locale}>
+  <meta charset=utf-8 />
+  <meta name=viewport content="width=device-width, initial-scale=1" />
+  <title>${title}</title>
+  <link rel=stylesheet href=/client.css />
+  <script type=application/json id=StoreState>
+    ${JSON.stringify(state)}
+  </script>
+  <script defer src=/client.js></script>
+  <body>
+    <div id=root>${ReactDOMServer.renderToString(view)}</div>
+  </body>
+</html>`
 
   return response
     .status(statusCode)

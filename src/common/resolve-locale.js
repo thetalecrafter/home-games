@@ -3,20 +3,22 @@ if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(requi
 
 const lookupClosestLocale = require('lookup-closest-locale')
 const formatMessage = require('format-message')
+const generateId = require('format-message-generate-id/underscored_crc32')
 const resolveUrl = require('./resolve-url')
 
 const translations = {}
 const locales = {
-  en: () => new Promise((resolve) => require.ensure([], function (require) {
+  en: () => new Promise((resolve) => require.ensure([], function () {
     resolve(require('../../locales/en.json'))
   }, 'locale-en')),
-  pt: () => new Promise((resolve) => require.ensure([], function (require) {
+  pt: () => new Promise((resolve) => require.ensure([], function () {
     resolve(require('../../locales/pt.json'))
   }, 'locale-pt'))
 }
 
 formatMessage.setup({
   translations,
+  generateId,
   missingTranslation: 'ignore'
 })
 
