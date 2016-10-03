@@ -1,33 +1,44 @@
-const redis = require('redis')
 const { EventEmitter } = require('events')
+const { readFile, writeFile } = require('fs')
+const { join } = require('path')
 
-const REDIS_SOCKET = process.env.REDIS_SOCKET ||
-  (process.env.REDIS_SOCKET = '/tmp/redis.home-games.sock')
-const rwClient = redis.createClient(REDIS_SOCKET)
-const subClient = redis.createClient(REDIS_SOCKET)
-const pubClient = redis.createClient(REDIS_SOCKET)
 const events = new EventEmitter()
 events.setMaxListeners(Infinity)
 
-subClient.subscribe('persist')
-subClient.on('message', (channel, message) => {
-  if (channel !== 'persist') return
-  try {
-    let args = JSON.parse(message)
-    events.emit(...args)
-  } catch (err) {
-    console.error(err.message)
-  }
-})
+function getFilename (name) {
+  return join(__dirname, '../../data', name + '.json')
+}
+
+let data = new Map()
+let writes = new Map()
+
+function writeNext (queue, name) {
+  const filename = getFilename(name)
+  const index = queue.length - 1
+  const { content } = queue[index]
+  console.log('writing ', name)
+  writeFile(filename, JSON.stringify(content, null, '  '), (err) => {
+    if (err) console.error(err.message)
+    queue.splice(0, index + 1).forEach(err
+      ? ({ reject }) => reject(err)
+      : ({ resolve }) => resolve(content)
+    )
+    if (queue.length) writeNext(queue, name)
+  })
+}
 
 module.exports = {
   read (name) {
+    if (data.has(name)) return Promise.resolve(data.get(name))
+    const filename = getFilename(name)
     return new Promise((resolve, reject) => {
-      rwClient.get(name, (err, content) => {
-        if (err) return reject(err)
-        if (!content) return resolve(null)
+      console.log('reading ', name)
+      readFile(filename, 'utf8', (err, content) => {
+        if (err && err.code !== 'ENOENT') return reject(err)
         try {
-          resolve(JSON.parse(content))
+          const value = JSON.parse(content || 'null')
+          data.set(name, value)
+          resolve(value)
         } catch (err) {
           reject(err)
         }
@@ -36,15 +47,20 @@ module.exports = {
   },
 
   write (name, content) {
-    return new Promise((resolve, reject) => {
-      rwClient.set(name, JSON.stringify(content, null, '  '), (err) => {
-        if (err) {
-          console.error(err.message)
-          return reject(err)
-        }
-        resolve(content)
-      })
+    data.set(name, content)
+
+    const queue = writes.get(name) || []
+    writes.set(name, queue)
+
+    const record = { content }
+    record.promise = new Promise((resolve, reject) => {
+      record.resolve = resolve
+      record.reject = reject
     })
+    queue.push(record)
+    if (queue.length === 1) writeNext(queue, name)
+
+    return record.promise
   },
 
   subscribe (name, onNext) {
@@ -56,6 +72,6 @@ module.exports = {
   },
 
   publish (name, content) {
-    pubClient.publish('persist', JSON.stringify([ name, content ]))
+    events.emit(name, content)
   }
 }

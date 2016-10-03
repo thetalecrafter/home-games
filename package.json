@@ -5,12 +5,9 @@
   "dependencies": {
     "body-parser": "^1.13.3",
     "compression": "^1.6.1",
-    "connect-redis": "^3.0.0",
-    "cookie": "^0.3.1",
-    "cookie-signature": "^1.0.6",
+    "cookie-session": "^2.0.0-alpha.1",
     "elemental": "^0.6.1",
     "express": "^4.13.3",
-    "express-session": "^1.11.3",
     "format-message": "^5.0.0",
     "format-message-generate-id": "^5.0.0",
     "lookup-closest-locale": "^4.0.0",
@@ -19,7 +16,6 @@
     "react": "^15.0.1",
     "react-addons-css-transition-group": "^15.0.1",
     "react-dom": "^15.0.1",
-    "redis": "^2.6.0-1",
     "redux": "^3.0.0"
   },
   "devDependencies": {
@@ -57,7 +53,6 @@
     "build": "webpack --colors",
     "build:dev": "webpack -d --colors",
     "extract": "format-message extract -l en -o locales/en.json 'src/**/*.js'",
-    "redis": "redis-server redis.conf",
     "start": "node src/server.js",
     "watch": "webpack -d --colors --watch & node-dev src/server.js"
   },
