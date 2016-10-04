@@ -2,6 +2,7 @@ const { createElement: h, PropTypes } = require('react')
 const formatMessage = require('format-message')
 const Glyph = require('elemental/lib/components/Glyph')
 const resolve = require('../../common/resolve-url')
+const { compareName } = require('../../common/natural-compare')
 const Shell = require('../../common/shell')
 const Player = require('./list-item')
 require('./list.css')
@@ -13,7 +14,7 @@ const PlayersList = ({ players, selectedId, actions }) =>
     ),
     h('h2', null, formatMessage('Players')),
     h('ul', { className: 'PlayersList-list' },
-      players.map((player) => h(Player, {
+      players.sort(compareName()).map((player) => h(Player, {
         key: player.id,
         player,
         isSelected: player.id === selectedId,

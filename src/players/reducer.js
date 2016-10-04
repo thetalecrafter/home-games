@@ -1,4 +1,3 @@
-const compare = require('../../lib/natural-compare')
 const {
   REPLACE_PLAYERS,
   CREATE_PLAYER,
@@ -21,7 +20,7 @@ module.exports = function players (state = initialState, action) {
 
       return (state
         .concat(action.player)
-        .sort((a, b) => compare(a.name, b.name))
+        .sort()
       )
 
     case UPDATE_PLAYER:
@@ -30,7 +29,7 @@ module.exports = function players (state = initialState, action) {
           (player.id !== action.player.id) ? player
           : Object.assign({}, player, action.player)
         ))
-        .sort((a, b) => compare(a.name, b.name))
+        .sort()
       )
 
     case UPDATE_PLAYER_AVATAR: {

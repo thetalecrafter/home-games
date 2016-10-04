@@ -1,7 +1,7 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const formatMessage = require('format-message')
 const { roles } = require('../../constants')
-const PlayerPicker = require('../../../players/picker')
+const PlayerPicker = require('../../../players/view/picker')
 const ReadyButton = require('../ready-button')
 
 module.exports = createClass({

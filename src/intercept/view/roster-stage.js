@@ -1,6 +1,6 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const formatMessage = require('format-message')
-const PlayerPicker = require('../../players/picker-multi')
+const PlayerPicker = require('../../players/view/picker-multi')
 const VoteResults = require('./vote-results')
 
 module.exports = createClass({

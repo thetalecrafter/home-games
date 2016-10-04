@@ -1,4 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
+const { compareName } = require('../../common/natural-compare')
 
 module.exports = createClass({
   displayName: 'PlayerPickerMulti',
@@ -19,7 +20,7 @@ module.exports = createClass({
   render () {
     const { name = 'playerIds', players, isSelected, isDisabled, onChange } = this.props
     return (
-      h('div', null, players.map((player, index) =>
+      h('div', null, players.sort(compareName()).map((player, index) =>
         h('label', { key: player.id },
           h('input', {
             type: 'checkbox',

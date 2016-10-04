@@ -1,8 +1,9 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const formatMessage = require('format-message')
 const resolve = require('../../common/resolve-url')
-const PlayerPicker = require('../../players/picker')
+const PlayerPicker = require('../../players/view/picker')
 const { MIN_PLAYERS, MAX_PLAYERS } = require('../constants')
+const { compareName } = require('../../common/natural-compare')
 
 module.exports = createClass({
   displayName: 'AddPlayerStage',
@@ -88,7 +89,7 @@ module.exports = createClass({
               count
             })
         ),
-        h('ol', null, game.players.map((player) =>
+        h('ol', null, game.players.sort(compareName()).map((player) =>
           h('li', { key: player.id }, player.name)
         )),
         isPlaying &&

@@ -1,7 +1,7 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const formatMessage = require('format-message')
 const resolve = require('../../common/resolve-url')
-const PlayerPicker = require('../../players/picker')
+const PlayerPicker = require('../../players/view/picker')
 const { MIN_PLAYERS } = require('../constants')
 
 module.exports = createClass({

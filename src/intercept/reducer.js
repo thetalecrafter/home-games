@@ -1,4 +1,3 @@
-const compare = require('../../lib/natural-compare')
 const {
   stages,
 
@@ -50,7 +49,7 @@ module.exports = function intercept (state = initialState, action) {
       return Object.assign({}, state, {
         players: (state.players
           .concat(action.player)
-          .sort((a, b) => compare(a.name, b.name))
+          .sort()
         )
       })
     }

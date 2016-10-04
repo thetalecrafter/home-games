@@ -1,9 +1,5 @@
-let locale = 'en'
+const globals = require('globals')
 
-function resolve (path) {
-  return `/${locale}/${path.replace(/^\/+/, '')}`
+module.exports = function resolve (path) {
+  return `/${globals.getLocale()}/${path.replace(/^\/+/, '')}`
 }
-
-resolve.setLocale = (value) => (locale = value)
-
-module.exports = resolve

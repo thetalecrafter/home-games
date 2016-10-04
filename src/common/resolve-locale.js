@@ -4,7 +4,7 @@ if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(requi
 const lookupClosestLocale = require('lookup-closest-locale')
 const formatMessage = require('format-message')
 const generateId = require('format-message-generate-id/underscored_crc32')
-const resolveUrl = require('./resolve-url')
+const globals = require('./globals')
 
 const translations = {}
 const locales = {
@@ -33,7 +33,7 @@ module.exports = function resolveLocale ({ location, params, redirect, resolve }
   }
 
   formatMessage.setup({ locale })
-  resolveUrl.setLocale(locale)
+  globals.setLocale(locale)
   if (translations[locale]) return
   return locales[locale]().then((strings) => { translations[locale] = strings })
 }
