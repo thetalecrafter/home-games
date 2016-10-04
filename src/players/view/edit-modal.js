@@ -19,6 +19,7 @@ module.exports = createClass({
     player: PropTypes.object,
     create: PropTypes.func.isRequired,
     update: PropTypes.func.isRequired,
+    updateAvatar: PropTypes.func.isRequired,
     delete: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired
@@ -67,12 +68,17 @@ module.exports = createClass({
 
   didSubmit (evt) {
     evt.preventDefault()
+    const { player } = this.props
     let { id, name, gender, avatar } = this.state
     if (!id) {
       id = Math.random().toString(16).slice(2)
-      this.props.create({ id, name, gender, avatar })
+      this.props.create({ id, name, gender })
     } else {
-      this.props.update({ id, name, gender, avatar })
+      this.props.update({ id, name, gender })
+    }
+    if (player.avatar !== avatar) {
+      const lastUpdated = Math.floor(Date.now() / 1000)
+      this.props.updateAvatar({ id, avatar, lastUpdated })
     }
     this.props.onClose()
   },

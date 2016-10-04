@@ -1,56 +1,64 @@
 const { EventEmitter } = require('events')
-const { readFile, writeFile } = require('fs')
+const { readFile, writeFile, unlink } = require('fs')
 const { join } = require('path')
 
 const events = new EventEmitter()
 events.setMaxListeners(Infinity)
 
 function getFilename (name) {
-  return join(__dirname, '../../data', name + '.json')
+  return join(__dirname, '../../data', name)
 }
 
 let data = new Map()
 let writes = new Map()
 
-function writeNext (queue, name) {
-  const filename = getFilename(name)
+function writeNext (queue, filename) {
   const index = queue.length - 1
   const { content } = queue[index]
-  console.log('writing ', name)
-  writeFile(filename, JSON.stringify(content, null, '  '), (err) => {
+  console.log('writing', filename)
+  writeFile(filename, content, (err) => {
     if (err) console.error(err.message)
     queue.splice(0, index + 1).forEach(err
       ? ({ reject }) => reject(err)
       : ({ resolve }) => resolve(content)
     )
-    if (queue.length) writeNext(queue, name)
+    if (queue.length) writeNext(queue, filename)
   })
 }
 
 module.exports = {
   read (name) {
     if (data.has(name)) return Promise.resolve(data.get(name))
+    return this.readFile(name + '.json')
+      .then((content) => {
+        const value = JSON.parse((content || 'null').toString('utf8'))
+        data.set(name, value)
+        return value
+      })
+  },
+
+  readFile (name) {
     const filename = getFilename(name)
     return new Promise((resolve, reject) => {
-      console.log('reading ', name)
-      readFile(filename, 'utf8', (err, content) => {
+      console.log('reading', filename)
+      readFile(filename, (err, content) => {
         if (err && err.code !== 'ENOENT') return reject(err)
-        try {
-          const value = JSON.parse(content || 'null')
-          data.set(name, value)
-          resolve(value)
-        } catch (err) {
-          reject(err)
-        }
+        resolve(content)
       })
     })
   },
 
   write (name, content) {
     data.set(name, content)
+    return this.writeFile(name + '.json',
+      Buffer.from(JSON.stringify(content, null, '  '))
+    ).then((content) => JSON.parse(content))
+  },
 
-    const queue = writes.get(name) || []
-    writes.set(name, queue)
+  writeFile (name, content) {
+    const filename = getFilename(name)
+    const queue = writes.get(filename) || []
+    writes.set(filename, queue)
 
     const record = { content }
     record.promise = new Promise((resolve, reject) => {
@@ -58,9 +66,20 @@ module.exports = {
       record.reject = reject
     })
     queue.push(record)
-    if (queue.length === 1) writeNext(queue, name)
+    if (queue.length === 1) writeNext(queue, filename)
 
     return record.promise
+  },
+
+  deleteFile (name) {
+    const filename = getFilename(name)
+    return new Promise((resolve, reject) => {
+      console.log('deleting', filename)
+      unlink(filename, (err) => {
+        if (err && err.code !== 'ENOENT') return reject(err)
+        resolve()
+      })
+    })
   },
 
   subscribe (name, onNext) {
@@ -72,6 +91,9 @@ module.exports = {
   },
 
   publish (name, content) {
+    console.log(name, JSON.stringify(content)
+      .replace(/(data:[^,]+),[^"]+/g, '$1,...')
+    )
     events.emit(name, content)
   }
 }

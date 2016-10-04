@@ -56,6 +56,6 @@
     "start": "node src/server.js",
     "watch": "webpack -d --colors --watch & node-dev src/server.js"
   },
-  "author": "Andy VanWagoner <thetalecrafter@gmail.com>",
-  "license": "MIT"
+  "author": "Andy VanWagoner <andy@thetalecrafter.com>",
+  "license": "BSD2"
 }

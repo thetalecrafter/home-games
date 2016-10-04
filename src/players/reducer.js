@@ -3,7 +3,8 @@ const {
   REPLACE_PLAYERS,
   CREATE_PLAYER,
   UPDATE_PLAYER,
-  DELETE_PLAYER
+  DELETE_PLAYER,
+  UPDATE_PLAYER_AVATAR
 } = require('./constants')
 
 const initialState = []
@@ -31,6 +32,20 @@ module.exports = function players (state = initialState, action) {
         ))
         .sort((a, b) => compare(a.name, b.name))
       )
+
+    case UPDATE_PLAYER_AVATAR: {
+      const { id, avatar, lastUpdated } = action.player
+      let ext = (avatar.match(/image\/(\w+)/) || [])[1]
+      if (ext === 'jpeg') ext = 'jpg'
+      return (state
+        .map((player) => (
+          (player.id !== id) ? player
+          : Object.assign({}, player, {
+            avatar: `/api/v1/players/${id}/avatar/${lastUpdated}.${ext}`
+          })
+        ))
+      )
+    }
 
     case DELETE_PLAYER:
       return (state
