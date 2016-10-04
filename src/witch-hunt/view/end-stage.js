@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const { roles } = require('../constants')
 
 module.exports = createClass({
@@ -25,24 +25,24 @@ module.exports = createClass({
     const { game } = this.props
     return (
       h('div', null,
-        h('h2', null, formatMessage('Epilogue')),
+        h('h2', null, t('Epilogue')),
         h('table', null, game.players.map((player) =>
           h('tr', { key: player.id },
             h('th', null, player.name),
             h('td', null,
               player.role === roles.WITCH
-                ? formatMessage('Witch')
-                : formatMessage('Puritan')
+                ? t('Witch')
+                : t('Puritan')
             ),
             h('td', null,
               player.isDead
-                ? formatMessage('Died')
-                : formatMessage('Survived')
+                ? t('Died')
+                : t('Survived')
             ),
             h('td', null,
               this.didWin(game, player)
-                ? formatMessage('Won')
-                : formatMessage('Lost')
+                ? t('Won')
+                : t('Lost')
             )
           )
         ))

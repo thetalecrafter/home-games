@@ -1,20 +1,20 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const ReadyButton = require('./ready-button')
 const { roles } = require('../constants')
 
 const spy = (
   h('div', null,
-    h('h2', null, formatMessage('You are a Spy!')),
+    h('h2', null, t('You are a Spy!')),
     h('p', null,
-      formatMessage(
+      t(
         `You have been tasked with intercepting strategic enemy intel. The most
         difficult part of your job will be decerning which of your fellow spies
         is actually working for your enemy.`
       )
     ),
     h('p', null,
-      formatMessage(
+      t(
         `You should always include yourself to go on missions you lead, since
         you are the only one you can trust completely.`
       )
@@ -24,16 +24,16 @@ const spy = (
 
 const doubleAgent = (
   h('div', null,
-    h('h2', null, formatMessage('You are a Double Agent!')),
+    h('h2', null, t('You are a Double Agent!')),
     h('p', null,
-      formatMessage(
+      t(
         `The fools around you have no idea that they are your true enemy. With
         your cunning, you will sabotage this group so that your superior nation
         can justly conquer.`
       )
     ),
     h('p', null,
-      formatMessage(
+      t(
         `Do not let anyone besides your fellow double agents know where your
         real allegiance lies. Act in every way as a normal spy, until you can
         sabotage an interception.`
@@ -44,16 +44,16 @@ const doubleAgent = (
 
 const mole = (
   h('div', null,
-    h('h2', null, formatMessage('You are a Mole!')),
+    h('h2', null, t('You are a Mole!')),
     h('p', null,
-      formatMessage(
+      t(
         `You are a Triple Agent. The Double Agents think you are one of them,
         and you must use this to your advantage. The Spies also rightly think
         you are one of them, don't let them down.`
       )
     ),
     h('p', null,
-      formatMessage(
+      t(
         `Pretend to be a Double Agent, but be very careful, you only win if the
         missions are successful.`
       )
@@ -81,13 +81,13 @@ module.exports = createClass({
           : mole,
         currentPlayer.role === roles.SPY
           ? h('p', null,
-            formatMessage(
+            t(
               'There are {count, number} Double Agents in this game.',
               { count: game.players.filter((player) => player.role === roles.DOUBLE).length }
             )
           )
           : h('p', null,
-            formatMessage('Here are your fellow Double Agents:'),
+            t('Here are your fellow Double Agents:'),
             h('ul', null,
               game.players
                 .filter((player) => player.role !== roles.SPY && player !== currentPlayer)

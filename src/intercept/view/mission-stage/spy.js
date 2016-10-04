@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 
 module.exports = createClass({
   displayName: 'SpyMissionStage',
@@ -22,7 +22,7 @@ module.exports = createClass({
     return (
       h('div', null,
         h('p', null,
-          formatMessage(
+          t(
             `As a Spy, you need to intercept messages to win, you cannot
             sabotage the mission.`
           )
@@ -30,15 +30,15 @@ module.exports = createClass({
         result == null
           ? h('div', null,
             h('button', { onClick: this.vote },
-              formatMessage('Intercept Message')
+              t('Intercept Message')
             ),
             h('button', { disabled: true },
-              formatMessage('Sabotage Mission')
+              t('Sabotage Mission')
             )
           )
           : result &&
             h('p', null,
-              formatMessage('You have successfully completed your mission.')
+              t('You have successfully completed your mission.')
             )
       )
     )

@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const resolve = require('../../common/resolve-url')
 const PlayerPicker = require('../../players/view/picker')
 const { MIN_PLAYERS, MAX_PLAYERS } = require('../constants')
@@ -61,9 +61,9 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Choose Players')),
+        h('h2', null, t('Choose Players')),
         h('p', null,
-          formatMessage('This game requires 5 to 10 players.')
+          t('This game requires 5 to 10 players.')
         ),
         !isPlaying &&
           h('div', null,
@@ -73,14 +73,14 @@ module.exports = createClass({
               select: this.select
             }),
             h('a', { href: resolve('players/+') },
-              formatMessage('Add Player')
+              t('Add Player')
             ),
             h('button', { onClick: this.join },
-              formatMessage('Join Game')
+              t('Join Game')
             )
           ),
         h('p', null,
-          formatMessage(`{
+          t(`{
               count, plural,
               =0 {nobody has}
               one {1 player has}
@@ -97,7 +97,7 @@ module.exports = createClass({
             onClick: canStart ? start : null,
             disabled: !canStart
           },
-            formatMessage('Start Game')
+            t('Start Game')
           )
       )
     )

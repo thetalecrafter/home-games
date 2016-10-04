@@ -1,5 +1,5 @@
-const globals = require('globals')
+const viewGlobals = require('./view-globals')
 
 module.exports = function resolve (path) {
-  return `/${globals.getLocale()}/${path.replace(/^\/+/, '')}`
+  return `/${viewGlobals.getLocale()}/${path.replace(/^\/+/, '')}`
 }

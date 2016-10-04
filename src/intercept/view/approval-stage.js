@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const VoteResults = require('./vote-results')
 
 module.exports = createClass({
@@ -50,15 +50,15 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Team Approval')),
+        h('h2', null, t('Team Approval')),
         h('ul', null,
           players.filter(this.isPlayerSelected).map(this.renderPlayer)
         ),
         h('div', null,
-          formatMessage('Current Votes:'),
+          t('Current Votes:'),
           h(VoteResults, { players, votes }),
           h('span', null,
-            formatMessage(`Waiting for {
+            t(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}
@@ -67,15 +67,15 @@ module.exports = createClass({
         ),
         h('span', null,
           h('button', { onClick: this.approve },
-            formatMessage('Approve Team')
+            t('Approve Team')
           ),
           h('button', { onClick: this.reject },
-            formatMessage('Reject Team')
+            t('Reject Team')
           )
         ),
         mission.votes &&
           h('p', null,
-            formatMessage(
+            t(
               'Rejected teams: { count }',
               { count: mission.rejectedRosters }
             )

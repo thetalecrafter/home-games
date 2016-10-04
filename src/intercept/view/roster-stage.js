@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const PlayerPicker = require('../../players/view/picker-multi')
 const VoteResults = require('./vote-results')
 
@@ -51,14 +51,14 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Team Selection')),
+        h('h2', null, t('Team Selection')),
         h('p', null,
           isLeader
-            ? formatMessage('You are the leader. Please choose your team.')
-            : formatMessage('{ name } will choose the team.', { name: leader.name })
+            ? t('You are the leader. Please choose your team.')
+            : t('{ name } will choose the team.', { name: leader.name })
         ),
         h('p', null,
-          formatMessage(
+          t(
             `{ numPlayers, plural,
                 one {# player is needed for this mission.}
               other {# players are needed for this mission.}
@@ -74,17 +74,17 @@ module.exports = createClass({
         }),
         isLeader &&
           h('button', { onClick: ready, disabled: !canBeReady },
-            formatMessage('Propose Team')
+            t('Propose Team')
           ),
         mission.votes &&
           h('div', null,
             h('p', null,
-              formatMessage(
+              t(
                 'Rejected teams: { count }',
                 { count: mission.rejectedRosters }
               )
             ),
-            formatMessage('Last rejected team votes:'),
+            t('Last rejected team votes:'),
             h(VoteResults, { players: game.players, votes: mission.votes })
           )
       )

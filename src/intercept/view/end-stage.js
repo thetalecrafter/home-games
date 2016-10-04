@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const { roles } = require('../constants')
 
 module.exports = createClass({
@@ -35,19 +35,19 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Epilogue')),
+        h('h2', null, t('Epilogue')),
         h('p', null,
         (fails < 3 && successes < 3)
-          ? formatMessage(
+          ? t(
           `Indecision kept the team from intercepting vital enemy messages.
           Double Agents win.`
           )
           : fails > successes
-          ? formatMessage(
+          ? t(
           `The Double Agents successfully sabotaged the interception of enemy
           messages. Double Agents win.`
           )
-          : formatMessage(
+          : t(
           `The team of Spies successfully intercepted the enemy messages,
           avoiding disruption from the Double Agents. Spies win.`
           )
@@ -56,14 +56,14 @@ module.exports = createClass({
           h('tr', { key: player.id },
             h('th', null, player.name),
             h('td', null,
-              player.role === roles.DOUBLE ? formatMessage('Double Agent')
-                : player.role === roles.MOLE ? formatMessage('Mole')
-                : formatMessage('Spy')
+              player.role === roles.DOUBLE ? t('Double Agent')
+                : player.role === roles.MOLE ? t('Mole')
+                : t('Spy')
             ),
             h('td', null,
               this.didWin(fails, successes, player)
-                ? formatMessage('Won')
-                : formatMessage('Lost')
+                ? t('Won')
+                : t('Lost')
             )
           )
         ))

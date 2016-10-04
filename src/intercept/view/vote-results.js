@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 
 module.exports = createClass({
   displayName: 'VoteResults',
@@ -25,7 +25,7 @@ module.exports = createClass({
     const { votes } = this.props
     return (
       h('li', { key: player.id },
-        formatMessage(
+        t(
           `{ vote, select,
             approve {{name} approved}
              reject {{name} rejected}

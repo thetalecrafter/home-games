@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const WitchNightStage = require('./night-stage/witch')
 const PuritanNightStage = require('./night-stage/puritan')
 const { roles } = require('../constants')
@@ -27,7 +27,7 @@ module.exports = createClass({
     const isWitch = currentPlayer.role === roles.WITCH
     return (
       h('div', null,
-        h('h2', null, formatMessage('Night')),
+        h('h2', null, t('Night')),
         isWitch
           ? h(WitchNightStage, this.props)
           : h(PuritanNightStage, this.props)

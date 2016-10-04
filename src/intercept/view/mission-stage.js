@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const SpyMissionStage = require('./mission-stage/spy')
 const DoubleMissionStage = require('./mission-stage/double')
 const MoleMissionStage = require('./mission-stage/mole')
@@ -49,10 +49,10 @@ module.exports = createClass({
     const View = this.getView(isOnTeam, role)
     return (
       h('div', null,
-        h('h2', null, formatMessage('Intercept Enemy Message')),
+        h('h2', null, t('Intercept Enemy Message')),
         h(View, { result: results[id], vote: this.intercept }),
         h('span', null,
-          formatMessage(
+          t(
             `{ count, plural,
                 one {Waiting for # player...}
               other {Waiting for # players...}

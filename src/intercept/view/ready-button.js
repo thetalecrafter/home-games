@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 
 module.exports = createClass({
   displayName: 'ReadyButton',
@@ -30,10 +30,10 @@ module.exports = createClass({
       h('div', null,
         confirm
           ? h('button', { onClick: confirm },
-            formatMessage('I’m Ready')
+            t('I’m Ready')
           )
           : h('span', null,
-            formatMessage(`Waiting for {
+            t(`Waiting for {
                 count, plural,
                 one {1 other player}
                 other {# other players}

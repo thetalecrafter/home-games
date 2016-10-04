@@ -2,9 +2,9 @@
 if (typeof require.ensure !== 'function') { require.ensure = (_, fn) => fn(require) }
 
 const lookupClosestLocale = require('lookup-closest-locale')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const generateId = require('format-message-generate-id/underscored_crc32')
-const globals = require('./globals')
+const viewGlobals = require('./view-globals')
 
 const translations = {}
 const locales = {
@@ -16,7 +16,7 @@ const locales = {
   }, 'locale-pt'))
 }
 
-formatMessage.setup({
+t.setup({
   translations,
   generateId,
   missingTranslation: 'ignore'
@@ -32,8 +32,8 @@ module.exports = function resolveLocale ({ location, params, redirect, resolve }
     return resolve(redirect(url))
   }
 
-  formatMessage.setup({ locale })
-  globals.setLocale(locale)
+  t.setup({ locale })
+  viewGlobals.setLocale(locale)
   if (translations[locale]) return
   return locales[locale]().then((strings) => { translations[locale] = strings })
 }

@@ -1,6 +1,6 @@
 /* global window */
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const Form = require('elemental/lib/components/Form')
 const FormField = require('elemental/lib/components/FormField')
 const FormInput = require('elemental/lib/components/FormInput')
@@ -32,7 +32,7 @@ module.exports = createClass({
   getStateFromPlayer (player) {
     const {
       id,
-      name = formatMessage('New Player'),
+      name = t('New Player'),
       gender = 'other',
       avatar = null
     } = player || {}
@@ -57,7 +57,7 @@ module.exports = createClass({
   },
 
   didClickRemove (evt) {
-    const msg = formatMessage('Are you sure you want to remove { name }?', {
+    const msg = t('Are you sure you want to remove { name }?', {
       name: this.state.name
     })
     if (window.confirm(msg)) {
@@ -68,7 +68,7 @@ module.exports = createClass({
 
   didSubmit (evt) {
     evt.preventDefault()
-    const { player } = this.props
+    const player = this.props.player || {}
     let { id, name, gender, avatar } = this.state
     if (!id) {
       id = Math.random().toString(16).slice(2)
@@ -76,7 +76,7 @@ module.exports = createClass({
     } else {
       this.props.update({ id, name, gender })
     }
-    if (player.avatar !== avatar) {
+    if (avatar && player.avatar !== avatar) {
       const lastUpdated = Math.floor(Date.now() / 1000)
       this.props.updateAvatar({ id, avatar, lastUpdated })
     }
@@ -97,12 +97,12 @@ module.exports = createClass({
             showCloseButton: true,
             onClose: onClose,
             text: player
-              ? formatMessage('Update { name }', { name: player.name })
-              : formatMessage('Add Player')
+              ? t('Update { name }', { name: player.name })
+              : t('Add Player')
           }),
           h(ModalBody, null,
             h('input', { type: 'hidden', name: 'id', value: id }),
-            h(FormField, { label: formatMessage('Name'), htmlFor: 'name' },
+            h(FormField, { label: t('Name'), htmlFor: 'name' },
               h(FormInput, {
                 type: 'text',
                 name: 'name',

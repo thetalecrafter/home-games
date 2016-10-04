@@ -1,5 +1,5 @@
 const { createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const Glyph = require('elemental/lib/components/Glyph')
 const resolve = require('../../common/resolve-url')
 const { compareName } = require('../../common/natural-compare')
@@ -10,9 +10,10 @@ require('./list.css')
 const PlayersList = ({ players, selectedId, actions }) =>
   h(Shell, { className: 'PlayersList u-chunk' },
     h('a', { href: resolve('/') },
-      `« ${formatMessage('Home')}`
+      h(Glyph, { className: 'u-space-right', icon: 'chevron-left' }),
+      t('Home')
     ),
-    h('h2', null, formatMessage('Players')),
+    h('h2', null, t('Players')),
     h('ul', { className: 'PlayersList-list' },
       players.sort(compareName()).map((player) => h(Player, {
         key: player.id,
@@ -22,7 +23,7 @@ const PlayersList = ({ players, selectedId, actions }) =>
       })),
       h(Player, {
         key: '+',
-        player: { id: '+', name: formatMessage('Add Player') },
+        player: { id: '+', name: t('Add Player') },
         isSelected: selectedId === '+' || selectedId === ' ',
         actions,
         icon: h(Glyph, { icon: 'plus' })

@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const { roles } = require('../../constants')
 const PlayerPicker = require('../../../players/view/picker')
 const ReadyButton = require('../ready-button')
@@ -39,7 +39,7 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('p', null, formatMessage('Select a Puritan to curse.')),
+        h('p', null, t('Select a Puritan to curse.')),
         h(PlayerPicker, {
           players: puritans,
           selectedId: currentPlayer.isDead ? null : currentPlayer.vote,

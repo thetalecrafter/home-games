@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const PlayerPicker = require('../../../players/view/picker')
 const ReadyButton = require('../ready-button')
 
@@ -51,9 +51,9 @@ module.exports = createClass({
                 disabled,
                 onChange: this.voteSleep
               }),
-              formatMessage('Sleep')
+              t('Sleep')
             ),
-            h('p', null, formatMessage('Or choose someone to follow.')),
+            h('p', null, t('Or choose someone to follow.')),
             h(PlayerPicker, {
               name: 'playerId',
               players: followees,

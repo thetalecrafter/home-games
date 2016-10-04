@@ -1,6 +1,7 @@
 const { createElement: h, PropTypes } = require('react')
 const resolve = require('../../common/resolve-url')
 const EditModal = require('./edit-modal')
+const Avatar = require('./avatar')
 require('./list-item.css')
 
 function back () {
@@ -10,13 +11,13 @@ function back () {
 const PlayersListItem = ({ icon, player, isSelected, actions }) =>
   h('li', { className: 'PlayersListItem' },
     h('a', { className: 'PlayersListItem-link', href: resolve(`players/${player.id}`) },
-      player.avatar
-        ? h('img', {
+      icon
+        ? h('span', { className: 'PlayersListItem-icon' }, icon)
+        : h(Avatar, {
           className: 'PlayersListItem-avatar',
-          alt: player.name,
-          src: player.avatar
-        })
-        : h('span', { className: 'PlayersListItem-avatar-none' }, icon),
+          name: player.name,
+          avatar: player.avatar
+        }),
       h('span', { className: 'PlayersListItem-name' },
         player.name
       ),

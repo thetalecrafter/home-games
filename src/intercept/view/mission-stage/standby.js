@@ -1,5 +1,5 @@
 const { createClass, createElement: h } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 
 module.exports = createClass({
   displayName: 'StandbyMissionStage',
@@ -13,7 +13,7 @@ module.exports = createClass({
   render () {
     return (
       h('p', null,
-        formatMessage(
+        t(
           'Please wait while your comrades complete their assignment.'
         )
       )

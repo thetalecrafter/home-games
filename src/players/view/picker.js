@@ -1,5 +1,5 @@
 const { createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const { compareName } = require('../../common/natural-compare')
 
 const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others = [] }) =>
@@ -16,15 +16,15 @@ const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others =
         player.name
       ),
       ' ',
-      formatMessage('('),
+      t('('),
       delimit(others
         .filter(({ selectedId }) => selectedId === player.id)
         .map((other) =>
           h('span', { key: other.player.id }, other.player.name)
         ),
-        formatMessage(', ')
+        t(', ')
       ),
-      formatMessage(')')
+      t(')')
     )
   ))
 

@@ -1,8 +1,9 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const { stages } = require('./constants')
 const resolve = require('../common/resolve-url')
 
+const Glyph = require('elemental/lib/components/Glyph')
 const AddPlayerStage = require('./view/add-player-stage')
 const IntroStage = require('./view/intro-stage')
 const RosterStage = require('./view/roster-stage')
@@ -40,9 +41,9 @@ module.exports = createClass({
 
   didClickEnd (end) {
     const message = (
-      formatMessage('Are you sure you want to end the game?') +
+      t('Are you sure you want to end the game?') +
       '\n\n' +
-      formatMessage('All players will be taken back to the game description and a new game can be started.')
+      t('All players will be taken back to the game description and a new game can be started.')
     )
     if (window.confirm(message)) this.props.end()
   },
@@ -56,17 +57,18 @@ module.exports = createClass({
     return (
       h('div', { className: 'InterceptView u-chunk InterceptView--' + stage },
         h('a', { href: resolve('/') },
-          `« ${formatMessage('Home')}`
+          h(Glyph, { className: 'u-space-right', icon: 'chevron-left' }),
+          t('Home')
         ),
-        h('h1', null, formatMessage('Intercept')),
+        h('h1', null, t('Intercept')),
         h(Stage, this.props),
         isPlaying &&
           h('div', null,
             h(Status, { missions: game.missions, current: game.currentMission }),
             h('button', { onClick: this.didClickEnd, className: 'Intercept-abandon' },
               stage === stages.END
-                ? formatMessage('End Game')
-                : formatMessage('Abandon Game')
+                ? t('End Game')
+                : t('Abandon Game')
             )
           )
       )

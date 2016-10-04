@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const ReadyButton = require('./ready-button')
 
 module.exports = createClass({
@@ -37,16 +37,16 @@ module.exports = createClass({
     if (victimDied) {
       victimResult = (victimId === currentPlayer.id)
         ? h('div', null,
-          h('h3', null, formatMessage('You have died')),
+          h('h3', null, t('You have died')),
           h('p', null,
-            formatMessage(`To prove your innocence, you were thrown into the
+            t(`To prove your innocence, you were thrown into the
               lake. You struggled and flailed, but you quickly sank into water
               and drowned. After your body was pulled from the lake, you were
               given a proper christian burial.`)
           )
         )
         : h('p', null,
-          formatMessage(`As a trial, you all tossed { name } into the lake.
+          t(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, but quickly sank into water and
             drowned. After the body was pulled from the lake, you gave { name }
             a proper christian burial.`, { name: victimName })
@@ -54,13 +54,13 @@ module.exports = createClass({
     } else {
       victimResult = (victimId === currentPlayer.id)
         ? h('p', null,
-          formatMessage(`To prove your innocence, you were thrown into the
+          t(`To prove your innocence, you were thrown into the
             lake. You struggled and flailed, and managed to stay afloat. In
             horror, the others watched you exert inhuman power in returning to
             the shore.`)
         )
         : h('p', null,
-          formatMessage(`As a trial, you all tossed { name } into the lake.
+          t(`As a trial, you all tossed { name } into the lake.
             { name } struggled and flailed, and managed to stay afloat. In
             horror, you watched the inhuman power { name } exerted to return to
             the shore.`, { name: victimName })
@@ -69,12 +69,12 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Afternoon')),
+        h('h2', null, t('Afternoon')),
         victimResult,
         !victimDied && victimId !== currentPlayer.id &&
           h('div', null,
             h('p', null,
-              formatMessage(`Does this prove to you that { name } is a witch,
+              t(`Does this prove to you that { name } is a witch,
                 and should now be executed?`, { name: victimName })
             ),
             h('label', null,
@@ -85,7 +85,7 @@ module.exports = createClass({
                 disabled: disabled,
                 onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: true })
               }),
-              formatMessage('Yes')
+              t('Yes')
             ),
             h('label', null,
               h('input', {
@@ -95,12 +95,12 @@ module.exports = createClass({
                 disabled: disabled,
                 onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: false })
               }),
-              formatMessage('No')
+              t('No')
             )
           ),
         !victimDied && victimId === currentPlayer.id &&
           h('p', null,
-            formatMessage(`Your community will now decide your fate. Having
+            t(`Your community will now decide your fate. Having
               survived the trial, they undoubtedly will assume you are a witch.`)
           ),
         h(ReadyButton, {

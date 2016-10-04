@@ -1,27 +1,27 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const ReadyButton = require('./ready-button')
 const { roles } = require('../constants')
 
 const witch = (
   h('div', null,
     h('p', null,
-      formatMessage(`You have found that you have uncanny powers to influence
+      t(`You have found that you have uncanny powers to influence
         those around you, and can cause occurrences inexplicable to ordinary
         understanding. In order to survive, you must use this power to stop
         those who would destroy you.`)
     ),
     h('p', null,
-      formatMessage(`Each night you will choose with your cohorts whom you
+      t(`Each night you will choose with your cohorts whom you
         must curse, so that you may live.`)
     ),
     h('p', null,
-      formatMessage(`Each day you will defend your friends against the deadly
+      t(`Each day you will defend your friends against the deadly
         trails, but do not let the commoners know that you are a witch, or who
         your fellow witches are.`)
     ),
     h('p', null,
-      formatMessage('A swift end to the trials is your safest course.')
+      t('A swift end to the trials is your safest course.')
     )
   )
 )
@@ -29,23 +29,23 @@ const witch = (
 const puritan = (
   h('div', null,
     h('p', null,
-      formatMessage(`You are godly and kind. Your hard work will ensure your
+      t(`You are godly and kind. Your hard work will ensure your
         place in heaven, but the Devil is among your community and will surely
         destroy everything you love, and take away your heavenly reward, unless
         you discover and destroy his agents.`)
     ),
     h('p', null,
-      formatMessage(`Each night you can choose to sleep, or to follow a member
+      t(`Each night you can choose to sleep, or to follow a member
         of your community. Following can help you find who is a witch, but you
         may look a little suspicious in the process.`)
     ),
     h('p', null,
-      formatMessage(`Each day you will put to trial the person you most think
+      t(`Each day you will put to trial the person you most think
         to be a witch. If they survive the trial, it is surely through the evil
         one’s power, and they must be executed immediately.`)
     ),
     h('p', null,
-      formatMessage(`An early ending to the trials may leave your enemies a
+      t(`An early ending to the trials may leave your enemies a
         chance to drag you down to hell.`)
     )
   )
@@ -68,8 +68,8 @@ module.exports = createClass({
       h('div', null,
         h('h2', null,
           isWitch
-            ? formatMessage('You are a witch!')
-            : formatMessage('You are a puritan')
+            ? t('You are a witch!')
+            : t('You are a puritan')
         ),
         isWitch ? witch : puritan,
         h(ReadyButton, {

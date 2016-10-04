@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const PlayerPicker = require('../../players/view/picker')
 const ReadyButton = require('./ready-button')
 const { roles } = require('../constants')
@@ -48,11 +48,11 @@ module.exports = createClass({
       const followPlayer = game.players.find((player) => player.id === followId)
       const name = followPlayer.name
       followResult = follow[currentPlayer.id].wasAwake
-        ? formatMessage(`You followed { name } for much of the evening. { name }
+        ? t(`You followed { name } for much of the evening. { name }
         was sneaking about, but you couldn’t keep up without being noticed,
         so eventually you went back to bed without really seeing anything.`,
         { name })
-        : formatMessage(`You stayed up for a little while, but { name } just went
+        : t(`You stayed up for a little while, but { name } just went
         to sleep as usual, and then, so did you.`, { name })
     }
 
@@ -62,30 +62,30 @@ module.exports = createClass({
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id)
           ? h('div', null,
-            h('h3', null, formatMessage('You have died')),
+            h('h3', null, t('You have died')),
             h('p', null,
-              formatMessage(`Shortly after you retired to your bed, a sudden
+              t(`Shortly after you retired to your bed, a sudden
                 pain flashed in your shoulder and chest. After a few moments
                 your life came to an end.`)
             )
           )
           : h('p', null,
-            formatMessage(`Late this morning someone realized { name } wasn’t
+            t(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was quickly found to be dead in
               bed.`, { name: victimName })
           )
       } else {
         victimResult = (victimId === currentPlayer.id)
           ? h('div', null,
-            h('h3', null, formatMessage('You have been cursed')),
+            h('h3', null, t('You have been cursed')),
             h('p', null,
-              formatMessage(`You woke this morning with a terrible headache
+              t(`You woke this morning with a terrible headache
                 and fever. You tried to get out of bed but felt so dizzy you
                 immediately returned to bed.`)
             )
           )
           : h('p', null,
-            formatMessage(`Late this morning someone realized { name } wasn’t
+            t(`Late this morning someone realized { name } wasn’t
               about the usual tasks. { name } was then found to be terribly ill
               in bed.`, { name: victimName })
           )
@@ -94,7 +94,7 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Morning')),
+        h('h2', null, t('Morning')),
         followResult && h('p', null, followResult),
 
         victimResult
@@ -102,7 +102,7 @@ module.exports = createClass({
             victimResult,
             !isDone &&
               h('div', null,
-                h('p', null, formatMessage('Whom shall be tried for this tragedy?')),
+                h('p', null, t('Whom shall be tried for this tragedy?')),
                 h(PlayerPicker, {
                   players: game.players.filter((player) => !player.isDead),
                   selectedId: currentPlayer.isDead ? null : currentPlayer.vote,
@@ -112,7 +112,7 @@ module.exports = createClass({
               )
           )
           : h('p', null,
-            formatMessage(`You all went about their usual tasks this morning.
+            t(`You all went about their usual tasks this morning.
               Everyone was accounted for.`)
           ),
         h(ReadyButton, {

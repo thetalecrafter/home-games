@@ -1,6 +1,6 @@
 /* global window */
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const FormField = require('elemental/lib/components/FormField')
 require('./edit-avatar.css')
 
@@ -49,7 +49,7 @@ module.exports = createClass({
   render () {
     const { value } = this.props
     return (
-      h(FormField, { label: formatMessage('Picture'), htmlFor: 'avatar' },
+      h(FormField, { label: t('Picture'), htmlFor: 'avatar' },
         h('div', { className: 'EditPlayerAvatar' },
           value &&
             h('img', {

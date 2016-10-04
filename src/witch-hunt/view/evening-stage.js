@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const formatMessage = require('format-message')
+const t = require('format-message')
 const ReadyButton = require('./ready-button')
 
 module.exports = createClass({
@@ -30,16 +30,16 @@ module.exports = createClass({
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id)
           ? h('div', null,
-            h('h3', null, formatMessage('You have died')),
+            h('h3', null, t('You have died')),
             h('p', null,
-              formatMessage(`Surviving the trial only further convinced your
+              t(`Surviving the trial only further convinced your
                 community of your wickedness. Your soaked clothing continued to
                 drip long after you strangled on the gallows. When they cut you
                 down, your body was tossed into an open pit outside town.`)
             )
           )
           : h('p', null,
-            formatMessage(`Surviving the trial only further convinced everyone
+            t(`Surviving the trial only further convinced everyone
               of { name }’s wickedness. { name }’s soaked clothing continued to
               drip long after strangling on the gallows. When { name } was cut
               down, the body was tossed into an open pit outside town.`,
@@ -48,11 +48,11 @@ module.exports = createClass({
       } else {
         victimResult = (victimId === currentPlayer.id)
           ? h('p', null,
-            formatMessage(`Though you survived the trial, your struggle was
+            t(`Though you survived the trial, your struggle was
               enough to convince your fellows of your innocence... for now.`)
           )
           : h('p', null,
-            formatMessage(`Though { name } survived the trial, the struggle was
+            t(`Though { name } survived the trial, the struggle was
               enough to convince everyone of { name }’s innocence... for now.`,
               { name: victimName })
           )
@@ -61,7 +61,7 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, formatMessage('Evening')),
+        h('h2', null, t('Evening')),
         victimResult,
         h(ReadyButton, {
           player: currentPlayer,
