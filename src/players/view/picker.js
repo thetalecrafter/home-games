@@ -46,7 +46,7 @@ const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others }
 
 function delimit (array, delimiter) {
   const newArray = []
-  for (const value of array) {
+  for (let value of array) {
     newArray.push(value)
     newArray.push(delimiter)
   }

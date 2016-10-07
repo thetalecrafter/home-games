@@ -23,11 +23,11 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        loader: ExtractTextPlugin.extract('style', 'css?&sourceMap!postcss')
+        loader: ExtractTextPlugin.extract('style', 'css!postcss')
       },
       {
         test: /\.less$/i,
-        loader: ExtractTextPlugin.extract('style', 'css?&sourceMap!less?sourceMap')
+        loader: ExtractTextPlugin.extract('style', 'css!less')
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,

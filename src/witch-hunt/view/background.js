@@ -1,5 +1,4 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const t = require('format-message')
 const { stages } = require('../constants')
 require('./background.css')
 
@@ -7,7 +6,7 @@ module.exports = createClass({
   displayName: 'WitchHuntBackground',
 
   propTypes: {
-    stage: PropTypes.string.isRequired,
+    stage: PropTypes.string,
     player: PropTypes.object
   },
 
@@ -17,8 +16,8 @@ module.exports = createClass({
 
   shouldComponentUpdate (nextProps, nextState) {
     return (
-      nextState.name !== this.props.name ||
-      nextState.previous !== this.props.previous
+      nextState.name !== this.state.name ||
+      nextState.previous !== this.state.previous
     )
   },
 
