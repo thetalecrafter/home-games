@@ -1,0 +1,43 @@
+.PlayerPicker-player {
+  margin: 0.5em 0;
+}
+
+.PlayerPicker-label {
+  position: relative;
+  display: inline-flex;
+  padding-right: 0.8em;
+  align-items: center;
+  overflow: hidden;
+}
+
+.PlayerPicker-label:hover .PlayerPicker-name {
+  text-decoration: underline;
+}
+
+.PlayerPicker-label--selected .PlayerPicker-name {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.PlayerPicker-avatar {
+  width: 32px;
+  height: 32px;
+  margin-right: 0.8em;
+  opacity: 0.8;
+  transition: opacity .2s ease;
+}
+
+.PlayerPicker-label:hover .PlayerPicker-avatar,
+.PlayerPicker-avatar--selected {
+  opacity: 1;
+}
+
+.PlayerPicker-input {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.001;
+}

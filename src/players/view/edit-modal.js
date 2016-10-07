@@ -71,7 +71,7 @@ module.exports = createClass({
     const player = this.props.player || {}
     let { id, name, gender, avatar } = this.state
     if (!id) {
-      id = Math.random().toString(16).slice(2)
+      id = Math.random().toString(36).slice(2)
       this.props.create({ id, name, gender })
     } else {
       this.props.update({ id, name, gender })

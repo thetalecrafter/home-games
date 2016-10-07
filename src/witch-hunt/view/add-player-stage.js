@@ -1,8 +1,11 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const t = require('format-message')
+const Button = require('elemental/lib/components/Button')
+const Glyph = require('elemental/lib/components/Glyph')
 const resolve = require('../../common/resolve-url')
 const PlayerPicker = require('../../players/view/picker')
 const { MIN_PLAYERS } = require('../constants')
+require('./add-player-stage.css')
 
 module.exports = createClass({
   displayName: 'AddPlayerStage',
@@ -56,43 +59,53 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        h('h2', null, t('Choose Players')),
-        h('p', null,
-          t('This game requires at least 4 players.')
-        ),
-        !isPlaying &&
-          h('div', null,
-            h(PlayerPicker, {
-              players: availablePlayers,
-              selectedId: this.state.selectedId,
-              select: this.select
-            }),
-            h('a', { href: resolve('players/+') },
-              t('Add Player')
+        h('div', { className: 'WitchHuntPanel' },
+          h('h2', null, t('Pick Your Player')),
+          !isPlaying &&
+            h('div', null,
+              h(PlayerPicker, {
+                players: availablePlayers,
+                selectedId: this.state.selectedId,
+                select: this.select
+              }),
+              h('a', { href: resolve('players/+'), className: 'WitchHuntAddPlayers-new-link' },
+                h('span', { className: 'WitchHuntAddPlayers-new-icon' }, h(Glyph, { icon: 'plus' })),
+                h('span', { className: 'WitchHuntAddPlayers-new-text' }, t('Add Player'))
+              ),
+              h('div', { className: 'WitchHuntAddPlayers-join' },
+                h(Button, {
+                  type: 'primary',
+                  disabled: !this.state.selectedId,
+                  onClick: this.join
+                },
+                  t('Join Game')
+                )
+              )
             ),
-            h('button', { onClick: this.join },
-              t('Join Game')
-            )
+          h('p', null,
+            t(`{
+                count, plural,
+                one {1 player has}
+                other {# players have}
+              } joined.`, {
+                count
+              }),
+            ' ',
+            t('This game requires at least 4 players.')
           ),
-        h('p', null,
-          t(`{
-              count, plural,
-              one {1 player has}
-              other {# players have}
-            } joined this game.`, {
-              count
-            })
-        ),
-        h('ol', null, game.players.map((player) =>
-          h('li', { key: player.id }, player.name)
-        )),
-        isPlaying &&
-          h('button', {
-            onClick: canStart ? start : null,
-            disabled: !canStart
-          },
-            t('Start Game')
-          )
+          game.players.length > 0 &&
+            h('ol', null, game.players.map((player) =>
+              h('li', { key: player.id }, player.name)
+            )),
+          isPlaying &&
+            h(Button, {
+              type: 'primary',
+              onClick: canStart ? start : null,
+              disabled: !canStart
+            },
+              t('Start Game')
+            )
+        )
       )
     )
   }

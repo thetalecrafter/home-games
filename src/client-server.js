@@ -12,7 +12,7 @@ module.exports = Router()
 function client (request, response, next) {
   const env = process.env
   const locale = request.params.locale
-  const sid = request.sessionID
+  const sid = request.session.id
   const port = request.app.get('port')
   const api = (
     request.protocol + '://' +

@@ -1,0 +1,24 @@
+.WitchHuntAddPlayers-new-link {
+  display: inline-flex;
+  padding-right: 0.8em;
+  align-items: center;
+  &:hover {
+    text-decoration: none;
+    & .WitchHuntAddPlayers-new-text {
+      text-decoration: underline;
+    }
+  }
+}
+
+.WitchHuntAddPlayers-new-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-right: 0.8em;
+}
+
+.WitchHuntAddPlayers-join {
+  margin: 1em 0;
+}

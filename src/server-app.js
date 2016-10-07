@@ -6,7 +6,6 @@ const compression = require('compression')
 
 const cookieName = 'player'
 const secret1 = '27980042-d587-4ad1-ad1d-6275980f9acf'
-let i = 0
 
 const app = express()
   .set('api-base-url', '/api/v1')
@@ -18,7 +17,7 @@ const app = express()
   }))
   .use((req, res, next) => {
     // always put something in the session to create cookie
-    req.session.i = req.session.i || ++i
+    req.session.id = req.session.id || Math.random().toString(36).slice(2)
     next()
   })
   .use(compression())

@@ -35,7 +35,7 @@ persist.subscribe('dispatch', (action) => {
 })
 
 events.on('connect', ({ request, send }) => {
-  const sid = request.sessionID
+  const sid = request.session.id
   const isPlaying = !!state.players.find((player) => player.sid === sid)
   if (!isPlaying) return
 

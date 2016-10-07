@@ -3,6 +3,7 @@ const t = require('format-message')
 const { stages } = require('./constants')
 const resolve = require('../common/resolve-url')
 
+const Button = require('elemental/lib/components/Button')
 const Glyph = require('elemental/lib/components/Glyph')
 const AddPlayerStage = require('./view/add-player-stage')
 const IntroStage = require('./view/intro-stage')
@@ -12,6 +13,7 @@ const AfternoonStage = require('./view/afternoon-stage')
 const EveningStage = require('./view/evening-stage')
 const EndStage = require('./view/end-stage')
 const GameDescription = require('./view/description')
+const Background = require('./view/background')
 require('./view/view.css')
 
 module.exports = createClass({
@@ -62,23 +64,29 @@ module.exports = createClass({
   render () {
     const { sid, game } = this.props
     const stage = game.stage
-    const isPlaying = !!game.players.find((player) => player.sid === sid)
+    const player = game.players.find((player) => player.sid === sid)
+    const isPlaying = !!player
     const Stage = this.getView(isPlaying, stage)
 
     return (
       h('div', { className: 'WitchHuntView u-chunk WitchHuntView--' + stage },
-        h('a', { href: resolve('/') },
-          h(Glyph, { className: 'u-space-right', icon: 'chevron-left' }),
-          t('Home')
-        ),
-        h('h1', null, t('Witch Hunt')),
+        h(Background, { stage, player }),
         h(Stage, this.props),
-        isPlaying &&
-          h('button', { onClick: this.end, className: 'WitchHuntView-abandon' },
-            stage === stages.END
-              ? t('End Game')
-              : t('Abandon Game')
-          )
+        h('header', { className: 'WitchHuntView-header' },
+          h('a', { href: resolve('/'), className: 'WitchHuntView-home-link' },
+            h(Glyph, { className: 'u-space-right', icon: 'chevron-left' }),
+            t('Home')
+          ),
+          h('h1', { className: 'WitchHuntView-title' }, t('Witch Hunt')),
+          isPlaying &&
+            h(Button, {
+              className: 'WitchHuntView-abandon',
+              type: 'link-danger',
+              onClick: this.end
+            },
+              t('Quit')
+            )
+        )
       )
     )
   }
