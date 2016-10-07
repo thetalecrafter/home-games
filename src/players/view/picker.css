@@ -14,9 +14,13 @@
   text-decoration: underline;
 }
 
-.PlayerPicker-label--selected .PlayerPicker-name {
+.PlayerPicker-name.is-selected {
   font-weight: bold;
   text-decoration: underline;
+}
+
+.PlayerPicker-name.is-disabled {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .PlayerPicker-avatar {
@@ -28,8 +32,12 @@
 }
 
 .PlayerPicker-label:hover .PlayerPicker-avatar,
-.PlayerPicker-avatar--selected {
+.PlayerPicker-avatar.is-selected {
   opacity: 1;
+}
+
+.PlayerPicker-avatar.is-disabled {
+  opacity: 0.5;
 }
 
 .PlayerPicker-input {
@@ -40,4 +48,8 @@
   width: 100%;
   height: 100%;
   opacity: 0.001;
+}
+
+.PlayerPicker-others {
+  margin-left: 0.8em;
 }

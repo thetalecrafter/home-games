@@ -2,6 +2,8 @@ const { createClass, createElement: h, PropTypes } = require('react')
 const t = require('format-message')
 const PlayerPicker = require('../../../players/view/picker')
 const ReadyButton = require('../ready-button')
+const Button = require('elemental/lib/components/Button')
+const Glyph = require('elemental/lib/components/Glyph')
 
 module.exports = createClass({
   displayName: 'PuritanNightStage',
@@ -43,17 +45,15 @@ module.exports = createClass({
       h('div', null,
         !currentPlayer.isDead &&
           h('div', null,
-            h('label', null,
-              h('input', {
-                type: 'radio',
-                name: 'playerId',
-                checked: currentPlayer.vote === '',
-                disabled,
-                onChange: this.voteSleep
-              }),
-              t('Sleep')
+            h(Button, {
+              type: 'default-success',
+              disabled,
+              onClick: this.voteSleep
+            },
+              currentPlayer.vote === '' && h(Glyph, { icon: 'check' }),
+              h('span', null, t('Sleep'))
             ),
-            h('p', null, t('Or choose someone to follow.')),
+            h('p', null, t('Or choose someone to follow:')),
             h(PlayerPicker, {
               name: 'playerId',
               players: followees,

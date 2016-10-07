@@ -1,4 +1,4 @@
-.WitchHuntView {
+.WitchHunt {
   visibility: visible;
   min-height: 100%;
   background: #444;
@@ -7,27 +7,7 @@
   padding: 44px 1em 1em 1em;
 }
 
-.WitchHuntView--night {
-  background-color: #0b1e32;
-  color: #5fb1ca;
-}
-
-.WitchHuntView--morning {
-  background-color: #1365e0;
-  color: #fefd91;
-}
-
-.WitchHuntView--afternoon {
-  background-color: #4383bb;
-  color: #111;
-}
-
-.WitchHuntView--evening {
-  background-color: #ce8049;
-  color: #1c1c1c;
-}
-
-.WitchHuntView-header {
+.WitchHunt-header {
   position: fixed;
   top: 0;
   right: 0;
@@ -38,27 +18,30 @@
   text-align: center;
 }
 
-.WitchHuntView-home-link {
+.WitchHunt-home-link {
   position: absolute;
   top: 0.65em;
   left: 1em;
 }
 
-.WitchHuntView-title {
+.WitchHunt-title {
   color: inherit;
   margin: 0;
   font-size: 2rem;
 }
 
-.WitchHuntView-abandon {
+.WitchHunt-abandon {
   position: absolute;
   right: 0;
   top: 0.1em;
   text-shadow: inherit;
 }
 
-.WitchHuntPanel {
+.WitchHunt-main {
   position: relative;
+}
+
+.WitchHuntPanel {
   max-width: 960px;
   margin: 1em auto;
   border-radius: 1em;
@@ -71,7 +54,8 @@
   & > :last-child {
     margin-bottom: 0;
   }
-  & > h2 {
+  & h2,
+  & h3 {
     color: inherit;
   }
 }

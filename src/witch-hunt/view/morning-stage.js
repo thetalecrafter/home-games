@@ -62,7 +62,7 @@ module.exports = createClass({
       if (victimDied) {
         victimResult = (victimId === currentPlayer.id)
           ? h('div', null,
-            h('h3', null, t('You have died')),
+            h('h3', null, t('You have died!')),
             h('p', null,
               t(`Shortly after you retired to your bed, a sudden
                 pain flashed in your shoulder and chest. After a few moments
@@ -77,11 +77,14 @@ module.exports = createClass({
       } else {
         victimResult = (victimId === currentPlayer.id)
           ? h('div', null,
-            h('h3', null, t('You have been cursed')),
+            h('h3', null, t('You have been cursed!')),
             h('p', null,
               t(`You woke this morning with a terrible headache
                 and fever. You tried to get out of bed but felt so dizzy you
                 immediately returned to bed.`)
+            ),
+            h('p', null,
+              t(`This sudden illness is clearly a failed attempt on your life.`)
             )
           )
           : h('p', null,
@@ -93,7 +96,7 @@ module.exports = createClass({
     }
 
     return (
-      h('div', null,
+      h('div', { className: 'WitchHuntPanel' },
         h('h2', null, t('Morning')),
         followResult && h('p', null, followResult),
 
@@ -102,7 +105,7 @@ module.exports = createClass({
             victimResult,
             !isDone &&
               h('div', null,
-                h('p', null, t('Whom shall be tried for this tragedy?')),
+                h('p', null, t('Whom shall be tried?')),
                 h(PlayerPicker, {
                   players: game.players.filter((player) => !player.isDead),
                   selectedId: currentPlayer.isDead ? null : currentPlayer.vote,

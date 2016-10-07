@@ -24,7 +24,7 @@ module.exports = createClass({
   render () {
     const { game } = this.props
     return (
-      h('div', null,
+      h('div', { className: 'WitchHuntPanel' },
         h('h2', null, t('Epilogue')),
         h('table', null, game.players.map((player) =>
           h('tr', { key: player.id },

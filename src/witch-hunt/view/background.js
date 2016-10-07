@@ -1,5 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
-const { stages } = require('../constants')
+const { stages, roles } = require('../constants')
 require('./background.css')
 
 module.exports = createClass({
@@ -38,7 +38,7 @@ module.exports = createClass({
     switch (stage) {
       case stages.ADD_PLAYERS: return 'gallery'
       case stages.INTRO: return 'village'
-      case stages.NIGHT: return player.isWitch ? 'witches' : 'twilight'
+      case stages.NIGHT: return player.role === roles.WITCH ? 'witches' : 'twilight'
       case stages.MORNING: return 'village'
       case stages.AFTERNOON: return 'village'
       case stages.EVENING: return 'village'

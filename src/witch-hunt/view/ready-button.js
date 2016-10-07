@@ -1,4 +1,5 @@
 const { createClass, createElement: h, PropTypes } = require('react')
+const Button = require('elemental/lib/components/Button')
 const t = require('format-message')
 
 module.exports = createClass({
@@ -40,7 +41,8 @@ module.exports = createClass({
                 other {# other players}
               }...`, { count })
           )
-          : h('button', {
+          : h(Button, {
+            type: 'primary',
             onClick: disabled ? null : () => confirm(player),
             disabled
           },

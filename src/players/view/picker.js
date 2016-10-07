@@ -6,43 +6,51 @@ const classnames = require('classnames')
 require('./picker.css')
 
 const PlayerPicker = ({ name = 'playerId', players, selectedId, select, others }) =>
-  h('div', null, players.sort(compareName()).map((player) =>
-    h('div', { key: player.id, className: 'PlayerPicker-player' },
+  h('div', null, players.sort(compareName()).map((player) => {
+    const isDisabled = !select || player.isDisabled
+    const isSelected = player.id === selectedId
+    const selectedBy = (others || [])
+      .filter(({ selectedId }) => selectedId === player.id)
+
+    return h('div', { key: player.id, className: 'PlayerPicker-player' },
       h('label', {
-        className: classnames('PlayerPicker-label', {
-          'PlayerPicker-label--selected': player.id === selectedId
-        })
+        className: 'PlayerPicker-label'
       },
-        h(Avatar, {
+        player.icon || h(Avatar, {
           className: classnames('PlayerPicker-avatar', {
-            'PlayerPicker-avatar--selected': player.id === selectedId
+            'is-selected': isSelected,
+            'is-disabled': isDisabled
           }),
           name: player.name,
           avatar: player.avatar
         }),
-        h('span', { className: 'PlayerPicker-name' }, player.name),
+        h('span', {
+          className: classnames('PlayerPicker-name', {
+            'is-selected': isSelected,
+            'is-disabled': isDisabled
+          })
+        }, player.name),
+        selectedBy.length > 0 && h('div', { className: 'PlayerPicker-others' },
+          t('(chosen by '),
+          delimit(
+            selectedBy.map((other) =>
+              h('span', { key: other.player.id }, other.player.name)
+            ),
+            t(', ')
+          ),
+          t(')')
+        ),
         h('input', {
           className: 'PlayerPicker-input',
           type: 'radio',
           name: name,
           onChange: select ? () => select(player.id) : null,
-          disabled: !select || player.isDisabled,
-          checked: player.id === selectedId
+          disabled: isDisabled,
+          checked: isSelected
         })
-      ),
-      others && h('div', { className: 'PlayerPicker-others' },
-        t('('),
-        delimit(others
-          .filter(({ selectedId }) => selectedId === player.id)
-          .map((other) =>
-            h('span', { key: other.player.id }, other.player.name)
-          ),
-          t(', ')
-        ),
-        t(')')
       )
     )
-  ))
+  }))
 
 function delimit (array, delimiter) {
   const newArray = []

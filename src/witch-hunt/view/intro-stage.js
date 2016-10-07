@@ -65,7 +65,7 @@ module.exports = createClass({
     const currentPlayer = game.players.find((player) => player.sid === sid)
     const isWitch = currentPlayer.role === roles.WITCH
     return (
-      h('div', null,
+      h('div', { className: 'WitchHuntPanel' },
         h('h2', null,
           isWitch
             ? t('You are a witch!')

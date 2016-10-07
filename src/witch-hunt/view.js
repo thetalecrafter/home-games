@@ -17,7 +17,7 @@ const Background = require('./view/background')
 require('./view/view.css')
 
 module.exports = createClass({
-  displayName: 'WitchHuntView',
+  displayName: 'WitchHunt',
 
   propTypes: {
     sid: PropTypes.string.isRequired,
@@ -69,18 +69,20 @@ module.exports = createClass({
     const Stage = this.getView(isPlaying, stage)
 
     return (
-      h('div', { className: 'WitchHuntView u-chunk WitchHuntView--' + stage },
+      h('div', { className: 'WitchHunt u-chunk WitchHunt--' + stage },
         h(Background, { stage, player }),
-        h(Stage, this.props),
-        h('header', { className: 'WitchHuntView-header' },
-          h('a', { href: resolve('/'), className: 'WitchHuntView-home-link' },
+        h('main', { className: 'WitchHunt-main' },
+          h(Stage, this.props)
+        ),
+        h('header', { className: 'WitchHunt-header' },
+          h('a', { href: resolve('/'), className: 'WitchHunt-home-link' },
             h(Glyph, { className: 'u-space-right', icon: 'chevron-left' }),
             t('Home')
           ),
-          h('h1', { className: 'WitchHuntView-title' }, t('Witch Hunt')),
+          h('h1', { className: 'WitchHunt-title' }, t('Witch Hunt')),
           isPlaying &&
             h(Button, {
-              className: 'WitchHuntView-abandon',
+              className: 'WitchHunt-abandon',
               type: 'link-danger',
               onClick: this.end
             },

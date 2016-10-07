@@ -60,7 +60,7 @@ module.exports = createClass({
     }
 
     return (
-      h('div', null,
+      h('div', { className: 'WitchHuntPanel' },
         h('h2', null, t('Evening')),
         victimResult,
         h(ReadyButton, {

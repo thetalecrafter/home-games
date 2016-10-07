@@ -1,6 +1,8 @@
 const { createClass, createElement: h, PropTypes } = require('react')
 const t = require('format-message')
 const ReadyButton = require('./ready-button')
+const FormField = require('elemental/lib/components/FormField')
+const Radio = require('elemental/lib/components/Radio')
 
 module.exports = createClass({
   displayName: 'AfternoonStage',
@@ -68,36 +70,32 @@ module.exports = createClass({
     }
 
     return (
-      h('div', null,
+      h('div', { className: 'WitchHuntPanel' },
         h('h2', null, t('Afternoon')),
         victimResult,
-        !victimDied && victimId !== currentPlayer.id &&
-          h('div', null,
-            h('p', null,
-              t(`Does this prove to you that { name } is a witch,
-                and should now be executed?`, { name: victimName })
-            ),
-            h('label', null,
-              h('input', {
-                type: 'radio',
-                name: 'vote',
-                checked: currentPlayer.vote === true,
-                disabled: disabled,
-                onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: true })
-              }),
-              t('Yes')
-            ),
-            h('label', null,
-              h('input', {
-                type: 'radio',
-                name: 'vote',
-                checked: currentPlayer.vote === false,
-                disabled: disabled,
-                onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: false })
-              }),
-              t('No')
-            )
-          ),
+        !victimDied && victimId !== currentPlayer.id && h(FormField, null,
+          h('div', { className: 'inline-controls' },
+            h('p', null, t(
+              `Does this prove to you that { name } is a witch,
+              and should now be executed?`, { name: victimName }
+            )),
+            h(Radio, {
+              label: t('Yes'),
+              name: 'vote',
+              checked: currentPlayer.vote === true,
+              disabled: disabled,
+              onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: true })
+            }),
+            h(Radio, {
+              label: t('No'),
+              type: 'radio',
+              name: 'vote',
+              checked: currentPlayer.vote === false,
+              disabled: disabled,
+              onChange: disabled ? null : () => vote({ id: currentPlayer.id, vote: false })
+            })
+          )
+        ),
         !victimDied && victimId === currentPlayer.id &&
           h('p', null,
             t(`Your community will now decide your fate. Having
