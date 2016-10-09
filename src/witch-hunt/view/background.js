@@ -7,7 +7,8 @@ module.exports = createClass({
 
   propTypes: {
     stage: PropTypes.string,
-    player: PropTypes.object
+    player: PropTypes.object,
+    result: PropTypes.object
   },
 
   getInitialState () {
@@ -23,26 +24,26 @@ module.exports = createClass({
 
   componentWillMount () {
     this.setState({
-      name: this.getBackground(this.props.stage, this.props.player)
+      name: this.getBackground(this.props)
     })
   },
 
   componentWillReceiveProps (nextProps) {
-    const name = this.getBackground(nextProps.stage, nextProps.player)
+    const name = this.getBackground(nextProps)
     if (name !== this.state.name) {
       this.setState({ previous: this.state.name, name })
     }
   },
 
-  getBackground (stage, player) {
+  getBackground ({ stage, player, result }) {
     switch (stage) {
       case stages.ADD_PLAYERS: return 'gallery'
       case stages.INTRO: return 'village'
-      case stages.NIGHT: return player.role === roles.WITCH ? 'witches' : 'twilight'
-      case stages.MORNING: return 'village'
-      case stages.AFTERNOON: return 'village'
-      case stages.EVENING: return 'village'
-      case stages.END: return 'village'
+      case stages.NIGHT: return player && player.role === roles.WITCH ? 'witches' : 'twilight'
+      case stages.MORNING: return 'morning'
+      case stages.AFTERNOON: return result && result.victimDied ? 'martyr' : 'village'
+      case stages.EVENING: return 'harvest'
+      case stages.END: return 'skull'
       default: return 'village'
     }
   },

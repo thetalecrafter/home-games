@@ -1,5 +1,12 @@
 @keyframes WitchHuntBackground-in1 { from { opacity: 0; } to { opacity: 1; } }
 @keyframes WitchHuntBackground-in2 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in3 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in4 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in5 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in6 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in7 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in8 { from { opacity: 0; } to { opacity: 1; } }
+@keyframes WitchHuntBackground-in9 { from { opacity: 0; } to { opacity: 1; } }
 
 .WitchHuntBackground {
   top: 0;
@@ -37,7 +44,7 @@
 }
 
 .WitchHuntBackground--twilight {
-  animation-name: WitchHuntBackground-in2;
+  animation-name: WitchHuntBackground-in3;
   background-image: url(./img/twilight.jpg);
   background-position: left bottom;
   &::before {
@@ -46,11 +53,47 @@
 }
 
 .WitchHuntBackground--witches {
-  animation-name: WitchHuntBackground-in2;
+  animation-name: WitchHuntBackground-in4;
   background-image: url(./img/witches.jpg);
   background-position: 66% 66%;
   &::before {
     content: "David Teniers the Younger. Witches' Initiation. 1647. Akademie der bildenden Künste, Vienna";
+  }
+}
+
+.WitchHuntBackground--skull {
+  animation-name: WitchHuntBackground-in5;
+  background-image: url(./img/skull.jpg);
+  background-position: center center;
+  &::before {
+    content: "Adriaen van Utrecht. Vanitas - Still Life with Bouquet and Skull. c 1642. Private collection";
+  }
+}
+
+.WitchHuntBackground--morning {
+  animation-name: WitchHuntBackground-in6;
+  background-image: url(./img/morning.jpg);
+  background-position: center center;
+  &::before {
+    content: "John Atkinson Grimshaw. Autumn Morning";
+  }
+}
+
+.WitchHuntBackground--harvest {
+  animation-name: WitchHuntBackground-in7;
+  background-image: url(./img/harvest.jpg);
+  background-position: center center;
+  &::before {
+    content: "John Atkinson Grimshaw. Under The Harvest Moon. 1872";
+  }
+}
+
+.WitchHuntBackground--martyr {
+  animation-name: WitchHuntBackground-in8;
+  background-image: url(./img/martyr.jpg);
+  background-position: center bottom;
+  &::before {
+    content: "Paul Delaroche. The Young Martyr. 1853";
   }
 }
 

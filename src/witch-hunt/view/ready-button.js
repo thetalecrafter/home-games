@@ -33,7 +33,7 @@ module.exports = createClass({
 
     return (
       h('div', null,
-        player.isDead || player.isReady
+        (player.isDead || player.isReady)
           ? h('span', null,
             t(`Waiting for {
                 count, plural,

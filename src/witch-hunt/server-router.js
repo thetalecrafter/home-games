@@ -28,8 +28,10 @@ persist.subscribe('dispatch', (action) => {
   }
 
   if (interState !== newState) {
-    persist.publish('dispatch', {
-      type: TRANSITION, state
+    Promise.resolve().then(() => {
+      persist.publish('dispatch', {
+        type: TRANSITION, state
+      })
     })
   }
 })

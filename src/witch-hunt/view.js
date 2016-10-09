@@ -63,14 +63,14 @@ module.exports = createClass({
 
   render () {
     const { sid, game } = this.props
-    const stage = game.stage
+    const { stage, result } = game
     const player = game.players.find((player) => player.sid === sid)
     const isPlaying = !!player
     const Stage = this.getView(isPlaying, stage)
 
     return (
       h('div', { className: 'WitchHunt u-chunk WitchHunt--' + stage },
-        h(Background, { stage, player }),
+        h(Background, { stage, player, result }),
         h('main', { className: 'WitchHunt-main' },
           h(Stage, this.props)
         ),

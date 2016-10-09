@@ -18,7 +18,7 @@ module.exports = function transition (state) {
   if (!to) { throw new Error(errors.BAD_TRANSITION) }
   const newState = to(state)
   newState.players = newState.players.map((player) =>
-    Object.assign({}, player, { isReady: undefined, vote: undefined })
+    Object.assign({}, player, { isReady: false, vote: null })
   )
   return newState
 }
@@ -75,7 +75,7 @@ function transitionFromNight (state) {
     }
   })
   if ((result.victimId = victimId)) {
-    if ((result.victimDied = Math.random() < 0.7)) {
+    if ((result.victimDied = Math.random() < 0.9)) {
       players = killPlayer(victimId, players)
     }
   }

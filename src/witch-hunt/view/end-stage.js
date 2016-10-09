@@ -26,26 +26,28 @@ module.exports = createClass({
     return (
       h('div', { className: 'WitchHuntPanel' },
         h('h2', null, t('Epilogue')),
-        h('table', null, game.players.map((player) =>
-          h('tr', { key: player.id },
-            h('th', null, player.name),
-            h('td', null,
-              player.role === roles.WITCH
-                ? t('Witch')
-                : t('Puritan')
-            ),
-            h('td', null,
-              player.isDead
-                ? t('Died')
-                : t('Survived')
-            ),
-            h('td', null,
-              this.didWin(game, player)
-                ? t('Won')
-                : t('Lost')
+        h('table', null,
+          h('tbody', null, game.players.map((player) =>
+            h('tr', { key: player.id },
+              h('th', null, player.name),
+              h('td', null,
+                player.role === roles.WITCH
+                  ? t('Witch')
+                  : t('Puritan')
+              ),
+              h('td', null,
+                player.isDead
+                  ? t('Died')
+                  : t('Survived')
+              ),
+              h('td', null,
+                this.didWin(game, player)
+                  ? t('Won')
+                  : t('Lost')
+              )
             )
-          )
-        ))
+          ))
+        )
       )
     )
   }
