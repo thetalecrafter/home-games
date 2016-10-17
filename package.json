@@ -57,5 +57,5 @@
     "watch": "webpack -d --colors --watch & node-dev src/server.js"
   },
   "author": "Andy VanWagoner <andy@thetalecrafter.com>",
-  "license": "BSD2"
+  "license": "BSD-2-Clause"
 }

@@ -80,13 +80,13 @@ module.exports = createClass({
             t('Home')
           ),
           h('h1', { className: 'WitchHunt-title' }, t('Witch Hunt')),
-          isPlaying &&
+          stage &&
             h(Button, {
               className: 'WitchHunt-abandon',
               type: 'link-danger',
               onClick: this.end
             },
-              t('Quit')
+              isPlaying ? t('Quit') : t('End')
             )
         )
       )
