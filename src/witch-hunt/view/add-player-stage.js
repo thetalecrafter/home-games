@@ -94,9 +94,10 @@ module.exports = createClass({
             t('This game requires at least 4 players.')
           ),
           game.players.length > 0 &&
-            h('ol', null, game.players.map((player) =>
-              h('li', { key: player.id }, player.name)
-            )),
+            h(PlayerPicker, {
+              players: game.players,
+              selectedId: currentPlayer && currentPlayer.id
+            }),
           isPlaying &&
             h(Button, {
               type: 'primary',

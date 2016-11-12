@@ -10,17 +10,18 @@
   overflow: hidden;
 }
 
-.PlayerPicker-label:hover .PlayerPicker-name {
-  text-decoration: underline;
-}
-
-.PlayerPicker-name.is-selected {
-  font-weight: bold;
+.PlayerPicker-label:hover .PlayerPicker-name:not(.is-disabled) {
   text-decoration: underline;
 }
 
 .PlayerPicker-name.is-disabled {
   color: rgba(255, 255, 255, 0.5);
+}
+
+.PlayerPicker-name.is-selected {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .PlayerPicker-avatar {
@@ -31,13 +32,13 @@
   transition: opacity .2s ease;
 }
 
-.PlayerPicker-label:hover .PlayerPicker-avatar,
-.PlayerPicker-avatar.is-selected {
-  opacity: 1;
-}
-
 .PlayerPicker-avatar.is-disabled {
   opacity: 0.5;
+}
+
+.PlayerPicker-label:hover .PlayerPicker-avatar:not(.is-disabled),
+.PlayerPicker-avatar.is-selected {
+  opacity: 1;
 }
 
 .PlayerPicker-input {
