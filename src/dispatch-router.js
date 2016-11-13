@@ -19,6 +19,10 @@ module.exports = Router()
       res.flush()
     }
 
+    const sendShutdown = (code) => {
+      res.end(`event: shutdown\ndata: ${code}\n\n`)
+    }
+
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
@@ -36,8 +40,10 @@ module.exports = Router()
     }, heartbeatTime)
 
     persist.subscribe('dispatch', send)
+    persist.subscribe('shutdown', sendShutdown)
     req.connection.on('close', () => {
       persist.unsubscribe('dispatch', send)
+      persist.unsubscribe('shutdown', sendShutdown)
       clearInterval(timer)
     })
     events.emit('connect', { request: req, send })
@@ -47,5 +53,10 @@ module.exports = Router()
     persist.publish('dispatch', req.body)
     res.status(204).end()
   })
+
+process.on('SIGTERM', () => {
+  persist.publish('shutdown', 'SIGTERM')
+  setTimeout(() => process.exit(128 + 15), 10)
+})
 
 module.exports.events = events

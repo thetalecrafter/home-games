@@ -58,7 +58,9 @@ module.exports = createClass({
             }),
           h('input', {
             className: 'EditPlayerAvatar-input',
-            type: 'file', name: 'avatar', defaultValue: '',
+            type: 'file',
+            name: 'avatar',
+            defaultValue: '',
             onChange: this.didChangeImage
           })
         )

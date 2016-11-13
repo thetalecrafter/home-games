@@ -61,7 +61,7 @@ module.exports = {
       mangle: {
         screw_ie8: true
       }
-    })*/
+    }) */
   ]),
   postcss: function (webpack) {
     return [

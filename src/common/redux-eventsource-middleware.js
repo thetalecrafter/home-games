@@ -1,4 +1,4 @@
-/* global EventSource, fetch */
+/* global EventSource, fetch, location */
 module.exports = function serverMiddleware (store) {
   const url = `${store.getState().config.api}/actions`
   let source
@@ -8,6 +8,7 @@ module.exports = function serverMiddleware (store) {
       console.error('EventSource connection closed', event.target.url)
       source.removeEventListener('error', logError, false)
       source.removeEventListener('dispatch', dispatch, false)
+      source.removeEventListener('shutdown', shutdown, false)
       setTimeout(connect, 3000)
     } else if (event.target.readyState === EventSource.CONNECTING) {
       console.info('EventSource reconnecting', event.target.url)
@@ -26,10 +27,16 @@ module.exports = function serverMiddleware (store) {
     }
   }
 
+  function shutdown (event) {
+    console.info('EventSource notified of server shutdown with code:', event.data)
+    setTimeout(() => location.reload(true), 3000)
+  }
+
   function connect () {
     source = new EventSource(url)
     source.addEventListener('error', logError, false)
     source.addEventListener('dispatch', dispatch, false)
+    source.addEventListener('shutdown', shutdown, false)
   }
 
   connect()

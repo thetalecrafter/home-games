@@ -32,7 +32,10 @@ function client (request, response, next) {
   })
 
   const router = createRouter({
-    request, response, env, store,
+    request,
+    response,
+    env,
+    store,
     isClient: false,
     isServer: true,
     redirect (url) {

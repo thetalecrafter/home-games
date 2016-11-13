@@ -38,7 +38,7 @@ function getPlayerAvatarFile (players, id) {
     if (player.id === id) avatar = player.avatar
   })
   if (avatar) {
-    return `player-avatar-${id}-${avatar.replace(/[^\/]*\//g, '')}`
+    return `player-avatar-${id}-${avatar.replace(/[^\/]*\//g, '')}` // eslint-disable-line
   }
 }
 
