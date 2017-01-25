@@ -20,7 +20,7 @@
     "redux": "^3.0.0"
   },
   "devDependencies": {
-    "css-loader": "^0.25.0",
+    "css-loader": "^0.26.1",
     "eslint": "^3.3.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-config-standard-react": "^4.2.0",
@@ -39,14 +39,14 @@
     "node-dev": "^3.1.0",
     "postcss-browser-reporter": "^0.5.0",
     "postcss-cssnext": "^2.5.2",
-    "postcss-import": "^8.1.0",
+    "postcss-import": "^9.1.0",
     "postcss-loader": "^1.1.1",
-    "postcss-reporter": "^2.0.0",
+    "postcss-reporter": "^3.0.0",
     "postcss-url": "^5.1.1",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.6",
     "webpack": "^1.13.2",
-    "whatwg-fetch": "^1.0.0"
+    "whatwg-fetch": "^2.0.2"
   },
   "scripts": {
     "lint": "eslint .",
